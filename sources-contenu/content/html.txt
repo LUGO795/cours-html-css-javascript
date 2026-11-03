@@ -1,0 +1,1080 @@
+§§chapter html-bases
+part: html
+title: Premiers pas en HTML
+subtitle: Balises, éléments, attributs et squelette d'une page
+duration: 1 h
+feature: La coque de l'application (index.html)
+§intro
+<p>Le <strong>HTML</strong> (HyperText Markup Language) n'est pas un langage de programmation : c'est un langage de <strong>description</strong>. Il dit au navigateur « ceci est un titre », « ceci est un paragraphe », « ceci est un bouton ».</p>
+<p>On écrit le HTML avec des <strong>balises</strong> entre chevrons. La plupart vont par deux : une balise ouvrante <code>&lt;p&gt;</code> et une balise fermante <code>&lt;/p&gt;</code>. Le tout (balises + contenu) s'appelle un <strong>élément</strong>.</p>
+<p>Une balise peut porter des <strong>attributs</strong> qui ajoutent une information : <code>&lt;html lang="fr"&gt;</code> indique que la page est en français. Certaines balises sont <strong>vides</strong> (sans fermeture) : <code>&lt;meta&gt;</code>, <code>&lt;img&gt;</code>, <code>&lt;br&gt;</code>.</p>
+<div class="analogy"><strong>Image mentale :</strong> le HTML est le squelette de la page, le CSS est la peau et les vêtements, le JavaScript est les muscles qui la font bouger.</div>
+§example html
+<!DOCTYPE html>                 <!-- 1. Je déclare un document HTML5 -->
+<html lang="fr">                <!-- 2. Racine de la page, en français -->
+  <head>                        <!-- 3. Informations pour le navigateur (invisibles) -->
+    <meta charset="UTF-8">      <!-- Encodage : accents corrects -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Ondea Commandes</title>   <!-- Titre de l'onglet -->
+    <link rel="stylesheet" href="css/style.css">  <!-- Feuille de style -->
+  </head>
+  <body>                        <!-- 4. Tout ce qui est visible -->
+    <h1>Ondea Commandes</h1>
+    <p>Gestion des commandes pour TPE et PME.</p>
+    <script src="js/app.js" defer></script>  <!-- JS chargé après le HTML -->
+  </body>
+</html>
+§explain
+<ul>
+<li><code>&lt;!DOCTYPE html&gt;</code> doit être la toute première ligne : sans elle, le navigateur passe en « mode bizarre » (quirks).</li>
+<li><code>&lt;head&gt;</code> contient les <em>métadonnées</em> : encodage, titre de l'onglet, liens vers le CSS. Rien n'y est affiché dans la page.</li>
+<li><code>&lt;meta name="viewport"&gt;</code> est indispensable pour que la page s'adapte aux smartphones.</li>
+<li><code>&lt;body&gt;</code> contient tout ce que l'utilisateur voit.</li>
+<li>L'attribut <code>defer</code> sur <code>&lt;script&gt;</code> attend que tout le HTML soit lu avant d'exécuter le JavaScript.</li>
+<li>Les commentaires <code>&lt;!-- ... --&gt;</code> ne sont pas affichés : ils servent à expliquer le code.</li>
+<li>On <strong>indente</strong> (décale) les éléments enfants de 2 espaces pour voir l'imbrication d'un coup d'œil.</li>
+</ul>
+§demo-html
+<h1>Ondea Commandes</h1>
+<p>Gestion des commandes pour <strong>TPE</strong> et <em>PME</em>.</p>
+<p>Ce texte est dans un paragraphe.<br>Celui-ci après un saut de ligne.</p>
+<hr>
+<p><small>Modifiez le code à gauche : l'aperçu se met à jour tout seul.</small></p>
+§guided
+<p>Créez l'en-tête de l'écran d'accueil d'Ondea Commandes.</p>
+<ol>
+<li>Ajoutez un titre de niveau 1 contenant <strong>Ondea Commandes</strong>.</li>
+<li>Ajoutez un paragraphe contenant le slogan <strong>Vos commandes, maîtrisées.</strong></li>
+<li>Ajoutez un second paragraphe avec le texte <strong>Version 1.1</strong> où « 1.1 » est mis en valeur avec <code>&lt;strong&gt;</code>.</li>
+</ol>
+§guided-html
+<!-- Écrivez votre code ici -->
+
+§guided-checks
+sel | h1 | Un titre <h1> existe
+text | h1 | Ondea Commandes | Le titre contient « Ondea Commandes »
+count | p | 2 | Au moins deux paragraphes <p>
+text | body | Vos commandes, maîtrisées. | Le slogan est présent
+sel | p strong | Un <strong> est placé dans un paragraphe
+§guided-solution-html
+<h1>Ondea Commandes</h1>
+<p>Vos commandes, maîtrisées.</p>
+<p>Version <strong>1.1</strong></p>
+§auto
+<p>Sur votre ordinateur, créez un dossier <code>ondea-commandes</code> contenant un fichier <code>index.html</code> complet (doctype, <code>html lang="fr"</code>, <code>head</code> avec <code>meta charset</code>, <code>viewport</code> et <code>title</code>, puis <code>body</code>). Dans le body : le titre de l'application, une phrase de présentation et un commentaire HTML qui explique à quoi sert la page. Ouvrez le fichier par double-clic et vérifiez le titre de l'onglet.</p>
+§solution
+<p>Le squelette est toujours le même : on le connaît par cœur après quelques jours. Vérifiez trois points : la langue (<code>lang="fr"</code>) pour les lecteurs d'écran, l'encodage UTF-8 pour les accents, le viewport pour le mobile.</p>
+§solution-code html
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ondea Commandes — Accueil</title>
+</head>
+<body>
+  <!-- Page d'accueil : présente l'application aux utilisateurs -->
+  <h1>Ondea Commandes</h1>
+  <p>L'application qui suit vos commandes de la saisie à la livraison.</p>
+</body>
+</html>
+§quiz
+? Quel est le rôle du HTML ?
+- Programmer des calculs
++ Décrire la structure et le sens du contenu
+- Mettre en forme les couleurs
+- Stocker des données
+= Le HTML décrit ; le CSS met en forme ; le JavaScript agit.
+? Où place-t-on la balise <title> ?
+- Dans <body>
++ Dans <head>
+- Après </html>
+- Dans <footer>
+= <title> est une métadonnée : il s'affiche dans l'onglet, pas dans la page.
+? Que fait l'attribut lang="fr" ?
+- Traduit la page
++ Indique la langue du contenu (prononciation des lecteurs d'écran, césure…)
+- Change la police
+- Rien du tout
+= La langue sert aux technologies d'assistance et aux moteurs de recherche.
+? Laquelle de ces balises est vide (sans balise fermante) ?
+- <p>
+- <h1>
++ <meta>
+- <body>
+= <meta>, <img>, <br>, <hr>, <input>, <link> sont des éléments vides.
+? Pourquoi ajouter defer sur <script> ?
++ Pour exécuter le JavaScript après la lecture complète du HTML
+- Pour rendre le script plus rapide à écrire
+- Pour désactiver le script
+- Pour le charger depuis Internet
+= Avec defer, le DOM est prêt quand le script démarre ; c'est ce que fait Ondea Commandes.
+§ondea
+<p>Ouvrez <code>index.html</code> d'Ondea Commandes : c'est une <strong>coque</strong>. On y trouve le doctype, le <code>head</code> (titre, favicon, 6 feuilles de style) et, en bas du <code>body</code>, une vingtaine de <code>&lt;script defer&gt;</code> chargés <strong>dans l'ordre</strong> : <code>utils.js</code> d'abord, <code>app.js</code> en dernier. Le contenu des écrans est ensuite fabriqué par JavaScript.</p>
+
+§§chapter html-semantique
+part: html
+title: HTML5 sémantique
+subtitle: header, nav, main, aside, section, article, footer
+duration: 1 h 30
+feature: Mise en page : barre latérale, barre supérieure, zone de contenu
+§intro
+<p>Une balise <strong>sémantique</strong> a un <em>sens</em>. <code>&lt;div&gt;</code> ne veut rien dire (c'est une boîte neutre), alors que <code>&lt;nav&gt;</code> veut dire « ceci est une navigation ».</p>
+<p>Pourquoi c'est important ? Les lecteurs d'écran proposent de « sauter à la navigation » ou « au contenu principal » ; Google comprend mieux la page ; et vos collègues relisent le code plus vite.</p>
+<p>Les zones principales s'appellent des <strong>landmarks</strong> (points de repère) : <code>&lt;header&gt;</code> (en-tête), <code>&lt;nav&gt;</code> (menu), <code>&lt;main&gt;</code> (contenu principal, <strong>un seul</strong> par page), <code>&lt;aside&gt;</code> (contenu annexe), <code>&lt;footer&gt;</code> (pied). À l'intérieur : <code>&lt;section&gt;</code> regroupe un thème avec son titre, <code>&lt;article&gt;</code> est un bloc autonome (une carte commande, un billet).</p>
+§example html
+<body>
+  <!-- Barre latérale : logo + menu principal -->
+  <aside class="sidebar">
+    <p class="logo">Ondea Commandes</p>
+    <nav aria-label="Menu principal">
+      <ul>
+        <li><a href="#/tableau-de-bord">Tableau de bord</a></li>
+        <li><a href="#/commandes">Commandes</a></li>
+        <li><a href="#/clients">Clients</a></li>
+      </ul>
+    </nav>
+  </aside>
+
+  <!-- En-tête de la zone de travail -->
+  <header class="topbar">
+    <h1>Tableau de bord</h1>
+  </header>
+
+  <!-- Contenu principal : un seul <main> -->
+  <main id="contenu">
+    <section aria-labelledby="titre-kpi">
+      <h2 id="titre-kpi">Indicateurs du jour</h2>
+      <article class="kpi">
+        <h3>Commandes en attente</h3>
+        <p>12</p>
+      </article>
+    </section>
+  </main>
+
+  <footer>© 2026 Ondea Web Studio</footer>
+</body>
+§explain
+<ul>
+<li><code>&lt;aside&gt;</code> contient ici la barre latérale ; <code>&lt;nav&gt;</code> le menu. Le <code>aria-label</code> nomme ce menu pour les lecteurs d'écran.</li>
+<li>Le menu est une <strong>liste</strong> <code>&lt;ul&gt;</code> de liens : un lecteur d'écran annonce « liste, 3 éléments ».</li>
+<li><code>&lt;main id="contenu"&gt;</code> est unique ; l'<code>id</code> permettra un lien d'évitement « Aller au contenu ».</li>
+<li><code>&lt;section aria-labelledby="titre-kpi"&gt;</code> : la section prend pour nom le texte de son titre.</li>
+<li>Chaque indicateur est un <code>&lt;article&gt;</code> : il a du sens tout seul.</li>
+<li>La hiérarchie des titres <code>h1 → h2 → h3</code> ne saute pas de niveau.</li>
+</ul>
+§demo-html
+<aside class="sb">
+  <p class="logo">◆ Ondea</p>
+  <nav aria-label="Menu principal"><ul>
+    <li><a href="#" aria-current="page">Tableau de bord</a></li>
+    <li><a href="#">Commandes</a></li>
+    <li><a href="#">Clients</a></li>
+  </ul></nav>
+</aside>
+<div class="zone">
+  <header><h1>Tableau de bord</h1></header>
+  <main>
+    <section><h2>Indicateurs</h2>
+      <article class="kpi"><h3>En attente</h3><p>12</p></article>
+      <article class="kpi"><h3>À expédier</h3><p>5</p></article>
+    </section>
+  </main>
+  <footer>© Ondea Web Studio</footer>
+</div>
+§demo-css
+body{display:flex;margin:0;font-family:system-ui;min-height:100vh}
+.sb{background:#11131c;color:#f4e8c8;padding:1rem;width:180px}
+.sb a{color:#f4e8c8;text-decoration:none;display:block;padding:.4rem}
+.sb a[aria-current]{background:#c9a14a;color:#11131c;border-radius:6px}
+.sb ul{list-style:none;padding:0}
+.logo{font-weight:700;color:#d6b05c}
+.zone{flex:1;display:flex;flex-direction:column}
+header,footer{padding:.5rem 1rem;background:#f4f1ea}
+main{flex:1;padding:1rem}
+.kpi{display:inline-block;border:1px solid #c9a14a;border-radius:10px;padding:.2rem 1rem;margin-right:.5rem}
+§guided
+<p>Construisez la structure de l'écran « Commandes » avec des balises sémantiques.</p>
+<ol>
+<li>Un <code>&lt;header&gt;</code> contenant un <code>&lt;h1&gt;</code> « Commandes ».</li>
+<li>Un <code>&lt;nav&gt;</code> avec <code>aria-label="Menu principal"</code> contenant une liste <code>&lt;ul&gt;</code> d'au moins 3 liens.</li>
+<li>Un <code>&lt;main&gt;</code> contenant une <code>&lt;section&gt;</code> avec un <code>&lt;h2&gt;</code> « Commandes récentes » et deux <code>&lt;article&gt;</code> (une commande chacun).</li>
+<li>Un <code>&lt;footer&gt;</code>.</li>
+</ol>
+§guided-html
+<!-- Remplacez les div par des balises sémantiques -->
+<div>
+  <h1>Commandes</h1>
+</div>
+
+§guided-checks
+sel | header h1 | Un <h1> dans un <header>
+sel | nav[aria-label] | Un <nav> nommé avec aria-label
+count | nav ul li a | 3 | Au moins 3 liens dans une liste du menu
+sel | main section h2 | Une section avec un <h2> dans <main>
+count | main article | 2 | Deux <article> dans <main>
+count | main | 1 | Un <main> présent
+sel | footer | Un <footer>
+§guided-solution-html
+<header><h1>Commandes</h1></header>
+<nav aria-label="Menu principal">
+  <ul>
+    <li><a href="#/tableau-de-bord">Tableau de bord</a></li>
+    <li><a href="#/commandes">Commandes</a></li>
+    <li><a href="#/clients">Clients</a></li>
+  </ul>
+</nav>
+<main>
+  <section>
+    <h2>Commandes récentes</h2>
+    <article><h3>CMD-2026-0042</h3><p>Brico Sud — Validée</p></article>
+    <article><h3>CMD-2026-0043</h3><p>Visso Bricolage — En préparation</p></article>
+  </section>
+</main>
+<footer>© 2026 Ondea Web Studio</footer>
+§auto
+<p>Réalisez la structure complète de l'écran « Fiche client » : barre latérale avec menu (5 liens : Tableau de bord, Commandes, Clients, Produits, Stocks), en-tête avec le nom du client, <code>main</code> avec trois sections (Coordonnées, Commandes du client, Notes) et un pied de page. Aucune <code>div</code> n'est autorisée sauf pour un regroupement purement visuel. Vérifiez la hiérarchie des titres avec l'extension « HeadingsMap » ou l'inspecteur.</p>
+§solution
+<p>L'astuce : lisez votre page à voix haute en ne prononçant que les balises. Si on comprend l'organisation de l'écran sans voir le rendu, la sémantique est bonne.</p>
+§solution-code html
+<aside>
+  <p class="logo">Ondea Commandes</p>
+  <nav aria-label="Menu principal">
+    <ul>
+      <li><a href="#/tableau-de-bord">Tableau de bord</a></li>
+      <li><a href="#/commandes">Commandes</a></li>
+      <li><a href="#/clients" aria-current="page">Clients</a></li>
+      <li><a href="#/produits">Produits</a></li>
+      <li><a href="#/stocks">Stocks</a></li>
+    </ul>
+  </nav>
+</aside>
+<header><h1>Brico Sud</h1></header>
+<main>
+  <section aria-labelledby="t-coord"><h2 id="t-coord">Coordonnées</h2>
+    <address>12 rue des Artisans, 83300 Draguignan</address></section>
+  <section aria-labelledby="t-cmd"><h2 id="t-cmd">Commandes du client</h2>
+    <article><h3>CMD-2026-0042</h3><p>Livrée</p></article></section>
+  <section aria-labelledby="t-notes"><h2 id="t-notes">Notes</h2>
+    <p>Livraison le matin uniquement.</p></section>
+</main>
+<footer>© 2026 Ondea Web Studio</footer>
+§quiz
+? Combien d'éléments <main> une page peut-elle contenir (visibles) ?
+- Autant qu'on veut
++ Un seul
+- Deux maximum
+- Aucun, c'est déprécié
+= <main> désigne le contenu principal unique de la page.
+? Quelle balise convient à une carte « commande » autonome ?
+- <div>
+- <span>
++ <article>
+- <aside>
+= Un article a du sens sorti de son contexte, comme une carte commande.
+? À quoi sert aria-label sur <nav> ?
++ Donner un nom au menu pour les technologies d'assistance
+- Changer la couleur du menu
+- Afficher une info-bulle
+- Rendre le menu invisible
+= S'il existe plusieurs <nav>, le nom permet de les distinguer.
+? Quelle hiérarchie de titres est correcte ?
+- h1 → h3 → h2
++ h1 → h2 → h3
+- h2 → h1 → h3
+- Que des h1
+= On ne saute pas de niveau : c'est le plan du document.
+? Que signifie « landmark » ?
+- Une balise obsolète
++ Une grande zone repère de la page (header, nav, main…)
+- Un lien externe
+- Une image de fond
+= Les landmarks permettent de naviguer rapidement au clavier ou au lecteur d'écran.
+§ondea
+<p>Dans <code>index.html</code> d'Ondea Commandes, la coque utilise exactement ce découpage : un <code>&lt;aside&gt;</code> pour la barre latérale avec <code>&lt;nav id="main-nav"&gt;</code>, un <code>&lt;header&gt;</code> pour la barre supérieure (recherche, notifications, profil) et un unique <code>&lt;main&gt;</code> dans lequel le routeur injecte chaque écran. Le README le résume par « Coque sémantique (landmarks, régions aria-live) ».</p>
+
+§§chapter html-contenus
+part: html
+title: Textes, listes, liens et images
+subtitle: Les briques de contenu d'un écran
+duration: 1 h
+feature: Tableau de bord et fiches produits
+§intro
+<p>Six familles de balises suffisent pour 90 % des contenus :</p>
+<ul>
+<li><strong>Titres</strong> <code>&lt;h1&gt;</code> à <code>&lt;h6&gt;</code> : le plan de la page.</li>
+<li><strong>Paragraphes</strong> <code>&lt;p&gt;</code> et mise en valeur <code>&lt;strong&gt;</code> (important) ou <code>&lt;em&gt;</code> (accentué).</li>
+<li><strong>Listes</strong> : <code>&lt;ul&gt;</code> (à puces), <code>&lt;ol&gt;</code> (numérotée), chaque élément dans <code>&lt;li&gt;</code>.</li>
+<li><strong>Liens</strong> <code>&lt;a href="..."&gt;</code> : vers une autre page, une ancre <code>#id</code>, un e-mail <code>mailto:</code> ou un téléphone <code>tel:</code>.</li>
+<li><strong>Images</strong> <code>&lt;img src alt&gt;</code> : <code>alt</code> décrit l'image pour qui ne la voit pas.</li>
+<li><strong>Figures</strong> <code>&lt;figure&gt;</code> + <code>&lt;figcaption&gt;</code> : une image avec sa légende.</li>
+</ul>
+<p>Règle d'or : on choisit la balise pour son <strong>sens</strong>, jamais pour son apparence (le CSS s'en chargera).</p>
+§example html
+<article class="fiche-produit">
+  <!-- Image : alt décrit ce que montre la photo -->
+  <figure>
+    <img src="perceuse.jpg" alt="Perceuse sans fil bleue avec sa batterie"
+         width="320" height="240" loading="lazy">
+    <figcaption>Photo fournisseur</figcaption>
+  </figure>
+
+  <h2>Perceuse sans fil 18 V</h2>
+  <p>Référence <strong>PER-18V-01</strong> — <em>stock faible</em>.</p>
+
+  <!-- Liste à puces : caractéristiques sans ordre -->
+  <ul>
+    <li>2 batteries incluses</li>
+    <li>Garantie 3 ans</li>
+  </ul>
+
+  <!-- Liste numérotée : les étapes ont un ordre -->
+  <ol>
+    <li>Commander</li>
+    <li>Préparer</li>
+    <li>Expédier</li>
+  </ol>
+
+  <p>Fournisseur : <a href="mailto:contact@outipro.fr">contact@outipro.fr</a>
+     — <a href="tel:+33494000000">04 94 00 00 00</a></p>
+</article>
+§explain
+<ul>
+<li><code>width</code> et <code>height</code> sur <code>&lt;img&gt;</code> réservent la place : la page ne « saute » pas au chargement.</li>
+<li><code>loading="lazy"</code> ne charge l'image que lorsqu'elle approche de l'écran.</li>
+<li>Une image purement décorative reçoit <code>alt=""</code> (vide) : le lecteur d'écran l'ignore.</li>
+<li><code>&lt;strong&gt;</code> = importance ; <code>&lt;b&gt;</code> = simple gras visuel (à éviter).</li>
+<li>Les liens <code>mailto:</code> et <code>tel:</code> ouvrent la messagerie ou le téléphone sur mobile.</li>
+<li>Le texte d'un lien doit avoir du sens seul : « Voir la commande CMD-42 » plutôt que « cliquez ici ».</li>
+</ul>
+§demo-html
+<article class="fiche">
+  <figure>
+    <svg width="120" height="80" role="img" aria-label="Pictogramme de perceuse"><rect width="120" height="80" rx="10" fill="#171a26"/><circle cx="40" cy="40" r="18" fill="#c9a14a"/><rect x="55" y="34" width="50" height="12" rx="4" fill="#f4e8c8"/></svg>
+    <figcaption>Pictogramme produit</figcaption>
+  </figure>
+  <h2>Perceuse sans fil 18 V</h2>
+  <p>Référence <strong>PER-18V-01</strong> — <em>stock faible</em></p>
+  <ul><li>2 batteries</li><li>Garantie 3 ans</li></ul>
+  <ol><li>Commander</li><li>Préparer</li><li>Expédier</li></ol>
+  <p><a href="#prix">Voir le prix</a></p>
+  <p id="prix">Prix : 129,00 € HT</p>
+</article>
+§demo-css
+body{font-family:system-ui;padding:1rem}
+.fiche{max-width:340px;border:1px solid #c9a14a;border-radius:14px;padding:1rem}
+figure{margin:0}figcaption{font-size:.8rem;color:#555}
+a{color:#614608;font-weight:700}
+§guided
+<p>Créez la carte produit « Vis inox 4x40 ».</p>
+<ol>
+<li>Un <code>&lt;h2&gt;</code> avec le nom du produit.</li>
+<li>Une image <code>&lt;img&gt;</code> avec un attribut <code>alt</code> non vide (utilisez l'image fournie <code>src="assets/img/vis-inox.svg"</code>).</li>
+<li>Une liste à puces <code>&lt;ul&gt;</code> de 3 caractéristiques.</li>
+<li>Une liste numérotée <code>&lt;ol&gt;</code> de 3 étapes.</li>
+<li>Un lien <code>mailto:</code> vers le fournisseur.</li>
+</ol>
+§guided-html
+<article>
+  <!-- À vous -->
+</article>
+§guided-checks
+sel | h2 | Un titre <h2>
+sel | img[alt]:not([alt=""]) | Une image avec un alt descriptif
+count | ul li | 3 | Une liste à puces de 3 éléments
+count | ol li | 3 | Une liste numérotée de 3 éléments
+sel | a[href^="mailto:"] | Un lien mailto:
+§guided-solution-html
+<article>
+  <h2>Vis inox 4x40</h2>
+  <img src="assets/img/vis-inox.svg" alt="Boîte de 200 vis inox à tête fraisée" width="200" height="150">
+  <ul>
+    <li>Acier inoxydable A2</li>
+    <li>Tête fraisée</li>
+    <li>Boîte de 200</li>
+  </ul>
+  <ol>
+    <li>Contrôler le stock</li>
+    <li>Réserver la quantité</li>
+    <li>Préparer le colis</li>
+  </ol>
+  <p><a href="mailto:ventes@visso.fr">Contacter le fournisseur</a></p>
+</article>
+§auto
+<p>Créez la page « Fiche fournisseur » d'Ondea : logo (image avec alt pertinent), nom du fournisseur en titre, adresse dans <code>&lt;address&gt;</code>, liste des catégories fournies, liens <code>mailto:</code> et <code>tel:</code>, et un lien d'ancre « Voir les produits » qui descend vers une section <code>id="produits"</code> contenant une liste de 4 produits.</p>
+§solution
+<p>Points de contrôle : chaque image a un alt qui décrit ce qu'on voit (pas « image »), les liens ont un texte explicite, l'ancre <code>href="#produits"</code> correspond exactement à l'<code>id</code>.</p>
+§solution-code html
+<article>
+  <img src="logo-visso.svg" alt="Logo Visso Bricolage" width="120" height="60">
+  <h1>Visso Bricolage</h1>
+  <address>8 avenue des Lices, 83000 Toulon</address>
+  <h2>Catégories</h2>
+  <ul><li>Visserie</li><li>Outillage</li><li>Quincaillerie</li></ul>
+  <p><a href="mailto:pro@visso.fr">pro@visso.fr</a> — <a href="tel:+33494112233">04 94 11 22 33</a></p>
+  <p><a href="#produits">Voir les produits</a></p>
+  <section id="produits">
+    <h2>Produits</h2>
+    <ul><li>Vis inox 4x40</li><li>Chevilles 8 mm</li><li>Équerre 60 mm</li><li>Charnière laiton</li></ul>
+  </section>
+</article>
+§quiz
+? Que doit contenir l'attribut alt d'une photo de produit ?
+- Le nom du fichier
++ Une description utile de ce que montre l'image
+- Le mot « image »
+- Rien, il est facultatif
+= alt remplace l'image pour les personnes non voyantes et quand l'image ne charge pas.
+? Quelle liste utiliser pour les étapes d'une préparation de commande ?
+- <ul>
++ <ol>
+- <dl>
+- <menu>
+= L'ordre compte : liste ordonnée.
+? Quel est l'alt d'une image purement décorative ?
++ alt=""
+- alt="décoration"
+- Pas d'attribut alt
+- alt="none"
+= Un alt vide indique explicitement que l'image ne porte pas d'information.
+? Que fait href="#produits" ?
+- Ouvre un site nommé produits
++ Fait défiler jusqu'à l'élément id="produits"
+- Télécharge un fichier
+- Rien
+= Le # désigne une ancre interne à la page.
+? Pourquoi donner width et height à une image ?
+- Pour la rendre floue
++ Pour réserver sa place et éviter que la page saute au chargement
+- C'est obligatoire en HTML5
+- Pour la compresser
+= On limite ainsi le décalage de mise en page (CLS).
+§ondea
+<p>Dans Ondea Commandes, les photos des utilisateurs (dossier <code>photos-utilisateurs/</code>) et des produits sont affichées avec un <code>alt</code> qui reprend le nom de la personne ou du produit. Le logo de la société cliente (<code>visso-bricolage-logo.svg</code>) illustre l'intérêt du format SVG : net à toutes les tailles. Le module <code>zoom-photos.js</code> agrandit une image au clic.</p>
+
+§§chapter html-navigation
+part: html
+title: Navigation et liens d'application
+subtitle: Menu, page courante, routes par hash
+duration: 45 min
+feature: Navigation entre les écrans
+§intro
+<p>Une application web d'une seule page (on dit <strong>SPA</strong>, Single Page Application) ne recharge pas la page à chaque clic. Elle utilise des liens qui changent seulement la partie après le <code>#</code> de l'adresse : <code>index.html#/commandes</code>, <code>index.html#/clients</code>.</p>
+<p>Le HTML prépare le terrain : un <code>&lt;nav&gt;</code>, une liste de liens, et l'attribut <code>aria-current="page"</code> sur le lien de l'écran affiché. C'est lui qui dit à un lecteur d'écran « page actuelle », et le CSS peut s'en servir pour le surligner.</p>
+<p>On ajoute aussi un <strong>lien d'évitement</strong> tout en haut : « Aller au contenu ». Au clavier, c'est le premier élément atteint avec Tab : il évite de traverser tout le menu.</p>
+§example html
+<!-- Lien d'évitement : premier élément focusable de la page -->
+<a class="skip-link" href="#contenu">Aller au contenu</a>
+
+<nav id="main-nav" aria-label="Menu principal">
+  <ul>
+    <!-- data-route : information personnalisée lue par JavaScript -->
+    <li><a class="nav-link" href="#/tableau-de-bord" data-route="tableau-de-bord"
+           aria-current="page">Tableau de bord</a></li>
+    <li><a class="nav-link" href="#/commandes" data-route="commandes">Commandes</a></li>
+    <li><a class="nav-link" href="#/preparation" data-route="preparation">Préparation</a></li>
+    <li><a class="nav-link" href="#/livraisons" data-route="livraisons">Livraisons</a></li>
+  </ul>
+</nav>
+
+<main id="contenu" tabindex="-1">…</main>
+§explain
+<ul>
+<li><code>href="#/commandes"</code> : le navigateur ne recharge pas, il change l'adresse et déclenche l'événement <code>hashchange</code> qu'écoute le JavaScript.</li>
+<li>Les attributs <code>data-*</code> (ici <code>data-route</code>) stockent une donnée libre, lisible en JS via <code>element.dataset.route</code>.</li>
+<li><code>aria-current="page"</code> ne doit être que sur <strong>un</strong> lien à la fois.</li>
+<li><code>tabindex="-1"</code> sur <code>&lt;main&gt;</code> permet de lui donner le focus par programme après un changement d'écran.</li>
+<li>Le lien d'évitement est caché visuellement mais réapparaît quand il reçoit le focus clavier.</li>
+</ul>
+§demo-html
+<a class="skip" href="#contenu">Aller au contenu</a>
+<nav aria-label="Menu principal"><ul>
+  <li><a href="#/tableau-de-bord" data-route="tableau-de-bord">Tableau de bord</a></li>
+  <li><a href="#/commandes" data-route="commandes">Commandes</a></li>
+  <li><a href="#/clients" data-route="clients">Clients</a></li>
+</ul></nav>
+<main id="contenu" tabindex="-1"><h1 id="titre">Tableau de bord</h1><p>Cliquez dans le menu. Appuyez sur Tab pour voir le lien d'évitement.</p></main>
+§demo-css
+body{font-family:system-ui;margin:0}
+nav ul{display:flex;gap:.5rem;list-style:none;padding:.5rem;margin:0;background:#171a26}
+nav a{color:#f4e8c8;padding:.4rem .8rem;border-radius:6px;text-decoration:none;display:block}
+nav a[aria-current="page"]{background:#c9a14a;color:#171a26;font-weight:700}
+.skip{position:absolute;left:-999px}.skip:focus{left:.5rem;top:.5rem;background:#fff;padding:.5rem;z-index:2}
+main{padding:1rem}
+§demo-js
+// Ce script surligne le lien correspondant à l'adresse (#/...)
+function majMenu() {
+  const route = location.hash.replace('#/', '') || 'tableau-de-bord';
+  document.querySelectorAll('nav a').forEach((a) => {
+    if (a.dataset.route === route) a.setAttribute('aria-current', 'page');
+    else a.removeAttribute('aria-current');
+  });
+  document.getElementById('titre').textContent = document.querySelector('nav a[aria-current]').textContent;
+}
+window.addEventListener('hashchange', majMenu);
+majMenu();
+§guided
+<p>Écrivez le menu de l'application Ondea pour le profil <strong>magasinier</strong>.</p>
+<ol>
+<li>Un lien d'évitement <code>href="#contenu"</code> en premier.</li>
+<li>Un <code>&lt;nav aria-label="Menu principal"&gt;</code> avec une liste de 4 liens : Tableau de bord, Commandes, Préparation, Livraisons. Chaque lien a un <code>href</code> qui commence par <code>#/</code> et un attribut <code>data-route</code>.</li>
+<li>Le lien « Préparation » porte <code>aria-current="page"</code>.</li>
+<li>Un <code>&lt;main id="contenu"&gt;</code>.</li>
+</ol>
+§guided-html
+<!-- Menu magasinier -->
+
+§guided-checks
+sel | a[href="#contenu"] | Un lien d'évitement vers #contenu
+count | nav[aria-label] ul li a[href^="#/"] | 4 | 4 liens de route dans le menu
+count | nav a[data-route] | 4 | Chaque lien a un data-route
+count | nav a[aria-current="page"] | =1 | Un seul lien marqué aria-current="page"
+text | nav a[aria-current="page"] | Préparation | C'est le lien Préparation qui est courant
+sel | main#contenu | Un <main id="contenu">
+§guided-solution-html
+<a class="skip-link" href="#contenu">Aller au contenu</a>
+<nav aria-label="Menu principal">
+  <ul>
+    <li><a href="#/tableau-de-bord" data-route="tableau-de-bord">Tableau de bord</a></li>
+    <li><a href="#/commandes" data-route="commandes">Commandes</a></li>
+    <li><a href="#/preparation" data-route="preparation" aria-current="page">Préparation</a></li>
+    <li><a href="#/livraisons" data-route="livraisons">Livraisons</a></li>
+  </ul>
+</nav>
+<main id="contenu" tabindex="-1"><h1>Préparation</h1></main>
+§auto
+<p>Créez le menu complet du profil <strong>directeur</strong> (13 entrées d'Ondea : tableau de bord, commandes, clients, produits, stocks, fournisseurs, préparation, livraisons, documents, statistiques, historique, utilisateurs, paramètres), regroupé en trois listes titrées : « Activité », « Catalogue », « Administration ». Ajoutez le lien d'évitement et testez toute la navigation au clavier (Tab, Maj+Tab, Entrée).</p>
+§solution
+<p>On peut regrouper les liens avec un titre par groupe. Le titre est relié à la liste par <code>aria-labelledby</code> pour que le lecteur d'écran annonce « Activité, liste, 4 éléments ».</p>
+§solution-code html
+<a class="skip-link" href="#contenu">Aller au contenu</a>
+<nav aria-label="Menu principal">
+  <h2 id="g1">Activité</h2>
+  <ul aria-labelledby="g1">
+    <li><a href="#/tableau-de-bord" data-route="tableau-de-bord">Tableau de bord</a></li>
+    <li><a href="#/commandes" data-route="commandes">Commandes</a></li>
+    <li><a href="#/preparation" data-route="preparation">Préparation</a></li>
+    <li><a href="#/livraisons" data-route="livraisons">Livraisons</a></li>
+    <li><a href="#/documents" data-route="documents">Documents</a></li>
+  </ul>
+  <h2 id="g2">Catalogue</h2>
+  <ul aria-labelledby="g2">
+    <li><a href="#/clients" data-route="clients">Clients</a></li>
+    <li><a href="#/produits" data-route="produits">Produits</a></li>
+    <li><a href="#/stocks" data-route="stocks">Stocks</a></li>
+    <li><a href="#/fournisseurs" data-route="fournisseurs">Fournisseurs</a></li>
+  </ul>
+  <h2 id="g3">Administration</h2>
+  <ul aria-labelledby="g3">
+    <li><a href="#/statistiques" data-route="statistiques">Statistiques</a></li>
+    <li><a href="#/historique" data-route="historique">Historique</a></li>
+    <li><a href="#/utilisateurs" data-route="utilisateurs">Utilisateurs</a></li>
+    <li><a href="#/parametres" data-route="parametres">Paramètres</a></li>
+  </ul>
+</nav>
+<main id="contenu" tabindex="-1"></main>
+§quiz
+? Que se passe-t-il quand on clique sur href="#/commandes" ?
+- La page se recharge
++ Seule la partie après # change ; l'événement hashchange est déclenché
+- Le navigateur télécharge commandes.html
+- Rien du tout
+= C'est le principe des routeurs par hash, compatibles file://.
+? Comment lire data-route="clients" en JavaScript ?
+- element.route
++ element.dataset.route
+- element.data.route
+- element.getRoute()
+= Les attributs data-* sont rassemblés dans l'objet dataset.
+? Combien de liens peuvent porter aria-current="page" en même temps dans un menu ?
+- Tous
++ Un seul
+- Deux
+- Aucun
+= Il n'y a qu'une page courante.
+? À quoi sert le lien d'évitement ?
+- À quitter le site
++ À sauter directement au contenu principal au clavier
+- À revenir en haut
+- À afficher le menu mobile
+= Critère WCAG 2.4.1 « Contourner des blocs ».
+? Pourquoi tabindex="-1" sur <main> ?
+- Pour l'exclure de la page
++ Pour pouvoir lui donner le focus en JavaScript sans l'ajouter à l'ordre de tabulation
+- Pour le rendre prioritaire
+- C'est une erreur
+= -1 : focusable par programme uniquement.
+§ondea
+<p>Le fichier <code>router.js</code> d'Ondea lit l'adresse (<code>#/module/identifiant/action?filtre=…</code>), vérifie les permissions de l'utilisateur, affiche l'écran puis appelle <code>setActiveNav(name)</code> qui pose <code>aria-current="page"</code> sur le bon lien grâce à <code>a.dataset.route</code>. C'est exactement le script de la démonstration, en plus complet.</p>
+
+§§chapter html-formulaires
+part: html
+title: Formulaires
+subtitle: label, input, select, textarea, fieldset et validation native
+duration: 2 h
+feature: Connexion et fiche client
+§intro
+<p>Un formulaire permet à l'utilisateur d'envoyer des informations : se connecter, créer un client, saisir une commande.</p>
+<p>Trois règles pour un formulaire professionnel :</p>
+<ol>
+<li><strong>Chaque champ a un <code>&lt;label&gt;</code></strong> relié par <code>for</code> = <code>id</code> du champ. Cliquer sur le label met le curseur dans le champ, et le lecteur d'écran lit le label.</li>
+<li><strong>Le bon type</strong> : <code>email</code>, <code>tel</code>, <code>number</code>, <code>date</code>, <code>password</code>… Sur mobile, le clavier s'adapte.</li>
+<li><strong>La validation native</strong> : <code>required</code>, <code>minlength</code>, <code>min</code>, <code>max</code>, <code>pattern</code>. Le navigateur bloque l'envoi si c'est invalide.</li>
+</ol>
+<p>On regroupe les champs liés dans un <code>&lt;fieldset&gt;</code> avec une légende <code>&lt;legend&gt;</code>.</p>
+§example html
+<form id="form-connexion" novalidate>
+  <h1>Connexion</h1>
+
+  <!-- for="identifiant" relie le label au champ id="identifiant" -->
+  <label for="identifiant">Identifiant</label>
+  <input id="identifiant" name="username" type="text"
+         autocomplete="username" required>
+
+  <label for="mdp">Mot de passe</label>
+  <input id="mdp" name="password" type="password"
+         autocomplete="current-password" required minlength="8"
+         aria-describedby="aide-mdp">
+  <p id="aide-mdp">8 caractères minimum.</p>
+
+  <fieldset>
+    <legend>Profil</legend>
+    <input type="radio" id="p-dir" name="role" value="directeur" checked>
+    <label for="p-dir">Directeur</label>
+    <input type="radio" id="p-mag" name="role" value="magasinier">
+    <label for="p-mag">Magasinier</label>
+  </fieldset>
+
+  <button type="submit">Se connecter</button>
+</form>
+§explain
+<ul>
+<li><code>name</code> est la clé de la donnée envoyée ; <code>id</code> sert au label et au CSS/JS.</li>
+<li><code>autocomplete="username"</code> / <code>current-password</code> aide le gestionnaire de mots de passe.</li>
+<li><code>aria-describedby</code> fait lire l'aide après le label.</li>
+<li>Les boutons radio d'un même groupe partagent le même <code>name</code> : un seul choix possible.</li>
+<li><code>novalidate</code> désactive les bulles du navigateur pour afficher nos propres messages en JS (chapitre Formulaires JS). Sans lui, la validation native s'applique.</li>
+<li><code>type="submit"</code> : le bouton envoie le formulaire. <code>type="button"</code> ne l'envoie pas.</li>
+</ul>
+§demo-html
+<form>
+  <fieldset><legend>Nouveau client</legend>
+    <label for="nom">Raison sociale *</label>
+    <input id="nom" required minlength="2">
+    <label for="mail">E-mail</label>
+    <input id="mail" type="email" placeholder="contact@exemple.fr">
+    <label for="type">Type</label>
+    <select id="type"><option>Professionnel</option><option>Particulier</option></select>
+    <label for="remise">Remise (%)</label>
+    <input id="remise" type="number" min="0" max="50" step="0.5" value="0">
+    <label for="notes">Notes</label>
+    <textarea id="notes" rows="3"></textarea>
+  </fieldset>
+  <button>Enregistrer</button>
+</form>
+§demo-css
+body{font-family:system-ui;padding:1rem}
+fieldset{border:1px solid #c9a14a;border-radius:12px;display:grid;gap:.3rem;max-width:360px}
+input,select,textarea{font:inherit;padding:.5rem;border:1px solid #888;border-radius:8px}
+input:invalid{border-color:#b91c1c}
+input:focus-visible{outline:3px solid #1d4ed8;outline-offset:2px}
+button{margin-top:.7rem;padding:.6rem 1.2rem;background:#171a26;color:#fdf8ea;border:0;border-radius:8px}
+§guided
+<p>Construisez le formulaire « Nouveau produit » d'Ondea.</p>
+<ol>
+<li>Un champ <strong>Référence</strong> obligatoire (<code>required</code>) avec son <code>label</code> relié.</li>
+<li>Un champ <strong>Désignation</strong> obligatoire.</li>
+<li>Un champ <strong>Prix HT</strong> de type <code>number</code> avec <code>min="0"</code> et <code>step="0.01"</code>.</li>
+<li>Une liste déroulante <strong>TVA</strong> (<code>select</code>) avec les options 20 %, 10 %, 5,5 %.</li>
+<li>Un bouton d'envoi <code>type="submit"</code>.</li>
+</ol>
+§guided-html
+<form>
+  <!-- À vous -->
+</form>
+§guided-checks
+count | form label[for] | 4 | Au moins 4 labels reliés par for
+sel | input[required] | Un champ obligatoire
+count | input[required] | 2 | Deux champs obligatoires
+sel | input[type="number"][min="0"] | Prix HT en type number avec min="0"
+count | select option | 3 | Un select avec 3 options
+sel | button[type="submit"] | Un bouton type="submit"
+§guided-solution-html
+<form>
+  <label for="ref">Référence</label>
+  <input id="ref" name="reference" required>
+  <label for="des">Désignation</label>
+  <input id="des" name="designation" required>
+  <label for="prix">Prix HT (€)</label>
+  <input id="prix" name="prixHT" type="number" min="0" step="0.01">
+  <label for="tva">TVA</label>
+  <select id="tva" name="tva">
+    <option value="2000">20 %</option>
+    <option value="1000">10 %</option>
+    <option value="550">5,5 %</option>
+  </select>
+  <button type="submit">Créer le produit</button>
+</form>
+§auto
+<p>Créez le formulaire complet « Fiche client » d'Ondea : raison sociale (obligatoire), SIRET (14 chiffres : utilisez <code>pattern="[0-9]{14}"</code> et <code>inputmode="numeric"</code>), e-mail, téléphone, adresse (rue, code postal à 5 chiffres, ville) regroupée dans un <code>fieldset</code>, conditions de paiement (select : comptant, 30 jours, 45 jours fin de mois), case à cocher « Client actif », notes. Testez l'envoi avec des valeurs fausses.</p>
+§solution
+<p>L'attribut <code>pattern</code> attend une expression régulière : <code>[0-9]{14}</code> signifie « exactement 14 chiffres ». <code>inputmode="numeric"</code> affiche le pavé numérique sur mobile sans les flèches du type number.</p>
+§solution-code html
+<form>
+  <label for="rs">Raison sociale *</label>
+  <input id="rs" name="raisonSociale" required autocomplete="organization">
+  <label for="siret">SIRET</label>
+  <input id="siret" name="siret" pattern="[0-9]{14}" inputmode="numeric" aria-describedby="aide-siret">
+  <p id="aide-siret">14 chiffres, sans espace.</p>
+  <label for="email">E-mail</label>
+  <input id="email" name="email" type="email" autocomplete="email">
+  <label for="tel">Téléphone</label>
+  <input id="tel" name="tel" type="tel" autocomplete="tel">
+  <fieldset>
+    <legend>Adresse</legend>
+    <label for="rue">Rue</label><input id="rue" name="rue" autocomplete="street-address">
+    <label for="cp">Code postal</label><input id="cp" name="cp" pattern="[0-9]{5}" inputmode="numeric">
+    <label for="ville">Ville</label><input id="ville" name="ville">
+  </fieldset>
+  <label for="paiement">Conditions de paiement</label>
+  <select id="paiement" name="paiement">
+    <option value="comptant">Comptant</option>
+    <option value="30j">30 jours</option>
+    <option value="45jfm">45 jours fin de mois</option>
+  </select>
+  <input type="checkbox" id="actif" name="actif" checked><label for="actif">Client actif</label>
+  <label for="notes">Notes</label><textarea id="notes" name="notes" rows="4"></textarea>
+  <button type="submit">Enregistrer le client</button>
+</form>
+§quiz
+? Comment relier un label à son champ ?
+- En les mettant côte à côte
++ for="x" sur le label et id="x" sur le champ
+- name identique
+- class identique
+= Le lien for/id est lu par les technologies d'assistance.
+? Quel type pour une adresse e-mail ?
+- text
++ email
+- mail
+- url
+= type="email" valide le format et adapte le clavier mobile.
+? Que font des boutons radio qui partagent le même name ?
++ Ils forment un groupe : un seul choix possible
+- Ils sont tous cochés
+- Rien de spécial
+- Ils deviennent des cases à cocher
+= name définit le groupe.
+? Quelle différence entre type="submit" et type="button" ?
+- Aucune
++ submit envoie le formulaire, button ne fait rien par défaut
+- button envoie, submit non
+- submit est obsolète
+= Dans un formulaire, un <button> sans type est un submit.
+? À quoi sert <fieldset> ?
+- À dessiner un tableau
++ À regrouper des champs liés, avec une <legend>
+- À masquer des champs
+- À valider le formulaire
+= Le lecteur d'écran annonce la légende avant chaque champ du groupe.
+§ondea
+<p>L'écran de connexion d'Ondea Commandes (<code>auth.js → renderLogin</code>) suit ces règles : labels reliés, <code>autocomplete</code>, message d'erreur annoncé. Les fiches client et produit utilisent le même principe ; la validation finale est faite en JavaScript par les fonctions de <code>utils.js</code> (e-mail, SIRET, code postal) car le JS ne doit jamais faire confiance au seul HTML.</p>
+
+§§chapter html-tableaux
+part: html
+title: Tableaux de données
+subtitle: table, caption, thead, tbody, tfoot, th et scope
+duration: 1 h
+feature: Liste des commandes et lignes d'une commande
+§intro
+<p>Un tableau HTML sert à présenter des <strong>données à deux dimensions</strong> : des lignes (une commande par ligne) et des colonnes (numéro, client, statut, montant). On ne s'en sert <strong>jamais</strong> pour faire de la mise en page.</p>
+<p>Structure : <code>&lt;table&gt;</code> contient un titre <code>&lt;caption&gt;</code>, une tête <code>&lt;thead&gt;</code>, un corps <code>&lt;tbody&gt;</code> et éventuellement un pied <code>&lt;tfoot&gt;</code> pour les totaux. Chaque ligne est un <code>&lt;tr&gt;</code> ; une cellule d'en-tête est un <code>&lt;th&gt;</code>, une cellule de donnée un <code>&lt;td&gt;</code>.</p>
+<p>L'attribut <code>scope="col"</code> ou <code>scope="row"</code> sur <code>&lt;th&gt;</code> indique si l'en-tête concerne une colonne ou une ligne.</p>
+§example html
+<table class="table">
+  <caption>Lignes de la commande CMD-2026-0042</caption>
+  <thead>
+    <tr>
+      <th scope="col">Produit</th>
+      <th scope="col">Qté</th>
+      <th scope="col">PU HT</th>
+      <th scope="col">Total HT</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th scope="row">Vis inox 4x40</th>
+      <td>10</td><td>8,50 €</td><td>85,00 €</td>
+    </tr>
+    <tr>
+      <th scope="row">Perceuse 18 V</th>
+      <td>1</td><td>129,00 €</td><td>129,00 €</td>
+    </tr>
+  </tbody>
+  <tfoot>
+    <tr><th scope="row" colspan="3">Total HT</th><td>214,00 €</td></tr>
+    <tr><th scope="row" colspan="3">TVA 20 %</th><td>42,80 €</td></tr>
+    <tr><th scope="row" colspan="3">Total TTC</th><td>256,80 €</td></tr>
+  </tfoot>
+</table>
+§explain
+<ul>
+<li><code>&lt;caption&gt;</code> donne le titre du tableau : il est annoncé en premier.</li>
+<li>Le nom du produit est un <code>&lt;th scope="row"&gt;</code> : c'est l'en-tête de sa ligne.</li>
+<li><code>colspan="3"</code> fusionne 3 colonnes (et <code>rowspan</code> fusionne des lignes).</li>
+<li><code>&lt;tfoot&gt;</code> accueille les totaux HT, TVA, TTC.</li>
+<li>Sur mobile, on entoure le tableau d'un conteneur qui défile horizontalement plutôt que de casser la structure.</li>
+</ul>
+§demo-html
+<div class="wrap"><table>
+  <caption>Commandes récentes</caption>
+  <thead><tr><th scope="col">N°</th><th scope="col">Client</th><th scope="col">Statut</th><th scope="col" class="num">TTC</th></tr></thead>
+  <tbody>
+    <tr><th scope="row">0042</th><td>Brico Sud</td><td><span class="b ok">Livrée</span></td><td class="num">256,80 €</td></tr>
+    <tr><th scope="row">0043</th><td>Visso</td><td><span class="b wait">En attente</span></td><td class="num">1 044,00 €</td></tr>
+    <tr><th scope="row">0044</th><td>Atelier Mistral</td><td><span class="b prep">En préparation</span></td><td class="num">89,90 €</td></tr>
+  </tbody>
+</table></div>
+§demo-css
+body{font-family:system-ui;padding:1rem}
+.wrap{overflow-x:auto}
+table{border-collapse:collapse;width:100%;min-width:420px}
+caption{text-align:left;font-weight:700;padding:.5rem 0}
+th,td{padding:.55rem .7rem;border-bottom:1px solid #e2dbcc;text-align:left}
+thead th{background:#171a26;color:#f4e8c8}
+tbody tr:hover{background:#faf3e0}
+.num{text-align:right;font-variant-numeric:tabular-nums}
+.b{padding:.15rem .5rem;border-radius:99px;font-size:.85rem}
+.ok{background:#dcf3e4;color:#0b4a26}.wait{background:#fbeccb;color:#5c3b00}.prep{background:#ebe2fb;color:#3b1a7a}
+§guided
+<p>Créez le tableau « Stock bas » d'Ondea.</p>
+<ol>
+<li>Un <code>&lt;caption&gt;</code> « Produits sous le seuil d'alerte ».</li>
+<li>Un <code>&lt;thead&gt;</code> avec 4 colonnes (<code>th scope="col"</code>) : Référence, Produit, Stock, Seuil.</li>
+<li>Un <code>&lt;tbody&gt;</code> avec au moins 3 lignes.</li>
+</ol>
+§guided-html
+<table>
+  <!-- À vous -->
+</table>
+§guided-checks
+sel | table caption | Un <caption>
+count | thead th[scope="col"] | 4 | 4 en-têtes de colonne avec scope="col"
+count | tbody tr | 3 | Au moins 3 lignes dans <tbody>
+text | caption | seuil | Le caption parle du seuil
+§guided-solution-html
+<table>
+  <caption>Produits sous le seuil d'alerte</caption>
+  <thead>
+    <tr><th scope="col">Référence</th><th scope="col">Produit</th><th scope="col">Stock</th><th scope="col">Seuil</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>VIS-440</td><td>Vis inox 4x40</td><td>12</td><td>50</td></tr>
+    <tr><td>PER-18V</td><td>Perceuse 18 V</td><td>2</td><td>5</td></tr>
+    <tr><td>CHV-08</td><td>Chevilles 8 mm</td><td>30</td><td>100</td></tr>
+  </tbody>
+</table>
+§auto
+<p>Reproduisez le bon de commande d'Ondea sous forme de tableau : 5 lignes de produits avec quantité, prix unitaire HT, remise %, taux de TVA et total HT, puis un <code>tfoot</code> avec Total HT, détail de la TVA par taux (20 % et 5,5 %), frais de port et Total TTC. Calculez les montants à la main (ou à la calculatrice) : vous les recalculerez en JavaScript plus tard.</p>
+§solution
+<p>La difficulté est le pied : on utilise <code>colspan</code> pour que l'intitulé occupe toutes les colonnes sauf la dernière. Les montants sont alignés à droite (CSS) pour faciliter la lecture.</p>
+§solution-code html
+<table>
+  <caption>Bon de commande CMD-2026-0050</caption>
+  <thead><tr><th scope="col">Produit</th><th scope="col">Qté</th><th scope="col">PU HT</th><th scope="col">Remise</th><th scope="col">TVA</th><th scope="col">Total HT</th></tr></thead>
+  <tbody>
+    <tr><th scope="row">Vis inox 4x40</th><td>10</td><td>8,50 €</td><td>0 %</td><td>20 %</td><td>85,00 €</td></tr>
+    <tr><th scope="row">Perceuse 18 V</th><td>2</td><td>129,00 €</td><td>10 %</td><td>20 %</td><td>232,20 €</td></tr>
+    <tr><th scope="row">Chevilles 8 mm</th><td>5</td><td>4,00 €</td><td>0 %</td><td>20 %</td><td>20,00 €</td></tr>
+    <tr><th scope="row">Guide technique</th><td>1</td><td>20,00 €</td><td>0 %</td><td>5,5 %</td><td>20,00 €</td></tr>
+    <tr><th scope="row">Équerre 60 mm</th><td>4</td><td>2,50 €</td><td>0 %</td><td>20 %</td><td>10,00 €</td></tr>
+  </tbody>
+  <tfoot>
+    <tr><th scope="row" colspan="5">Total HT produits</th><td>367,20 €</td></tr>
+    <tr><th scope="row" colspan="5">TVA 20 % (sur 347,20 €)</th><td>69,44 €</td></tr>
+    <tr><th scope="row" colspan="5">TVA 5,5 % (sur 20,00 €)</th><td>1,10 €</td></tr>
+    <tr><th scope="row" colspan="5">Frais de port HT (TVA 20 % : 2,00 €)</th><td>10,00 €</td></tr>
+    <tr><th scope="row" colspan="5">Total TTC</th><td>449,74 €</td></tr>
+  </tfoot>
+</table>
+§quiz
+? Quand utiliser un tableau HTML ?
+- Pour aligner les blocs d'une page
++ Pour présenter des données en lignes et colonnes
+- Pour faire un menu
+- Jamais, c'est obsolète
+= La mise en page se fait en CSS (Flexbox, Grid).
+? Quelle balise donne le titre d'un tableau ?
+- <title>
+- <th>
++ <caption>
+- <legend>
+= caption est le premier enfant de table.
+? Que signifie scope="col" ?
++ Cet en-tête s'applique à toute la colonne
+- La colonne est cachée
+- La colonne est triable
+- La cellule fait 2 colonnes
+= scope relie l'en-tête aux cellules concernées.
+? Où mettre les totaux d'une commande ?
+- <thead>
+- <caption>
++ <tfoot>
+- En dehors du tableau
+= tfoot = pied du tableau.
+? Que fait colspan="3" ?
+- Crée 3 tableaux
++ Fusionne la cellule sur 3 colonnes
+- Répète la cellule 3 fois
+- Ajoute 3 lignes
+= rowspan fait la même chose verticalement.
+§ondea
+<p>Ondea Commandes affiche presque toutes ses listes (commandes, clients, produits, mouvements de stock) avec des tableaux générés par <code>ui.js</code> : en-têtes cliquables pour trier, pagination, montants alignés à droite. Les documents imprimables (bons de commande, factures, bons de livraison) de <code>documents.js</code> utilisent <code>tfoot</code> pour les totaux HT, TVA par taux et TTC.</p>
+
+§§chapter html-accessibilite
+part: html
+title: Accessibilité et organisation
+subtitle: alt, ARIA, focus, régions live, dialog, structure de projet
+duration: 1 h 30
+feature: Notifications, modales et organisation des fichiers
+§intro
+<p>L'<strong>accessibilité</strong> (a11y) consiste à rendre l'application utilisable par tout le monde : personnes aveugles (lecteur d'écran), malvoyantes (zoom, contraste), qui n'utilisent que le clavier, daltoniennes, ou simplement sur un téléphone en plein soleil. En France, c'est aussi une obligation légale pour de nombreux services.</p>
+<p>Les bonnes pratiques clés :</p>
+<ul>
+<li>Utiliser d'abord le <strong>bon élément HTML</strong> : un <code>&lt;button&gt;</code> est déjà focusable et activable au clavier, une <code>&lt;div&gt;</code> non.</li>
+<li>ARIA seulement en complément : <code>aria-label</code> (nom), <code>aria-expanded</code> (ouvert/fermé), <code>aria-live</code> (annoncer un changement).</li>
+<li>Ne jamais transmettre une information par la <strong>couleur seule</strong> : un statut « En retard » a une couleur <em>et</em> un texte ou une icône.</li>
+<li>Le focus doit être <strong>visible</strong> et suivre un ordre logique.</li>
+</ul>
+<p>Côté organisation, un projet propre sépare <code>index.html</code>, un dossier <code>css/</code>, un dossier <code>js/</code> et un dossier <code>assets/</code> (images, icônes, polices).</p>
+§example html
+<!-- Bouton icône : le texte invisible donne son nom -->
+<button type="button" class="btn-icon" aria-label="Notifications (3 non lues)"
+        aria-expanded="false" aria-controls="panneau-notifs">
+  <svg aria-hidden="true" width="20" height="20"><use href="#i-bell"></use></svg>
+</button>
+
+<!-- Zone annoncée automatiquement par les lecteurs d'écran -->
+<div id="toasts" role="status" aria-live="polite"></div>
+
+<!-- Boîte de dialogue native : gère le focus et la touche Échap -->
+<dialog id="confirm-annulation" aria-labelledby="titre-dialog">
+  <h2 id="titre-dialog">Annuler la commande CMD-2026-0042 ?</h2>
+  <p>Le stock réservé sera libéré.</p>
+  <form method="dialog">
+    <button value="non">Garder la commande</button>
+    <button value="oui">Annuler la commande</button>
+  </form>
+</dialog>
+§explain
+<ul>
+<li>Un bouton qui ne contient qu'une icône doit avoir un <code>aria-label</code> ; l'icône a <code>aria-hidden="true"</code> pour ne pas être lue.</li>
+<li><code>aria-expanded</code> dit si le panneau commandé est ouvert ; le JS le met à jour.</li>
+<li><code>aria-live="polite"</code> : tout texte ajouté dans la zone est lu dès que l'utilisateur fait une pause. On l'utilise pour les messages « Commande enregistrée ».</li>
+<li><code>&lt;dialog&gt;</code> ouvert avec <code>showModal()</code> bloque le reste de la page, piège le focus et se ferme avec Échap.</li>
+<li>Dans un <code>&lt;form method="dialog"&gt;</code>, cliquer sur un bouton ferme la boîte et donne sa <code>value</code> à <code>dialog.returnValue</code>.</li>
+</ul>
+§demo-html
+<button type="button" id="ouvrir">Annuler la commande…</button>
+<div id="toasts" role="status" aria-live="polite"></div>
+<dialog id="dlg" aria-labelledby="t">
+  <h2 id="t">Annuler CMD-2026-0042 ?</h2>
+  <p>Le stock réservé sera libéré.</p>
+  <form method="dialog">
+    <button value="non" autofocus>Garder</button>
+    <button value="oui">Annuler la commande</button>
+  </form>
+</dialog>
+§demo-css
+body{font-family:system-ui;padding:1rem}
+button{font:inherit;padding:.5rem 1rem;border-radius:8px;border:1px solid #171a26;background:#fff;cursor:pointer}
+button:focus-visible{outline:3px solid #1d4ed8;outline-offset:2px}
+dialog{border:1px solid #c9a14a;border-radius:14px;padding:1.2rem}
+dialog::backdrop{background:rgba(10,12,20,.6)}
+#toasts{margin-top:1rem;font-weight:700;color:#0b4a26}
+§demo-js
+const dlg = document.getElementById('dlg');
+document.getElementById('ouvrir').addEventListener('click', () => dlg.showModal());
+dlg.addEventListener('close', () => {
+  // Le texte inséré dans la région aria-live est lu par le lecteur d'écran
+  document.getElementById('toasts').textContent =
+    dlg.returnValue === 'oui' ? 'Commande annulée.' : 'Commande conservée.';
+});
+§guided
+<p>Rendez accessible la barre supérieure d'Ondea.</p>
+<ol>
+<li>Un bouton icône « Notifications » : <code>&lt;button&gt;</code> avec <code>aria-label</code> et un <code>&lt;svg aria-hidden="true"&gt;</code> à l'intérieur.</li>
+<li>Un bouton « Menu » avec <code>aria-expanded="false"</code> et <code>aria-controls="menu"</code>.</li>
+<li>Une zone de messages avec <code>role="status"</code> et <code>aria-live="polite"</code>.</li>
+<li>Une boîte <code>&lt;dialog&gt;</code> de déconnexion avec un titre relié par <code>aria-labelledby</code>.</li>
+</ol>
+§guided-html
+<header>
+  <!-- À vous -->
+</header>
+§guided-checks
+sel | button[aria-label] svg[aria-hidden="true"] | Bouton icône nommé avec SVG masqué
+sel | button[aria-expanded="false"][aria-controls] | Bouton menu avec aria-expanded et aria-controls
+sel | [role="status"][aria-live="polite"] | Une région live polie
+sel | dialog[aria-labelledby] | Un dialog nommé par aria-labelledby
+§guided-solution-html
+<header>
+  <button type="button" aria-expanded="false" aria-controls="menu">Menu</button>
+  <button type="button" aria-label="Notifications (2 non lues)">
+    <svg aria-hidden="true" width="20" height="20"><circle cx="10" cy="10" r="8"/></svg>
+  </button>
+  <div role="status" aria-live="polite"></div>
+</header>
+<nav id="menu" hidden>…</nav>
+<dialog id="dlg-logout" aria-labelledby="t-logout">
+  <h2 id="t-logout">Se déconnecter ?</h2>
+  <form method="dialog"><button value="non">Rester</button><button value="oui">Se déconnecter</button></form>
+</dialog>
+§auto
+<p>Faites l'audit d'une de vos pages précédentes : (1) parcourez-la uniquement au clavier et notez chaque problème, (2) passez l'outil Lighthouse (onglet Accessibilité des outils de développement), (3) vérifiez le contraste de vos couleurs avec un vérificateur de contraste, (4) corrigez et rédigez un court rapport « avant / après » de 5 lignes. Puis organisez votre projet en dossiers <code>css/</code>, <code>js/</code>, <code>assets/img/</code>.</p>
+§solution
+<p>Les défauts les plus fréquents : images sans alt, champs sans label, focus invisible (<code>outline: none</code>), contraste insuffisant du texte gris, boutons faits en <code>&lt;div&gt;</code>, titres qui sautent des niveaux. Exemple de rapport :</p>
+§solution-code html
+<!-- Rapport d'audit — Fiche client -->
+<!-- Avant : 3 champs sans label, contraste du texte gris 3,2:1, focus supprimé. -->
+<!-- Après : labels reliés par for/id, texte #434753 sur #ffffff (> 7:1),
+     :focus-visible avec contour bleu de 3 px, score Lighthouse 78 → 100. -->
+<!-- Arborescence -->
+<!-- ondea-commandes/
+       index.html
+       css/style.css
+       js/app.js
+       assets/img/logo.svg -->
+§quiz
+? Quelle est la première règle de l'accessibilité en HTML ?
++ Utiliser le bon élément natif avant d'ajouter de l'ARIA
+- Ajouter role="button" partout
+- Utiliser des div
+- Mettre aria-label sur tout
+= « Pas d'ARIA vaut mieux qu'un mauvais ARIA. »
+? Que fait aria-live="polite" ?
+- Rend un texte plus poli
++ Fait annoncer les changements de contenu de la zone
+- Cache la zone
+- Rend la zone cliquable
+= Idéal pour les notifications de succès.
+? Un bouton qui contient seulement une icône doit avoir…
+- Un title uniquement
++ Un nom accessible, par exemple aria-label
+- Rien
+- Une classe icon
+= Sans nom, le lecteur d'écran dit seulement « bouton ».
+? Pourquoi ne pas indiquer un retard uniquement en rouge ?
+- Le rouge est démodé
++ Les personnes daltoniennes ou malvoyantes ne percevront pas l'information
+- Le rouge ne s'imprime pas
+- Ce n'est pas un problème
+= Critère WCAG 1.4.1 : utilisation de la couleur.
+? Quel avantage de <dialog> avec showModal() ?
+- Il est plus joli
++ Il gère la modalité, le focus et la touche Échap
+- Il fonctionne sans JavaScript
+- Il remplace les formulaires
+= Moins de code à écrire et un comportement accessible par défaut.
+§ondea
+<p>Ondea Commandes déclare dans <code>index.html</code> des régions <code>aria-live</code> pour ses toasts. <code>ui.js</code> fournit des modales accessibles (focus piégé, retour du focus sur le bouton d'origine, Échap), et chaque statut de commande associe couleur <strong>et</strong> libellé <strong>et</strong> icône (<code>STATUSES</code> dans <code>utils.js</code>). Les icônes sont regroupées dans un sprite SVG (<code>assets/icons/sprite.svg</code>) avec <code>aria-hidden</code>.</p>

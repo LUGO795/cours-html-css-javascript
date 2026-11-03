@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Ondea Academy — cours interactif HTML5, CSS3 et JavaScript pour les stagiaires DWWM 2027, construit autour de l'application Ondea Commandes.">
+  <meta name="color-scheme" content="dark light">
+  <title>Ondea Academy — HTML5, CSS3 et JavaScript · DWWM</title>
+  <script>(function(){var y=' · DWWM '+new Date().getFullYear();function f(){if(document.title.indexOf(y)===-1)document.title=document.title.replace(/\s*·\s*DWWM\s*\d*\s*$/,'')+y;}f();new MutationObserver(f).observe(document.querySelector('title'),{childList:true,characterData:true,subtree:true});})();</script>
+  
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%23f6dc9a'/%3E%3Cstop offset='.55' stop-color='%23d9b25a'/%3E%3Cstop offset='1' stop-color='%23a87e2a'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='48' height='48' rx='13' fill='%2312141d'/%3E%3Ccircle cx='24' cy='24' r='12.5' fill='none' stroke='url%28%23g%29' stroke-width='3.4'/%3E%3Cpath d='M9 27.5c4.5-4 8.6-4 13 0s8.6 4 13 0 4.4-2.6 4.4-2.6' fill='none' stroke='%23f6dc9a' stroke-width='2.6' stroke-linecap='round'/%3E%3C/svg%3E">
+
+  <link rel="icon" type="image/png" sizes="32x32" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABmJLR0QA/wD/AP+gvaeTAAAFP0lEQVRYhcWXa1CUVRjHf2d3XViIy94As/UWioSBl7asqNQaL9U4pmalk93LpmayL07NNJVdppzsgzVZ6pdmHNTMzG46YzrN6EBlCoqCqaQGKLCwAouwt/Oe0weEMGAXLO3/7T3v/3n+//eZ95znPIJeyLM63YFFaOZpmAhkANbevAEhAvg0lJq02Ob3p2yCikhPguj54HB4ZmDiM2DUZQrGwymhxXN+f/XurgVzt7jrumcQYhPguELiAHYEi2zJqeeCHYEyuipw8ct39DR0hSGFFrP8/uo9AvKsTlegUsP1V0m8C6fPpyfkmp3uxEc1PHGVxQHsSUF10oJm3mAj3Y5k8sdlkOVKQmtFfeMFjhxvorE5OKg8Suh5lotbbUCYestIXljsJT/HCSi0IVHKQCuJlJJDx3ys3VJJyeGGAeUT6AnC4fKE4+1zW+IQVr06k1mFo1CqUzTYEeJsQxtaSbJciVjNGqUMlJLsKq5lxdpygmEjnoeIcLg8Op745tULGJ/tQilJSWkN674oY3/5OaKyM9RiEXjz3Dw+J5ubctNRSlJR1czS90oJxTFhtiWlvRmL8NHrs7ltwjAi0QgrPt7L22uKqalrQ6m/OUpBbUM73++toTkQ5pa8NNx2C8PcCfx0oCmmAVOsl9OmjGLm7aNRSvLOJ/vY+H1lzGQAX/5YzYdFJ1CGwdSJdry5aZdv4PlFk1FKUnywhqLv4ot3YevusxyoOI80DBbPyro8AxnOZApyXChlsG5L6YDFu7Bh51kMKcnxJGBPsQzeQEFuJqDoaA/xW3ndoA0cOhmgIxRFK8VYj61fXr/WMhw2tCFpbouwZL6X9FQb5+oD7C45QaO/Pa6BqNQ0+ENk2i3cOnE4UVMrpUdrB24gy51CYoqLsY4EVuSM6V6XhmLj9jLe+3QPbRfCMU2YzRay8wuZNDWLZYbixhkf0NZ+yXWgbwNzZ4znxcenYxliItQRYNm7u6j3tTF2dAZPLvSyZP5kCr0jeWr5Fk6e6Xub3ZDt5o57ZmJLSmF/aRVF3x3tJU5/58DKV+4jOclKtN1H+EITW3b+zv7yOo4cr6PomzIAZk8dx4L78mloauNYla87VgjBQ/dPYN37D5Jks1F9/DALX95OWWV9n0b7PAnT0zp/mtXLp1AwNp39R+p59q2fL+HMuDOH1W/MJSXZyuma8xQfOANAoXckI69zEI1EqCovZu+vx3l7Q2Of4v1WIBSWhMISnz/I7MKhDHUm0BwIU3mqtZvzx59+tu4oJ9lmZVLeMLwFHvJzh2ISgl8OHMN/upgWv4/1O5rxtfR/HMftBStfmsR0rwsZjbKq6ARf7T7bi2MdYubazDTQmvEjYNH0FLRSFB+9wJpvW2Klj98Lig/5uDnPjttu4da8NAqyr6GxNUJjc6S7H5hMMMJt4pFpydw9MQllKE7Whli9rRlDxcreWYG47TgxwcxrT47hrgl2pGFgSEkwFKXOH8KQBs5UMyYMDMNASoOSinbW/9BCRMYsLl3tuBrwxGMCeHPTWDwzk5zhiWilkLJT1JASKQ0q/wyybV8rR0/HPh+6oTkj7C7PNwLmDCyiE/YUC2M8iThTLWitaGyJUlUbprU9Tr176bNdOJ3DH9NCfz6oyP8IQoslAiYPcbp8x/6Ha/mp802puSY4GEWLpYC8iuLShHoaKiJmgGCw9ZQtOfUciHvjXVL+C3EEz/qbar+m5ygW7AiUJdnSS4Tg9is1H2qoMqMWdonzz+m4E3lWp7PtYSX0AwImA5n/cjyv/3s8d2+Gg9GehL8AgyE7XptCQcIAAAAASUVORK5CYII=">
+
+    <!-- Appliqué AVANT l'affichage pour éviter un flash du mauvais thème -->
+    <script src="js/theme-init.js"></script>
+    <script src="js/text-size.js"></script>
+    <script src="js/scrollbar-chrome.js"></script>
+    <link rel="stylesheet" href="css/theme.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/effects.css">
+    <link rel="stylesheet" href="css/print.css">
+    <link rel="stylesheet" href="css/reset-progress.css">
+    <link rel="stylesheet" href="css/back-to-top.css">
+    <link rel="stylesheet" href="css/home-trailer.css">
+    <link rel="stylesheet" href="css/scrollbar-chrome.css">
+    <link rel="stylesheet" href="css/wide-layout.css">
+</head>
+<body>
+  <!-- Sprite d'icônes SVG : chaque icône est réutilisée avec <use href="#i-nom"> -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+    <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></symbol>
+    <symbol id="i-x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></symbol>
+    <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></symbol>
+    <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></symbol>
+    <symbol id="i-moon" viewBox="0 0 24 24"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></symbol>
+    <symbol id="i-chev-r" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></symbol>
+    <symbol id="i-chev-l" viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></symbol>
+    <symbol id="i-copy" viewBox="0 0 24 24"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a1 1 0 0 1 1-1h10"/></symbol>
+    <symbol id="i-play" viewBox="0 0 24 24"><path d="M7 5l12 7-12 7z"/></symbol>
+    <symbol id="i-pause" viewBox="0 0 24 24"><path d="M8 5v14M16 5v14"/></symbol>
+    <symbol id="i-reset" viewBox="0 0 24 24"><path d="M4 12a8 8 0 1 0 2.3-5.7"/><path d="M4 4v4h4"/></symbol>
+    <symbol id="i-eye" viewBox="0 0 24 24"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></symbol>
+    <symbol id="i-home" viewBox="0 0 24 24"><path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z"/></symbol>
+    <symbol id="i-code" viewBox="0 0 24 24"><path d="M8 7l-5 5 5 5M16 7l5 5-5 5M14 4l-4 16"/></symbol>
+    <symbol id="i-palette" viewBox="0 0 24 24"><path d="M12 3a9 9 0 1 0 0 18c1.1 0 1.6-.9 1.2-1.8-.5-1 .2-2.2 1.3-2.2H17a4 4 0 0 0 4-4c0-5-4-10-9-10z"/><circle cx="7.5" cy="11" r="1"/><circle cx="10" cy="7" r="1"/><circle cx="15" cy="7.5" r="1"/></symbol>
+    <symbol id="i-bolt" viewBox="0 0 24 24"><path d="M13 2L4 14h7l-1 8 9-12h-7z"/></symbol>
+    <symbol id="i-route" viewBox="0 0 24 24"><circle cx="6" cy="19" r="2.5"/><circle cx="18" cy="5" r="2.5"/><path d="M8.5 19H16a3.5 3.5 0 0 0 0-7H8a3.5 3.5 0 0 1 0-7h7.5"/></symbol>
+    <symbol id="i-mic" viewBox="0 0 24 24"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></symbol>
+    <symbol id="i-timer" viewBox="0 0 24 24"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2.5M9 2h6"/></symbol>
+    <symbol id="i-print" viewBox="0 0 24 24"><path d="M6 9V3h12v6M6 18H4a1 1 0 0 1-1-1v-6a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v6a1 1 0 0 1-1 1h-2"/><rect x="6" y="14" width="12" height="7"/></symbol>
+    <symbol id="i-download" viewBox="0 0 24 24"><path d="M12 3v12M7 10l5 5 5-5M4 20h16"/></symbol>
+    <symbol id="i-upload" viewBox="0 0 24 24"><path d="M12 21V9M7 14l5-5 5 5M4 4h16"/></symbol>
+    <symbol id="i-trash" viewBox="0 0 24 24"><path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13"/></symbol>
+    <symbol id="i-lock" viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></symbol>
+    <symbol id="i-dashboard" viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="10" rx="1.5"/><rect x="13" y="3" width="8" height="6" rx="1.5"/><rect x="13" y="11" width="8" height="10" rx="1.5"/><rect x="3" y="15" width="8" height="6" rx="1.5"/></symbol>
+    <symbol id="i-users" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0M16 4.5a3.5 3.5 0 0 1 0 7M18 14a6 6 0 0 1 3.5 6"/></symbol>
+    <symbol id="i-cart" viewBox="0 0 24 24"><path d="M3 4h2l2.4 11h11l2-8H6"/><circle cx="9" cy="20" r="1.5"/><circle cx="17" cy="20" r="1.5"/></symbol>
+    <symbol id="i-euro" viewBox="0 0 24 24"><path d="M18 6a7 7 0 1 0 0 12M4 10h10M4 14h10"/></symbol>
+    <symbol id="i-box" viewBox="0 0 24 24"><path d="M3 7l9-4 9 4v10l-9 4-9-4z"/><path d="M3 7l9 4 9-4M12 11v10"/></symbol>
+    <symbol id="i-truck" viewBox="0 0 24 24"><path d="M2 6h12v10H2zM14 10h4l3 3v3h-7"/><circle cx="6" cy="18" r="2"/><circle cx="17" cy="18" r="2"/></symbol>
+    <symbol id="i-chart" viewBox="0 0 24 24"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></symbol>
+    <symbol id="i-save" viewBox="0 0 24 24"><path d="M5 3h11l3 3v15H5z"/><path d="M8 3v5h7V3M8 21v-7h8v7"/></symbol>
+    <symbol id="i-image" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="2"/><path d="M21 16l-5-5-9 9"/></symbol>
+    <symbol id="i-sparkles" viewBox="0 0 24 24"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8zM19 16l.8 2.2L22 19l-2.2.8L19 22l-.8-2.2L16 19l2.2-.8z"/></symbol>
+    <symbol id="i-flag" viewBox="0 0 24 24"><path d="M5 21V4M5 4h11l-2 4 2 4H5"/></symbol>
+    <symbol id="i-list" viewBox="0 0 24 24"><path d="M9 6h12M9 12h12M9 18h12M4 6h.01M4 12h.01M4 18h.01"/></symbol>
+    <symbol id="i-award" viewBox="0 0 24 24"><circle cx="12" cy="9" r="6"/><path d="M8.5 14l-1.5 8 5-3 5 3-1.5-8"/></symbol>
+    <symbol id="i-target" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/></symbol>
+    <symbol id="i-motion" viewBox="0 0 24 24"><path d="M3 12h4l3-8 4 16 3-8h4"/></symbol>
+    <symbol id="i-book" viewBox="0 0 24 24"><path d="M2 5a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v16a2 2 0 0 0-2-2H2zM22 5a2 2 0 0 0-2-2h-6a2 2 0 0 0-2 2v16a2 2 0 0 1 2-2h8z"/></symbol>
+    <symbol id="i-menu-grid" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></symbol>
+  </svg>
+
+  <!-- ===== Introduction animée (une fois par session) ===== -->
+  <div class="intro" id="intro" role="dialog" aria-modal="true" aria-labelledby="intro-title" hidden>
+    <div class="intro-grid" aria-hidden="true"></div>
+    <div class="intro-scan" aria-hidden="true"></div>
+    <div class="intro-particles" aria-hidden="true"></div>
+    <div class="intro-inner">
+      <svg class="intro-emblem" viewBox="0 0 48 48" aria-hidden="true">
+        <defs><linearGradient id="ig" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f6dc9a"/><stop offset=".55" stop-color="#d9b25a"/><stop offset="1" stop-color="#a87e2a"/></linearGradient></defs>
+        <rect width="48" height="48" rx="13" fill="#12141d" stroke="url(#ig)" stroke-width="1"/>
+        <circle cx="24" cy="24" r="12.5" fill="none" stroke="url(#ig)" stroke-width="3.4"/>
+        <path d="M9 27.5c4.5-4 8.6-4 13 0s8.6 4 13 0 4.4-2.6 4.4-2.6" fill="none" stroke="#f6dc9a" stroke-width="2.6" stroke-linecap="round"/>
+      </svg>
+      <p class="intro-kicker">Ondea Web Studio présente</p>
+      <h1 class="intro-title" id="intro-title" data-text="Ondea Academy">Ondea Academy</h1>
+      <p class="intro-sub">Apprenez HTML5, CSS3 et JavaScript en construisant une vraie application professionnelle : Ondea Commandes.</p>
+      <div class="intro-langs" aria-label="Langages étudiés"><span style="--i:0">HTML5</span><span style="--i:1">CSS3</span><span style="--i:2">JavaScript</span><span style="--i:3">DWWM <script>document.write(new Date().getFullYear())</script></span></div>
+      <div class="intro-actions">
+        <button class="btn btn-gold" type="button" id="intro-enter"><svg class="icon" aria-hidden="true"><use href="#i-play"/></svg> Entrer dans le cours</button>
+        <button class="btn btn-ghost" type="button" id="intro-skip">Passer l'introduction</button>
+      </div>
+    </div>
+  </div>
+
+  <a class="skip-link" href="#contenu">Aller au contenu</a>
+  <div class="curtain" aria-hidden="true"></div>
+
+  <!-- ===== Barre supérieure ===== -->
+  <header class="app-header">
+    <button class="btn btn-ghost btn-icon menu-btn" type="button" id="menu-btn" aria-label="Ouvrir le sommaire" aria-expanded="false" aria-controls="sidebar">
+      <svg class="icon" aria-hidden="true"><use href="#i-menu"/></svg>
+    </button>
+    <a class="brand" href="#/accueil">
+      <img src="assets/img/favicon.svg" alt="" width="36" height="36">
+      <span><span class="brand-name">Ondea <span>Academy</span></span><span class="brand-sub">DWWM <script>document.write(new Date().getFullYear())</script> · Front-end</span></span>
+    </a>
+    <div class="header-progress" aria-hidden="true">
+      <div class="progress"><span id="hp-bar"></span></div>
+      <span id="hp-text">0 %</span>
+    </div>
+    <div class="header-actions">
+      <button class="btn btn-ghost search-trigger" type="button" id="search-btn" aria-haspopup="dialog" aria-label="Rechercher dans le cours (Ctrl + K)">
+        <svg class="icon" aria-hidden="true"><use href="#i-search"/></svg><span class="label">Rechercher</span> <kbd>Ctrl K</kbd>
+      </button>
+      <!-- Taille du texte : 100 % à 135 % -->
+      <div class="text-size" role="group" aria-label="Taille du texte">
+        <button class="text-size-btn" type="button" id="text-smaller" aria-label="Diminuer la taille du texte" title="Diminuer la taille du texte">
+          <span aria-hidden="true">A−</span>
+        </button>
+        <button class="text-size-btn text-size-value" type="button" id="text-reset" aria-label="Taille du texte : 100 %. Revenir à 100 %" title="Revenir à la taille normale">100 %</button>
+        <button class="text-size-btn" type="button" id="text-bigger" aria-label="Agrandir la taille du texte" title="Agrandir la taille du texte">
+          <span aria-hidden="true" class="big">A+</span>
+        </button>
+        <span class="visually-hidden" id="text-size-live" role="status" aria-live="polite"></span>
+      </div>
+      <button class="btn btn-ghost btn-icon" type="button" id="motion-btn" aria-pressed="false" aria-label="Réduire les animations">
+        <svg class="icon" aria-hidden="true"><use href="#i-motion"/></svg>
+      </button>
+      <button class="btn btn-ghost btn-icon" type="button" id="theme-btn" aria-label="Passer en thème clair">
+        <svg class="icon" aria-hidden="true"><use href="#i-sun" id="theme-icon"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <div class="layout">
+    <!-- ===== Sommaire interactif ===== -->
+    <aside class="sidebar" id="sidebar" aria-label="Sommaire du cours">
+      <div class="sidebar-close"><button class="btn btn-ghost btn-icon" type="button" id="sidebar-close" aria-label="Fermer le sommaire"><svg class="icon" aria-hidden="true"><use href="#i-x"/></svg></button></div>
+      <nav class="toc" id="toc" aria-label="Chapitres"></nav>
+      <!-- Encadré « Votre parcours » : réinitialisation de la progression -->
+      <div class="rp-box">
+        <p class="rp-label">Votre parcours</p>
+        <div class="rp-meter" aria-hidden="true"><span id="rp-bar"></span></div>
+        <p class="rp-stat" id="rp-stat">0 % accompli</p>
+        <button class="rp-btn" type="button" id="rp-open" aria-haspopup="dialog" aria-describedby="rp-stat">
+          <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-reset"/></svg>
+          <span>Réinitialiser ma progression</span>
+        </button>
+      </div>
+    </aside>
+    <button class="overlay" type="button" id="overlay" tabindex="-1" aria-label="Fermer le sommaire"></button>
+
+    <!-- ===== Contenu principal : rempli par js/app.js selon l'adresse (#/...) ===== -->
+    <main id="contenu" tabindex="-1">
+      <div id="view" class="view"></div>
+    </main>
+  </div>
+
+  <footer class="app-footer">
+    <div class="inner">
+      <p style="margin:0">© <script>document.write(new Date().getFullYear())</script> Ondea Web Studio — Cours conçu pour le Centre de Formation MODE 83 · Titre professionnel DWWM (RNCP 37674).</p>
+      <p style="margin:0"><button class="link-btn" type="button" id="replay-intro">Rejouer l'introduction</button> · <a href="#/progression">Ma progression</a></p>
+    </div>
+  </footer>
+
+  <!-- ===== Recherche ===== -->
+  <dialog id="search-dlg" aria-labelledby="search-title">
+    <h2 class="visually-hidden" id="search-title">Rechercher dans le cours</h2>
+    <div class="search-box">
+      <svg class="icon" aria-hidden="true"><use href="#i-search"/></svg>
+      <label class="visually-hidden" for="search-input">Mot-clé</label>
+      <input id="search-input" type="search" placeholder="Ex. : flexbox, TVA, IndexedDB, aria-live…" autocomplete="off" aria-describedby="search-count">
+      <button class="btn btn-ghost btn-icon" type="button" id="search-close" aria-label="Fermer la recherche"><svg class="icon" aria-hidden="true"><use href="#i-x"/></svg></button>
+    </div>
+    <p class="visually-hidden" id="search-count" role="status" aria-live="polite"></p>
+    <ul class="search-results" id="search-results"></ul>
+    <p class="search-hint"><kbd>Entrée</kbd> ouvre le premier résultat · <kbd>Échap</kbd> ferme</p>
+  </dialog>
+
+  <!-- ===== Confirmation ===== -->
+  <dialog id="confirm-dlg" aria-labelledby="confirm-title">
+    <div class="dlg-head"><h2 id="confirm-title">Confirmer</h2></div>
+    <div class="dlg-body">
+      <p id="confirm-text"></p>
+      <form method="dialog" class="btn-row">
+        <button class="btn" value="non" autofocus>Annuler</button>
+        <button class="btn btn-danger" value="oui" id="confirm-ok">Confirmer</button>
+      </form>
+    </div>
+  </dialog>
+
+    <!-- ===== Bouton « Retour en haut » effet film d'action ===== -->
+  <button class="back-top" id="back-top" type="button" aria-label="Retour en haut de la page" title="Retour en haut de la page">
+    <svg class="back-top-ring" viewBox="0 0 72 72" aria-hidden="true" focusable="false">
+      <circle class="back-top-track" cx="36" cy="36" r="30"/>
+      <circle class="back-top-progress" cx="36" cy="36" r="30"/>
+    </svg>
+    <span class="back-top-core" aria-hidden="true">
+      <span class="back-top-flame"></span>
+      <svg class="back-top-arrow" viewBox="0 0 24 24" focusable="false"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+      <span class="back-top-text">Haut</span>
+    </span>
+    <span class="back-top-tip" aria-hidden="true">Retour en haut</span>
+  </button>
+  <p class="visually-hidden" id="back-top-live" role="status" aria-live="polite"></p>
+  <div class="back-top-fx" id="back-top-fx" aria-hidden="true">
+    <div class="bt-vignette"></div>
+    <div class="bt-streaks"></div>
+    <div class="bt-flash"></div>
+    <span class="bt-shock"></span>
+    <span class="bt-shock s2"></span>
+    <div class="bt-bar bt-bar-top"></div>
+    <div class="bt-bar bt-bar-bottom"></div>
+    <p class="bt-title">Décollage</p>
+  </div>
+
+    <!-- ===== Confirmation de réinitialisation du parcours ===== -->
+  <dialog class="rp-dlg" id="rp-dlg" aria-labelledby="rp-title" aria-describedby="rp-desc">
+    <button class="rp-close" id="rp-close" type="button" aria-label="Fermer sans réinitialiser"><span aria-hidden="true">×</span></button>
+    <div class="rp-dlg-inner">
+      <div class="rp-emblem" aria-hidden="true"><svg class="icon" focusable="false"><use href="#i-reset"/></svg></div>
+      <h2 id="rp-title">Réinitialiser tout votre parcours ?</h2>
+      <p class="rp-desc" id="rp-desc">Toute votre progression dans le cours sera effacée sur ce navigateur. <strong>Cette action est définitive.</strong></p>
+      <h3 class="visually-hidden">Ce qui sera effacé</h3>
+      <ul class="rp-list" id="rp-list"></ul>
+      <div class="rp-tip">
+        <p>Conseil : téléchargez d'abord une sauvegarde. Vous pourrez la réimporter depuis « Ma progression ».</p>
+        <button class="rp-ghost" type="button" id="rp-backup"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-download"/></svg> Télécharger une sauvegarde</button>
+      </div>
+      <label class="rp-check"><input type="checkbox" id="rp-understand"> <span>Je comprends que ma progression sera définitivement effacée.</span></label>
+      <div class="rp-actions">
+        <button class="rp-cancel" type="button" id="rp-cancel">Annuler, garder ma progression</button>
+        <button class="rp-confirm" type="button" id="rp-confirm" aria-disabled="true">Oui, tout réinitialiser</button>
+      </div>
+      <p class="visually-hidden" id="rp-live" role="status" aria-live="polite"></p>
+    </div>
+  </dialog>
+
+  <div class="toasts" id="toasts" role="status" aria-live="polite"></div>
+
+  <!-- Scripts chargés dans l'ordre (comme dans Ondea Commandes) -->
+  <script src="js/data.js" defer></script>
+  <script src="js/core.js" defer></script>
+  <script src="js/highlight.js" defer></script>
+  <script src="js/playground.js" defer></script>
+  <script src="js/views.js" defer></script>
+  <script src="js/jury.js" defer></script>
+  <script src="js/app.js" defer></script>
+  <script src="js/reset-progress.js" defer></script>
+  <script src="js/back-to-top.js" defer></script>
+  <script src="js/home-trailer.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,121 @@
+/* ==========================================================================
+   Ondea Academy — scrollbar-chrome.css
+   Barre de défilement premium « Obsidienne & Or », Google Chrome uniquement
+   (activée par la classe .sb-chrome posée par js/scrollbar-chrome.js).
+   - Rail gravé avec filet doré central ;
+   - Curseur en or brossé : reflet métallique, arêtes lumineuses, cœur ambré ;
+   - Survol : l'or s'intensifie ; clic : l'or « chauffe » au blanc ;
+   - Pendant le défilement : la barre s'illumine (effet réacteur).
+   Lisible en thème clair et en thème sombre (curseur toujours très contrasté).
+   ========================================================================== */
+
+/* ---------- Couleurs par thème ---------- */
+html.sb-chrome {
+  --sb-size: 16px;
+  --sb-track: #0b0c12;
+  --sb-track-2: #151826;
+  --sb-groove: rgb(214 176 92 / 28%);
+  --sb-edge: #05060a;
+  --sb-gold-1: #fff3cf;
+  --sb-gold-2: #f1d68b;
+  --sb-gold-3: #d6b05c;
+  --sb-gold-4: #a87e2a;
+  --sb-gold-5: #6e4f12;
+}
+html.sb-chrome[data-theme="light"] {
+  --sb-track: #ece6d8;
+  --sb-track-2: #f8f5ee;
+  --sb-groove: rgb(97 70 8 / 30%);
+  --sb-edge: #d9cfb8;
+  --sb-gold-1: #fbe7b0;
+  --sb-gold-2: #d9b25a;
+  --sb-gold-3: #b8892c;
+  --sb-gold-4: #8a6a1f;
+  --sb-gold-5: #4f3806;
+}
+
+/* ---------- Dimensions ---------- */
+html.sb-chrome::-webkit-scrollbar { width: var(--sb-size); height: var(--sb-size); }
+html.sb-chrome *::-webkit-scrollbar { width: 12px; height: 12px; }
+
+/* ---------- Rail (track) gravé avec filet doré ---------- */
+html.sb-chrome::-webkit-scrollbar-track,
+html.sb-chrome *::-webkit-scrollbar-track {
+  background:
+    linear-gradient(90deg, transparent calc(50% - 1px), var(--sb-groove) calc(50% - 1px), var(--sb-groove) calc(50% + 1px), transparent calc(50% + 1px)),
+    linear-gradient(90deg, var(--sb-track) 0%, var(--sb-track-2) 50%, var(--sb-track) 100%);
+  box-shadow: inset 1px 0 0 var(--sb-edge), inset -1px 0 0 var(--sb-edge), inset 0 0 10px rgb(0 0 0 / 35%);
+}
+html.sb-chrome *::-webkit-scrollbar-track:horizontal {
+  background:
+    linear-gradient(180deg, transparent calc(50% - 1px), var(--sb-groove) calc(50% - 1px), var(--sb-groove) calc(50% + 1px), transparent calc(50% + 1px)),
+    linear-gradient(180deg, var(--sb-track) 0%, var(--sb-track-2) 50%, var(--sb-track) 100%);
+}
+
+/* ---------- Curseur (thumb) en or brossé ---------- */
+html.sb-chrome::-webkit-scrollbar-thumb,
+html.sb-chrome *::-webkit-scrollbar-thumb {
+  border: 3px solid transparent;          /* espace autour : le curseur « flotte » */
+  border-radius: 999px;
+  background:
+    linear-gradient(90deg, rgb(255 255 255 / 0%) 20%, rgb(255 255 255 / 55%) 45%, rgb(255 255 255 / 0%) 60%) padding-box,
+    linear-gradient(180deg, var(--sb-gold-1) 0%, var(--sb-gold-2) 18%, var(--sb-gold-3) 45%, var(--sb-gold-4) 72%, var(--sb-gold-2) 100%) padding-box;
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 70%),
+    inset 0 -1px 0 rgb(0 0 0 / 35%),
+    inset 1px 0 0 rgb(255 255 255 / 35%),
+    inset -1px 0 0 var(--sb-gold-5);
+  min-height: 48px;
+}
+html.sb-chrome *::-webkit-scrollbar-thumb:horizontal {
+  background:
+    linear-gradient(180deg, rgb(255 255 255 / 0%) 20%, rgb(255 255 255 / 55%) 45%, rgb(255 255 255 / 0%) 60%) padding-box,
+    linear-gradient(90deg, var(--sb-gold-1) 0%, var(--sb-gold-2) 18%, var(--sb-gold-3) 45%, var(--sb-gold-4) 72%, var(--sb-gold-2) 100%) padding-box;
+  min-width: 48px;
+}
+
+/* Survol : l'or s'intensifie */
+html.sb-chrome::-webkit-scrollbar-thumb:hover,
+html.sb-chrome *::-webkit-scrollbar-thumb:hover {
+  border-width: 2px;
+  background:
+    linear-gradient(90deg, rgb(255 255 255 / 0%) 15%, rgb(255 255 255 / 75%) 45%, rgb(255 255 255 / 0%) 65%) padding-box,
+    linear-gradient(180deg, #fffaf0 0%, var(--sb-gold-1) 15%, var(--sb-gold-2) 45%, var(--sb-gold-3) 75%, var(--sb-gold-1) 100%) padding-box;
+}
+
+/* Clic maintenu : l'or « chauffe » à blanc */
+html.sb-chrome::-webkit-scrollbar-thumb:active,
+html.sb-chrome *::-webkit-scrollbar-thumb:active {
+  border-width: 1px;
+  background:
+    radial-gradient(ellipse at 50% 50%, #ffffff 0%, #fff3cf 35%, rgb(255 243 207 / 0%) 70%) padding-box,
+    linear-gradient(180deg, #ffd27a 0%, #f6b73c 40%, #e08a1e 70%, #ffd27a 100%) padding-box;
+  box-shadow: inset 0 0 6px rgb(255 255 255 / 90%), inset 0 0 0 1px #fff3cf;
+}
+
+/* Pendant le défilement : effet réacteur (rail illuminé + curseur incandescent) */
+html.sb-chrome.sb-active::-webkit-scrollbar-track {
+  background:
+    linear-gradient(90deg, transparent calc(50% - 1px), var(--sb-gold-2) calc(50% - 1px), var(--sb-gold-2) calc(50% + 1px), transparent calc(50% + 1px)),
+    linear-gradient(90deg, var(--sb-track) 0%, var(--sb-track-2) 50%, var(--sb-track) 100%);
+}
+html.sb-chrome.sb-active::-webkit-scrollbar-thumb {
+  border-width: 2px;
+  background:
+    radial-gradient(ellipse at 50% 50%, rgb(255 255 255 / 85%) 0%, rgb(255 255 255 / 0%) 60%) padding-box,
+    linear-gradient(180deg, #fffaf0 0%, var(--sb-gold-1) 20%, var(--sb-gold-2) 50%, var(--sb-gold-3) 80%, var(--sb-gold-1) 100%) padding-box;
+}
+
+/* Coin entre deux barres et boutons fléchés */
+html.sb-chrome::-webkit-scrollbar-corner,
+html.sb-chrome *::-webkit-scrollbar-corner { background: var(--sb-track); }
+html.sb-chrome::-webkit-scrollbar-button,
+html.sb-chrome *::-webkit-scrollbar-button { display: none; height: 0; width: 0; }
+
+/* Contraste renforcé demandé par le système (Windows « contraste élevé ») */
+@media (forced-colors: active) {
+  html.sb-chrome::-webkit-scrollbar-thumb,
+  html.sb-chrome *::-webkit-scrollbar-thumb { background: CanvasText; box-shadow: none; }
+  html.sb-chrome::-webkit-scrollbar-track,
+  html.sb-chrome *::-webkit-scrollbar-track { background: Canvas; box-shadow: none; }
+}

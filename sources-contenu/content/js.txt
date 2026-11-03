@@ -1,0 +1,2088 @@
+§§chapter js-variables
+part: js
+title: Variables, types et console
+subtitle: let, const, nombres, chaînes, booléens, gabarits
+duration: 1 h 30
+feature: Numéro de commande et informations d'une commande
+§intro
+<p>Le <strong>JavaScript</strong> est le langage qui rend la page vivante : il calcule, réagit aux clics, enregistre les données. Il est exécuté par le navigateur.</p>
+<p>Une <strong>variable</strong> est une boîte étiquetée qui contient une valeur. On la crée avec :</p>
+<ul>
+<li><code>const</code> : la boîte ne sera <strong>pas réaffectée</strong> (à utiliser par défaut) ;</li>
+<li><code>let</code> : la valeur peut changer (un compteur, un total qui s'accumule).</li>
+</ul>
+<p>(On croise encore <code>var</code> dans de vieux codes : on ne l'utilise plus.)</p>
+<p>Les <strong>types</strong> de base : <code>number</code> (12, 8.5), <code>string</code> (texte entre guillemets), <code>boolean</code> (<code>true</code>/<code>false</code>), <code>null</code> (vide volontaire), <code>undefined</code> (pas encore de valeur). Les <strong>gabarits</strong> (template literals), entre accents graves <code>`…`</code>, insèrent une variable avec <code>${variable}</code>.</p>
+<p>Pour voir ce qui se passe, on affiche dans la <strong>console</strong> (F12 → Console) avec <code>console.log()</code>.</p>
+§example js
+// const : valeur fixe (on ne réaffecte pas la variable)
+const prefixe = 'CMD';
+const annee = 2026;
+
+// let : valeur qui va changer
+let compteur = 41;
+compteur = compteur + 1;          // ou compteur++ → 42
+
+// Un numéro de commande formaté : CMD-2026-0042
+// padStart(4, '0') complète à gauche avec des zéros
+const numero = `${prefixe}-${annee}-${String(compteur).padStart(4, '0')}`;
+console.log(numero);              // CMD-2026-0042
+
+// Les types
+const client = 'Brico Sud';       // string
+const quantite = 10;              // number
+const urgente = false;            // boolean
+let dateLivraison = null;         // pas encore planifiée
+console.log(typeof client, typeof quantite, typeof urgente); // string number boolean
+
+// Attention aux décimales : on calcule l'argent en CENTIMES entiers
+console.log(0.1 + 0.2);           // 0.30000000000000004 !
+const prixCentimes = 850;         // 8,50 €
+console.log(prixCentimes * quantite / 100); // 85
+§explain
+<ul>
+<li>Chaque instruction se termine par un point-virgule <code>;</code> (recommandé).</li>
+<li><code>//</code> commente une ligne, <code>/* … */</code> plusieurs lignes.</li>
+<li>Noms de variables en <strong>camelCase</strong> : <code>dateLivraison</code>, explicites et en français ou en anglais, mais pas un mélange.</li>
+<li><code>String(compteur)</code> convertit le nombre en texte pour pouvoir utiliser <code>padStart</code>.</li>
+<li>Les ordinateurs stockent les décimales en binaire, d'où <code>0.1 + 0.2 ≠ 0.3</code>. Ondea stocke donc tous les montants en <strong>centimes entiers</strong>.</li>
+<li><code>typeof</code> renvoie le type d'une valeur, utile pour déboguer.</li>
+</ul>
+§demo-js
+const prefixe = 'CMD';
+const annee = new Date().getFullYear();
+let compteur = 41;
+compteur++;
+const numero = `${prefixe}-${annee}-${String(compteur).padStart(4, '0')}`;
+console.log('Numéro :', numero);
+console.log('0.1 + 0.2 =', 0.1 + 0.2);
+console.log('En centimes : (10 + 20) / 100 =', (10 + 20) / 100);
+document.getElementById('sortie').textContent = numero;
+§demo-html
+<p>Numéro généré : <strong id="sortie"></strong></p>
+<p><small>Les messages console.log apparaissent dans la console sous l'aperçu.</small></p>
+§guided
+<p>Préparez les données d'une ligne de commande.</p>
+<ol>
+<li>Créez une constante <code>designation</code> valant <code>'Perceuse 18 V'</code>.</li>
+<li>Créez une constante <code>prixUnitaireCentimes</code> valant <code>12900</code> (129,00 €).</li>
+<li>Créez une variable <code>quantite</code> (avec <code>let</code>) valant 1, puis passez-la à 3.</li>
+<li>Créez une constante <code>totalCentimes</code> = prix × quantité.</li>
+<li>Affichez dans la console exactement : <code>Perceuse 18 V x3 = 387 €</code> avec un gabarit.</li>
+</ol>
+§guided-js
+// À vous
+
+§guided-checks
+eval | designation | Perceuse 18 V | La constante designation existe
+eval | totalCentimes | 38700 | totalCentimes vaut 38700
+js | let\s+quantite | quantite est déclarée avec let
+js | ` | Un gabarit (accents graves) est utilisé
+log | Perceuse 18 V x3 = 387 € | Le message attendu est affiché
+§guided-solution-js
+const designation = 'Perceuse 18 V';
+const prixUnitaireCentimes = 12900;
+let quantite = 1;
+quantite = 3;
+const totalCentimes = prixUnitaireCentimes * quantite;
+console.log(`${designation} x${quantite} = ${totalCentimes / 100} €`);
+§auto
+<p>Écrivez un script qui décrit une commande complète avec des variables : numéro (généré à partir d'un compteur), nom du client, date de création (<code>new Date().toLocaleDateString('fr-FR')</code>), nombre d'articles, montant HT en centimes, statut, priorité, booléen « payée ». Affichez un récapitulatif sur plusieurs lignes avec un seul gabarit (les accents graves acceptent les retours à la ligne).</p>
+§solution
+<p>Un gabarit multiligne garde les retours à la ligne et l'indentation. Pour afficher un montant en euros au format français, on utilisera plus tard <code>Intl.NumberFormat</code>.</p>
+§solution-code js
+let compteur = 49;
+compteur++;
+const numero = `CMD-2026-${String(compteur).padStart(4, '0')}`;
+const client = 'Atelier Mistral';
+const dateCreation = new Date().toLocaleDateString('fr-FR');
+const nbArticles = 7;
+const montantHTCentimes = 36720;
+const statut = 'validee';
+const priorite = 'haute';
+const payee = false;
+
+console.log(`Commande ${numero}
+Client : ${client}
+Créée le : ${dateCreation}
+Articles : ${nbArticles}
+Montant HT : ${(montantHTCentimes / 100).toFixed(2)} €
+Statut : ${statut} — priorité ${priorite}
+Payée : ${payee ? 'oui' : 'non'}`);
+§quiz
+? Quel mot-clé utiliser par défaut pour déclarer une variable ?
++ const
+- var
+- let
+- variable
+= const par défaut, let si la valeur doit être réaffectée.
+? Que vaut typeof 'CMD-42' ?
+- 'number'
++ 'string'
+- 'text'
+- 'boolean'
+= Tout ce qui est entre guillemets est une chaîne.
+? Que s'affiche avec const n = 5; console.log(`Total : ${n * 2}`) ?
+- Total : ${n * 2}
++ Total : 10
+- Total : n * 2
+- Une erreur
+= ${…} évalue l'expression dans le gabarit.
+? Pourquoi Ondea calcule-t-il l'argent en centimes ?
+- Pour économiser de la mémoire
++ Pour éviter les erreurs d'arrondi des nombres décimaux
+- Parce que l'euro l'exige
+- Pour aller plus vite
+= 0.1 + 0.2 = 0.30000000000000004 en virgule flottante.
+? Que se passe-t-il avec const x = 1; x = 2; ?
+- x vaut 2
++ Une erreur TypeError : assignation à une constante
+- x vaut 1 et rien ne se passe
+- x vaut 3
+= Une constante ne peut pas être réaffectée.
+§ondea
+<p>Dans <code>utils.js</code> d'Ondea, la fonction <code>toCents()</code> convertit une saisie comme « 12,5 » en <code>1250</code> centimes, et <code>money()</code> affiche les centimes en euros avec <code>Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR' })</code>. Les numéros de commande sont fabriqués à partir d'un compteur stocké dans la table <code>counters</code> d'IndexedDB.</p>
+
+§§chapter js-conditions
+part: js
+title: Conditions
+subtitle: if / else, opérateurs de comparaison et logiques, switch, ternaire
+duration: 1 h 30
+feature: Alertes de stock et droits des profils
+§intro
+<p>Une <strong>condition</strong> permet au programme de prendre une décision : <em>si</em> le stock est sous le seuil, <em>alors</em> afficher une alerte, <em>sinon</em> rien.</p>
+<ul>
+<li>Comparaisons : <code>===</code> (strictement égal), <code>!==</code> (différent), <code>&lt;</code>, <code>&gt;</code>, <code>&lt;=</code>, <code>&gt;=</code>. Toujours <code>===</code> et jamais <code>==</code> qui convertit les types de façon surprenante.</li>
+<li>Logique : <code>&amp;&amp;</code> (ET), <code>||</code> (OU), <code>!</code> (NON).</li>
+<li><code>if (…) { } else if (…) { } else { }</code> : plusieurs cas.</li>
+<li><code>switch</code> : quand on compare une même valeur à une liste de cas.</li>
+<li>Le <strong>ternaire</strong> <code>condition ? siVrai : siFaux</code> : un if/else court qui renvoie une valeur.</li>
+</ul>
+<p>Valeurs « fausses » (falsy) : <code>false</code>, <code>0</code>, <code>''</code>, <code>null</code>, <code>undefined</code>, <code>NaN</code>. Toutes les autres sont « vraies ».</p>
+§example js
+const stock = 4;
+const seuilAlerte = 5;
+
+// if / else if / else : du cas le plus grave au moins grave
+if (stock === 0) {
+  console.log('Rupture de stock');
+} else if (stock <= seuilAlerte) {
+  console.log('Stock faible : réapprovisionner');
+} else {
+  console.log('Stock suffisant');
+}
+
+// Opérateurs logiques : && (ET), || (OU)
+const role = 'magasinier';
+const commandeValidee = true;
+if (role === 'directeur' || (role === 'magasinier' && commandeValidee)) {
+  console.log('Peut lancer la préparation');
+}
+
+// switch : libellé à partir d'une clé de statut
+const statut = 'expediee';
+let libelle;
+switch (statut) {
+  case 'validee':  libelle = 'Validée'; break;
+  case 'expediee': libelle = 'Expédiée'; break;
+  case 'livree':   libelle = 'Livrée'; break;
+  default:         libelle = 'Inconnu';
+}
+console.log(libelle);
+
+// Ternaire : une valeur selon une condition
+const badge = stock <= seuilAlerte ? 'badge-danger' : 'badge-success';
+console.log(badge);
+§explain
+<ul>
+<li>L'ordre des <code>else if</code> compte : le premier test vrai gagne, les suivants sont ignorés. On teste donc <code>stock === 0</code> avant <code>stock &lt;= 5</code>.</li>
+<li>Les parenthèses clarifient les priorités : <code>&amp;&amp;</code> passe avant <code>||</code>.</li>
+<li>Dans un <code>switch</code>, <code>break</code> arrête l'exécution ; sans lui, on « tombe » dans le cas suivant.</li>
+<li><code>'5' == 5</code> vaut <code>true</code> mais <code>'5' === 5</code> vaut <code>false</code> : <code>===</code> compare aussi le type.</li>
+<li>Le ternaire est parfait pour choisir une classe CSS ou un texte ; pour plusieurs instructions, préférez un if.</li>
+</ul>
+§demo-html
+<label for="s">Stock du produit : <output id="v">4</output></label>
+<input id="s" type="range" min="0" max="20" value="4">
+<p id="msg" class="badge"></p>
+§demo-css
+body{font-family:system-ui;padding:1rem}
+input{width:100%;max-width:320px;display:block}
+.badge{display:inline-block;padding:.4rem .9rem;border-radius:99px;font-weight:700}
+.rupture{background:#fbe0de;color:#7a1410}.faible{background:#fbeccb;color:#5c3b00}.ok{background:#dcf3e4;color:#0b4a26}
+§demo-js
+const seuil = 5;
+const curseur = document.getElementById('s');
+function evaluer() {
+  const stock = Number(curseur.value);
+  document.getElementById('v').textContent = stock;
+  const msg = document.getElementById('msg');
+  if (stock === 0) { msg.textContent = '⛔ Rupture de stock'; msg.className = 'badge rupture'; }
+  else if (stock <= seuil) { msg.textContent = '⚠ Stock faible'; msg.className = 'badge faible'; }
+  else { msg.textContent = '✔ Stock suffisant'; msg.className = 'badge ok'; }
+  console.log(`stock=${stock} → ${msg.textContent}`);
+}
+curseur.addEventListener('input', evaluer);
+evaluer();
+§guided
+<p>Écrivez la fonction de décision de priorité d'une commande.</p>
+<ol>
+<li>Les variables <code>joursAvantLivraison</code> et <code>montantTTC</code> sont fournies.</li>
+<li>Créez une variable <code>priorite</code> : <code>'urgente'</code> si la livraison est dans 1 jour ou moins, sinon <code>'haute'</code> si moins de 4 jours <strong>ou</strong> si le montant dépasse 1000 €, sinon <code>'normale'</code>.</li>
+<li>Affichez <code>Priorité : haute</code> dans la console.</li>
+</ol>
+§guided-js
+const joursAvantLivraison = 6;
+const montantTTC = 1044;
+// À vous
+
+§guided-checks
+eval | priorite | haute | priorite vaut 'haute' (montant > 1000)
+js | if\s*\( | Une condition if est utilisée
+js | \|\| | L'opérateur OU || est utilisé
+js | (===|<=|<) | Comparaisons strictes ou d'ordre utilisées
+log | Priorité : haute | Le message est affiché
+§guided-solution-js
+const joursAvantLivraison = 6;
+const montantTTC = 1044;
+let priorite;
+if (joursAvantLivraison <= 1) {
+  priorite = 'urgente';
+} else if (joursAvantLivraison < 4 || montantTTC > 1000) {
+  priorite = 'haute';
+} else {
+  priorite = 'normale';
+}
+console.log(`Priorité : ${priorite}`);
+§auto
+<p>Écrivez le contrôle d'accès simplifié d'Ondea : à partir des variables <code>role</code> (<code>'directeur'</code> ou <code>'magasinier'</code>) et <code>action</code> (<code>'voir-finances'</code>, <code>'preparer'</code>, <code>'supprimer-commande'</code>, <code>'expedier'</code>), affichez « Autorisé » ou « Refusé ». Le directeur a tous les droits ; le magasinier peut préparer et expédier uniquement. Testez les 8 combinaisons. Utilisez d'abord un <code>switch</code>, puis réécrivez avec un tableau et <code>includes()</code>.</p>
+§solution
+<p>La version avec un tableau est plus facile à maintenir : ajouter un droit = ajouter un mot dans la liste. C'est le principe de la matrice de <code>permissions.js</code>.</p>
+§solution-code js
+function autoriser(role, action) {
+  if (role === 'directeur') return true;
+  switch (action) {
+    case 'preparer':
+    case 'expedier':
+      return role === 'magasinier';
+    default:
+      return false;
+  }
+}
+// Version « matrice »
+const DROITS = { magasinier: ['preparer', 'expedier'] };
+function autoriser2(role, action) {
+  return role === 'directeur' || (DROITS[role] || []).includes(action);
+}
+for (const role of ['directeur', 'magasinier']) {
+  for (const action of ['voir-finances', 'preparer', 'supprimer-commande', 'expedier']) {
+    console.log(role, action, autoriser2(role, action) ? 'Autorisé' : 'Refusé');
+  }
+}
+§quiz
+? Quel opérateur utiliser pour comparer une valeur ET son type ?
+- ==
++ ===
+- =
+- !=
+= = affecte, == compare avec conversion, === compare strictement.
+? Que vaut 0 || 'défaut' ?
+- 0
++ 'défaut'
+- true
+- false
+= 0 est falsy, donc || renvoie la seconde valeur.
+? Que se passe-t-il si on oublie break dans un case ?
+- Erreur de syntaxe
++ L'exécution continue dans le case suivant
+- Le switch s'arrête
+- Rien
+= C'est le « fall-through », parfois voulu pour regrouper des cas.
+? Que renvoie stock > 0 ? 'Disponible' : 'Rupture' avec stock = 0 ?
+- 'Disponible'
++ 'Rupture'
+- 0
+- undefined
+= 0 > 0 est faux.
+? Laquelle de ces valeurs est « falsy » ?
+- 'false'
+- [ ]
++ ''
+- 'texte'
+= La chaîne vide est fausse ; la chaîne 'false' est vraie car non vide.
+§ondea
+<p><code>permissions.js</code> d'Ondea définit une <code>MATRIX</code> : pour chaque profil, un ensemble (<code>Set</code>) de droits comme <code>'orders.validate'</code>. La fonction <code>OC.perm.require()</code> est appelée avant chaque écriture et lève une <code>PermissionError</code> si le droit manque. <code>stocks.js</code> compare le stock disponible au seuil d'alerte pour générer les notifications « stock bas ».</p>
+
+§§chapter js-boucles
+part: js
+title: Boucles
+subtitle: for, for…of, while et accumulation
+duration: 1 h
+feature: Total des lignes d'une commande
+§intro
+<p>Une <strong>boucle</strong> répète des instructions. C'est indispensable dès qu'on a une liste : additionner toutes les lignes d'une commande, afficher tous les clients, compter les commandes en retard.</p>
+<ul>
+<li><code>for (let i = 0; i &lt; n; i++)</code> : la boucle classique avec un compteur.</li>
+<li><code>for (const element of tableau)</code> : parcourt chaque élément d'un tableau. <strong>La plus lisible</strong>, à préférer.</li>
+<li><code>while (condition)</code> : répète tant que la condition est vraie (attention à la boucle infinie !).</li>
+<li><code>break</code> sort de la boucle ; <code>continue</code> passe directement au tour suivant.</li>
+</ul>
+<p>Le schéma le plus courant est l'<strong>accumulateur</strong> : une variable <code>let total = 0</code> avant la boucle, à laquelle on ajoute une valeur à chaque tour.</p>
+§example js
+// Quantités et prix (en centimes) des lignes d'une commande
+const quantites = [10, 2, 5];
+const prix      = [850, 12900, 400];
+
+// 1. for classique : i va de 0 à 2
+let totalHT = 0;                       // accumulateur
+for (let i = 0; i < quantites.length; i++) {
+  totalHT += quantites[i] * prix[i];   // += : ajoute à la valeur actuelle
+}
+console.log(totalHT);                  // 36300 centimes = 363,00 €
+
+// 2. for...of : parcourt directement les valeurs
+const statuts = ['livree', 'attente', 'livree', 'annulee', 'livree'];
+let nbLivrees = 0;
+for (const s of statuts) {
+  if (s === 'annulee') continue;       // on ignore les annulées
+  if (s === 'livree') nbLivrees++;
+}
+console.log(`${nbLivrees} commandes livrées`);
+
+// 3. while : réapprovisionner par cartons de 12 jusqu'au seuil
+let stock = 3;
+let cartons = 0;
+while (stock < 30) {
+  stock += 12;
+  cartons++;
+}
+console.log(`${cartons} cartons → stock ${stock}`); // 3 cartons → stock 39
+§explain
+<ul>
+<li>Les indices d'un tableau commencent à <strong>0</strong> : le dernier est à <code>length - 1</code>, d'où <code>i &lt; length</code> (et non <code>&lt;=</code>).</li>
+<li><code>i++</code> ajoute 1 à <code>i</code> après chaque tour.</li>
+<li><code>totalHT += x</code> est le raccourci de <code>totalHT = totalHT + x</code>.</li>
+<li>Avec <code>for…of</code>, pas d'indice à gérer : moins de risque d'erreur.</li>
+<li>Dans un <code>while</code>, quelque chose doit faire évoluer la condition (ici <code>stock += 12</code>), sinon la page se fige.</li>
+</ul>
+§demo-html
+<ul id="liste"></ul>
+<p id="total"></p>
+§demo-css
+body{font-family:system-ui;padding:1rem}
+li{padding:.3rem 0;border-bottom:1px solid #e2dbcc;list-style:none;display:flex;justify-content:space-between;max-width:340px}
+#total{font-weight:700;color:#614608}
+§demo-js
+const lignes = [
+  { nom: 'Vis inox 4x40', qte: 10, pu: 850 },
+  { nom: 'Perceuse 18 V', qte: 2, pu: 12900 },
+  { nom: 'Chevilles 8 mm', qte: 5, pu: 400 }
+];
+let total = 0;
+for (const l of lignes) {
+  const sousTotal = l.qte * l.pu;
+  total += sousTotal;
+  document.getElementById('liste').innerHTML += `<li><span>${l.qte} × ${l.nom}</span><span>${(sousTotal / 100).toFixed(2)} €</span></li>`;
+  console.log(`${l.nom} : ${sousTotal} centimes (cumul ${total})`);
+}
+document.getElementById('total').textContent = `Total HT : ${(total / 100).toFixed(2)} €`;
+§guided
+<p>Comptez et additionnez les commandes du jour.</p>
+<ol>
+<li>Le tableau <code>montants</code> (en centimes) est fourni.</li>
+<li>Avec une boucle <code>for…of</code>, calculez <code>total</code> (la somme).</li>
+<li>Dans la même boucle, comptez dans <code>nbGrosses</code> les commandes de plus de 50 000 centimes (500 €).</li>
+<li>Affichez <code>Total : 1945.5 € — 2 grosses commandes</code>.</li>
+</ol>
+§guided-js
+const montants = [25680, 104400, 8990, 2400, 52000, 1080];
+// À vous
+
+§guided-checks
+eval | total | 194550 | total vaut 194550
+eval | nbGrosses | 2 | nbGrosses vaut 2
+js | for\s*\(\s*const\s+\w+\s+of | Une boucle for…of est utilisée
+log | Total : 1945.5 € — 2 grosses commandes | Le message est affiché
+§guided-solution-js
+const montants = [25680, 104400, 8990, 2400, 52000, 1080];
+let total = 0;
+let nbGrosses = 0;
+for (const m of montants) {
+  total += m;
+  if (m > 50000) nbGrosses++;
+}
+console.log(`Total : ${total / 100} € — ${nbGrosses} grosses commandes`);
+§auto
+<p>À partir d'un tableau de 10 produits (nom, stock, seuil), écrivez un script qui : (1) affiche la liste des produits sous le seuil, (2) compte les ruptures (stock 0), (3) trouve le produit au stock le plus bas, (4) s'arrête et affiche un message dès qu'il trouve un produit dont le nom contient « Perceuse » (avec <code>break</code>). Utilisez au moins une boucle <code>for</code> classique et une boucle <code>for…of</code>.</p>
+§solution
+<p>Pour trouver un minimum, on initialise avec le premier élément puis on compare chaque élément au « meilleur » trouvé jusqu'ici.</p>
+§solution-code js
+const produits = [
+  { nom: 'Vis inox 4x40', stock: 12, seuil: 50 }, { nom: 'Perceuse 18 V', stock: 2, seuil: 5 },
+  { nom: 'Chevilles 8 mm', stock: 0, seuil: 100 }, { nom: 'Équerre 60 mm', stock: 80, seuil: 20 },
+  { nom: 'Charnière laiton', stock: 15, seuil: 10 }, { nom: 'Scie égoïne', stock: 0, seuil: 3 },
+  { nom: 'Mètre ruban 5 m', stock: 40, seuil: 10 }, { nom: 'Colle bois 750 g', stock: 6, seuil: 8 },
+  { nom: 'Niveau 60 cm', stock: 9, seuil: 4 }, { nom: 'Perceuse à percussion', stock: 3, seuil: 2 }
+];
+let ruptures = 0;
+let plusBas = produits[0];
+for (const p of produits) {
+  if (p.stock <= p.seuil) console.log(`Sous le seuil : ${p.nom} (${p.stock}/${p.seuil})`);
+  if (p.stock === 0) ruptures++;
+  if (p.stock < plusBas.stock) plusBas = p;
+}
+console.log(`${ruptures} ruptures ; stock le plus bas : ${plusBas.nom}`);
+for (let i = 0; i < produits.length; i++) {
+  if (produits[i].nom.includes('Perceuse')) {
+    console.log(`Première perceuse trouvée à l'indice ${i} : ${produits[i].nom}`);
+    break;
+  }
+}
+§quiz
+? Quel est l'indice du premier élément d'un tableau ?
++ 0
+- 1
+- -1
+- Cela dépend
+= Le dernier est donc à length - 1.
+? Quelle boucle est la plus lisible pour parcourir un tableau ?
+- while
++ for…of
+- do…while
+- for…in
+= for…in parcourt les clés (à réserver aux objets).
+? Que fait continue dans une boucle ?
+- Sort de la boucle
++ Passe directement au tour suivant
+- Recommence la boucle depuis le début
+- Met en pause
+= break, lui, sort de la boucle.
+? Que vaut total après : let total = 0; for (const n of [2, 3, 5]) total += n; ?
+- 0
+- 5
++ 10
+- 235
+= 0 + 2 + 3 + 5.
+? Quel risque principal avec while ?
+- Il est lent
++ La boucle infinie si la condition ne devient jamais fausse
+- Il ne fonctionne pas avec les tableaux
+- Il est obsolète
+= Toujours vérifier que la condition évolue.
+§ondea
+<p>La fonction <code>computeTotals(order)</code> de <code>utils.js</code> parcourt <code>order.lines</code> pour calculer le brut, la remise, le HT et la TVA ligne par ligne, puis les additionne (en centimes). <code>notifications.js</code> parcourt les commandes ouvertes pour détecter celles dont la date de livraison souhaitée est dépassée.</p>
+
+§§chapter js-fonctions
+part: js
+title: Fonctions
+subtitle: Paramètres, return, fonctions fléchées, portée
+duration: 2 h
+feature: Calculs HT, TVA et TTC
+§intro
+<p>Une <strong>fonction</strong> est une recette réutilisable : on lui donne des ingrédients (les <strong>paramètres</strong>), elle fait un travail et renvoie un résultat avec <code>return</code>.</p>
+<p>Avantages : on écrit le calcul de la TVA <strong>une seule fois</strong> et on l'utilise partout ; si la règle change, on ne corrige qu'à un endroit. On peut aussi tester la fonction seule.</p>
+<ul>
+<li>Déclaration : <code>function calculerTVA(ht, taux) { return … }</code></li>
+<li>Fonction fléchée : <code>const calculerTVA = (ht, taux) =&gt; …</code> (plus courte, très utilisée avec les tableaux).</li>
+<li>Paramètre par défaut : <code>function f(taux = 20)</code>.</li>
+<li><strong>Portée</strong> : une variable créée dans une fonction n'existe que dans cette fonction.</li>
+</ul>
+<p>Une bonne fonction fait <strong>une seule chose</strong>, porte un nom qui commence par un verbe (<code>calculer</code>, <code>formater</code>, <code>valider</code>) et ne modifie pas les données qu'on lui donne.</p>
+§example js
+/**
+ * Calcule la TVA d'un montant HT.
+ * @param {number} htCentimes  montant hors taxes en centimes
+ * @param {number} tauxPourcent taux de TVA (20, 10, 5.5)
+ * @returns {number} TVA en centimes, arrondie au centime
+ */
+function calculerTVA(htCentimes, tauxPourcent = 20) {
+  return Math.round(htCentimes * tauxPourcent / 100);
+}
+
+// Fonction fléchée : une ligne, return implicite
+const calculerTTC = (htCentimes, taux = 20) => htCentimes + calculerTVA(htCentimes, taux);
+
+// Formater des centimes en euros à la française
+const formaterEuros = (centimes) =>
+  new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR' }).format(centimes / 100);
+
+// Une fonction qui en utilise d'autres
+function resumeLigne(designation, quantite, puCentimes, taux) {
+  const ht = quantite * puCentimes;
+  return `${designation} : ${formaterEuros(ht)} HT, ${formaterEuros(calculerTTC(ht, taux))} TTC`;
+}
+
+console.log(calculerTVA(10000));                     // 2000 (20 € sur 100 €)
+console.log(calculerTTC(2000, 5.5));                 // 2110
+console.log(resumeLigne('Perceuse 18 V', 2, 12900, 20));
+// Perceuse 18 V : 258,00 € HT, 309,60 € TTC
+§explain
+<ul>
+<li>Le commentaire <code>/** … */</code> (JSDoc) documente les paramètres : l'éditeur l'affiche en info-bulle.</li>
+<li><code>return</code> renvoie la valeur <strong>et arrête</strong> la fonction. Sans <code>return</code>, la fonction renvoie <code>undefined</code>.</li>
+<li><code>tauxPourcent = 20</code> : si on n'envoie pas de taux, 20 est utilisé.</li>
+<li>Une fléchée sans accolades renvoie directement son expression. Avec accolades, il faut écrire <code>return</code>.</li>
+<li><code>Math.round()</code> arrondit à l'entier le plus proche : indispensable pour garder des centimes entiers.</li>
+<li>On appelle une fonction avec des parenthèses : <code>calculerTVA(10000)</code>. Sans parenthèses, on manipule la fonction elle-même sans l'exécuter.</li>
+</ul>
+§demo-html
+<form id="f">
+  <label>Prix HT (€) <input id="ht" type="number" value="129" step="0.01" min="0"></label>
+  <label>Quantité <input id="q" type="number" value="2" min="1"></label>
+  <label>TVA <select id="t"><option>20</option><option>10</option><option>5.5</option></select> %</label>
+</form>
+<p id="r"></p>
+§demo-css
+body{font-family:system-ui;padding:1rem}
+form{display:grid;gap:.5rem;max-width:300px}
+input,select{font:inherit;padding:.3rem}
+#r{font-size:1.1rem;font-weight:700;color:#614608}
+§demo-js
+const tva = (ht, taux) => Math.round(ht * taux / 100);
+const euros = (c) => new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR' }).format(c / 100);
+function maj() {
+  const puCentimes = Math.round(Number(document.getElementById('ht').value) * 100);
+  const ht = puCentimes * Number(document.getElementById('q').value);
+  const taux = Number(document.getElementById('t').value);
+  const montantTVA = tva(ht, taux);
+  document.getElementById('r').textContent = `HT ${euros(ht)} + TVA ${euros(montantTVA)} = TTC ${euros(ht + montantTVA)}`;
+}
+document.getElementById('f').addEventListener('input', maj);
+maj();
+§guided
+<p>Écrivez les fonctions de calcul d'une ligne de commande avec remise.</p>
+<ol>
+<li><code>appliquerRemise(htCentimes, remisePourcent)</code> renvoie le HT après remise, arrondi (<code>Math.round</code>).</li>
+<li><code>calculerTVA(htCentimes, taux)</code> renvoie la TVA arrondie.</li>
+<li><code>totalLigne(quantite, puCentimes, remisePourcent, taux)</code> renvoie un objet <code>{ ht, tva, ttc }</code> en utilisant les deux fonctions précédentes.</li>
+</ol>
+<p>Exemple : <code>totalLigne(2, 12900, 10, 20)</code> → <code>{ ht: 23220, tva: 4644, ttc: 27864 }</code>.</p>
+§guided-js
+// À vous
+
+§guided-checks
+eval | appliquerRemise(10000, 10) | 9000 | appliquerRemise(10000, 10) vaut 9000
+eval | calculerTVA(2000, 5.5) | 110 | calculerTVA(2000, 5.5) vaut 110
+eval | JSON.stringify(totalLigne(2, 12900, 10, 20)) | {"ht":23220,"tva":4644,"ttc":27864} | totalLigne renvoie le bon objet
+eval | totalLigne(3, 333, 0, 20).tva | 200 | La TVA est arrondie (999 × 20 % = 199,8 → 200)
+§guided-solution-js
+function appliquerRemise(htCentimes, remisePourcent) {
+  return Math.round(htCentimes * (100 - remisePourcent) / 100);
+}
+function calculerTVA(htCentimes, taux) {
+  return Math.round(htCentimes * taux / 100);
+}
+function totalLigne(quantite, puCentimes, remisePourcent, taux) {
+  const ht = appliquerRemise(quantite * puCentimes, remisePourcent);
+  const tva = calculerTVA(ht, taux);
+  return { ht, tva, ttc: ht + tva };
+}
+console.log(totalLigne(2, 12900, 10, 20));
+§auto
+<p>Écrivez une bibliothèque <code>calculs.js</code> pour Ondea : <code>versCentimes(saisie)</code> qui accepte « 12,5 », « 12.50 » ou « 1 234,56 » ; <code>formaterEuros(centimes)</code> ; <code>totalCommande(lignes, fraisPortHT)</code> qui renvoie le total HT, la TVA <strong>détaillée par taux</strong> et le TTC. Testez avec la commande du chapitre Tableaux HTML (vous devez retrouver 449,74 € TTC). Documentez chaque fonction en JSDoc.</p>
+§solution
+<p>On regroupe la TVA par taux dans un objet dont les clés sont les taux : <code>{ '20': {...}, '5.5': {...} }</code>. La remise se calcule avant la TVA, ligne par ligne, comme dans Ondea.</p>
+§solution-code js
+/** « 1 234,56 » → 123456 centimes (NaN si invalide) */
+function versCentimes(saisie) {
+  const s = String(saisie).replace(/\s/g, '').replace(',', '.');
+  if (!/^\d+(\.\d{1,2})?$/.test(s)) return NaN;
+  const [ent, dec = ''] = s.split('.');
+  return Number(ent) * 100 + Number((dec + '00').slice(0, 2));
+}
+/** 123456 → « 1 234,56 € » */
+const formaterEuros = (c) => new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR' }).format(c / 100);
+
+/** Totaux d'une commande. lignes : [{ qte, pu, remise, taux }] en centimes / % */
+function totalCommande(lignes, fraisPortHT = 0, tauxPort = 20) {
+  const parTaux = {};
+  let totalHT = 0;
+  const ajouter = (ht, taux) => {
+    const tva = Math.round(ht * taux / 100);
+    parTaux[taux] = parTaux[taux] || { base: 0, tva: 0 };
+    parTaux[taux].base += ht; parTaux[taux].tva += tva;
+    totalHT += ht;
+    return tva;
+  };
+  let totalTVA = 0;
+  for (const l of lignes) {
+    const ht = Math.round(l.qte * l.pu * (100 - l.remise) / 100);
+    totalTVA += ajouter(ht, l.taux);
+  }
+  if (fraisPortHT) totalTVA += ajouter(fraisPortHT, tauxPort);
+  return { totalHT, parTaux, totalTVA, totalTTC: totalHT + totalTVA };
+}
+const r = totalCommande([
+  { qte: 10, pu: 850, remise: 0, taux: 20 }, { qte: 2, pu: 12900, remise: 10, taux: 20 },
+  { qte: 5, pu: 400, remise: 0, taux: 20 }, { qte: 1, pu: 2000, remise: 0, taux: 5.5 },
+  { qte: 4, pu: 250, remise: 0, taux: 20 }
+], 1000);
+console.log(formaterEuros(r.totalTTC)); // 449,74 €
+§quiz
+? Que renvoie une fonction sans instruction return ?
+- 0
+- null
++ undefined
+- Une erreur
+= undefined est la valeur de retour par défaut.
+? Que vaut const double = (n) => n * 2; double(4) ?
+- 4
++ 8
+- n * 2
+- undefined
+= Fléchée sans accolades : return implicite.
+? Quelle est la portée d'une variable déclarée avec const dans une fonction ?
+- Toute la page
++ Uniquement l'intérieur de cette fonction (son bloc)
+- Toutes les fonctions
+- Le fichier HTML
+= Elle disparaît à la fin de l'appel.
+? Comment appeler la fonction calculerTVA avec 1000 ?
+- calculerTVA
+- calculerTVA[1000]
++ calculerTVA(1000)
+- call calculerTVA 1000
+= Les parenthèses exécutent la fonction.
+? Pourquoi découper le calcul en petites fonctions ?
++ Pour réutiliser, tester et corriger chaque règle à un seul endroit
+- Pour que le code soit plus long
+- C'est obligatoire en JavaScript
+- Pour aller plus vite à l'exécution
+= Principe de responsabilité unique.
+§ondea
+<p><code>utils.js</code> d'Ondea contient exactement cette chaîne de fonctions : <code>toCents()</code>, <code>applyBp()</code> (applique un taux exprimé en <em>points de base</em> : 20 % = 2000 pb, ce qui évite aussi les décimales comme 5,5), <code>roundHalfUp()</code> (arrondi commercial) et <code>computeTotals(order)</code> qui renvoie HT, TVA par taux (<code>vatBreakdown</code>) et TTC. Toutes sont pures : elles ne modifient pas la commande reçue.</p>
+
+§§chapter js-tableaux-objets
+part: js
+title: Tableaux et objets
+subtitle: Structurer les données, map, filter, reduce, find, déstructuration
+duration: 2 h 30
+feature: Clients, produits, recherche et filtres, statistiques
+§intro
+<p>Un <strong>objet</strong> regroupe les informations d'une même chose sous forme de paires <code>clé: valeur</code> : un client a un nom, un e-mail, une ville. Un <strong>tableau</strong> est une liste ordonnée : la liste des clients.</p>
+<p>Ensemble, ils modélisent toutes les données d'Ondea : un tableau de commandes, chaque commande est un objet qui contient un tableau de lignes, chaque ligne est un objet.</p>
+<p>Les méthodes de tableau à connaître absolument (elles ne modifient pas le tableau d'origine) :</p>
+<ul>
+<li><code>filter(fn)</code> : garde les éléments qui passent le test → les commandes en attente.</li>
+<li><code>map(fn)</code> : transforme chaque élément → la liste des noms.</li>
+<li><code>find(fn)</code> : le premier élément qui correspond → le client n° 3.</li>
+<li><code>reduce(fn, départ)</code> : combine tout en une valeur → le chiffre d'affaires.</li>
+<li><code>some</code>/<code>every</code>, <code>includes</code>, <code>sort</code>, <code>push</code>.</li>
+</ul>
+§example js
+// Un objet : des propriétés clé: valeur
+const client = { id: 3, nom: 'Brico Sud', ville: 'Draguignan', actif: true };
+console.log(client.nom);            // notation pointée
+client.telephone = '04 94 00 00 00'; // ajout d'une propriété
+
+// Un tableau d'objets
+const commandes = [
+  { numero: 'CMD-0042', clientId: 3, statut: 'livree',  ttc: 25680 },
+  { numero: 'CMD-0043', clientId: 5, statut: 'attente', ttc: 104400 },
+  { numero: 'CMD-0044', clientId: 3, statut: 'attente', ttc: 8990 },
+  { numero: 'CMD-0045', clientId: 7, statut: 'annulee', ttc: 2400 }
+];
+
+// filter : les commandes en attente
+const enAttente = commandes.filter((c) => c.statut === 'attente');
+
+// map : uniquement les numéros
+const numeros = enAttente.map((c) => c.numero);   // ['CMD-0043', 'CMD-0044']
+
+// find : la première commande du client 3
+const premiere = commandes.find((c) => c.clientId === 3);
+
+// reduce : chiffre d'affaires hors commandes annulées
+const ca = commandes
+  .filter((c) => c.statut !== 'annulee')
+  .reduce((somme, c) => somme + c.ttc, 0);        // 139070
+
+// Déstructuration et décomposition (spread)
+const { numero, ttc } = premiere;                 // deux variables d'un coup
+const copie = { ...premiere, statut: 'expediee' }; // copie modifiée, original intact
+
+// Recherche insensible à la casse
+const recherche = 'cmd-004';
+const resultats = commandes.filter((c) => c.numero.toLowerCase().includes(recherche));
+console.log(numeros, ca, numero, ttc, copie.statut, resultats.length);
+§explain
+<ul>
+<li>Chaque méthode reçoit une fonction (souvent fléchée) appelée pour chaque élément : <code>(c) =&gt; c.statut === 'attente'</code>.</li>
+<li>On peut <strong>enchaîner</strong> : <code>filter(...).map(...)</code> se lit comme une phrase.</li>
+<li><code>reduce((accumulateur, element) =&gt; …, valeurInitiale)</code> : l'accumulateur part de 0 et grossit à chaque élément.</li>
+<li><code>find</code> renvoie <code>undefined</code> si rien ne correspond : pensez à le vérifier.</li>
+<li><code>{ ...objet }</code> crée une copie superficielle : on ne modifie jamais les données d'origine par accident.</li>
+<li><code>sort</code> <strong>modifie</strong> le tableau : on trie une copie <code>[...tab].sort((a, b) =&gt; a.ttc - b.ttc)</code>.</li>
+</ul>
+§demo-html
+<label for="q">Rechercher</label> <input id="q" type="search" placeholder="client ou numéro">
+<div class="chips"><button data-s="">Toutes</button><button data-s="attente">En attente</button><button data-s="livree">Livrées</button></div>
+<ul id="l"></ul>
+<p id="ca"></p>
+§demo-css
+body{font-family:system-ui;padding:1rem}
+.chips{display:flex;gap:.4rem;margin:.6rem 0}
+.chips button{border:1px solid #c9a14a;background:#fff;border-radius:99px;padding:.3rem .8rem}
+.chips button[aria-pressed="true"]{background:#c9a14a}
+li{list-style:none;padding:.4rem;border-bottom:1px solid #e2dbcc}
+#ca{font-weight:700}
+§demo-js
+const data = [
+  { n: 'CMD-0042', client: 'Brico Sud', s: 'livree', ttc: 25680 },
+  { n: 'CMD-0043', client: 'Visso Bricolage', s: 'attente', ttc: 104400 },
+  { n: 'CMD-0044', client: 'Atelier Mistral', s: 'attente', ttc: 8990 },
+  { n: 'CMD-0046', client: 'Brico Sud', s: 'livree', ttc: 15400 }
+];
+let filtre = '';
+function afficher() {
+  const q = document.getElementById('q').value.toLowerCase();
+  const liste = data
+    .filter((c) => !filtre || c.s === filtre)
+    .filter((c) => (c.n + c.client).toLowerCase().includes(q));
+  document.getElementById('l').innerHTML = liste.map((c) => `<li>${c.n} — ${c.client} — ${(c.ttc / 100).toFixed(2)} €</li>`).join('');
+  const total = liste.reduce((s, c) => s + c.ttc, 0);
+  document.getElementById('ca').textContent = `${liste.length} commande(s), total ${(total / 100).toFixed(2)} €`;
+  document.querySelectorAll('.chips button').forEach((b) => b.setAttribute('aria-pressed', b.dataset.s === filtre));
+}
+document.getElementById('q').addEventListener('input', afficher);
+document.querySelector('.chips').addEventListener('click', (e) => {
+  if (e.target.dataset.s !== undefined) { filtre = e.target.dataset.s; afficher(); }
+});
+afficher();
+§guided
+<p>Produisez les statistiques du catalogue produits.</p>
+<ol>
+<li><code>sousSeuil</code> : les produits dont <code>stock &lt;= seuil</code> (<code>filter</code>).</li>
+<li><code>references</code> : un tableau des références de ces produits (<code>map</code>).</li>
+<li><code>valeurStock</code> : la valeur totale du stock en centimes, somme de <code>stock × prixAchat</code> (<code>reduce</code>).</li>
+<li><code>perceuse</code> : le produit dont la référence est <code>'PER-18V'</code> (<code>find</code>).</li>
+</ol>
+§guided-js
+const produits = [
+  { reference: 'VIS-440', nom: 'Vis inox 4x40', stock: 12, seuil: 50, prixAchat: 420 },
+  { reference: 'PER-18V', nom: 'Perceuse 18 V', stock: 2, seuil: 5, prixAchat: 7800 },
+  { reference: 'EQU-060', nom: 'Équerre 60 mm', stock: 80, seuil: 20, prixAchat: 110 },
+  { reference: 'CHV-008', nom: 'Chevilles 8 mm', stock: 0, seuil: 100, prixAchat: 190 }
+];
+// À vous
+
+§guided-checks
+eval | sousSeuil.length | 3 | 3 produits sous le seuil
+eval | references.join(',') | VIS-440,PER-18V,CHV-008 | Références correctes
+eval | valeurStock | 29440 | Valeur du stock : 29440 centimes
+eval | perceuse.nom | Perceuse 18 V | find a trouvé la perceuse
+js | \.reduce\( | reduce est utilisé
+§guided-solution-js
+const produits = [
+  { reference: 'VIS-440', nom: 'Vis inox 4x40', stock: 12, seuil: 50, prixAchat: 420 },
+  { reference: 'PER-18V', nom: 'Perceuse 18 V', stock: 2, seuil: 5, prixAchat: 7800 },
+  { reference: 'EQU-060', nom: 'Équerre 60 mm', stock: 80, seuil: 20, prixAchat: 110 },
+  { reference: 'CHV-008', nom: 'Chevilles 8 mm', stock: 0, seuil: 100, prixAchat: 190 }
+];
+const sousSeuil = produits.filter((p) => p.stock <= p.seuil);
+const references = sousSeuil.map((p) => p.reference);
+const valeurStock = produits.reduce((total, p) => total + p.stock * p.prixAchat, 0);
+const perceuse = produits.find((p) => p.reference === 'PER-18V');
+console.log(references, valeurStock, perceuse.nom);
+§auto
+<p>Créez un module « statistiques » : à partir d'un tableau de 12 commandes (client, date, statut, ttc), calculez le CA par mois (objet <code>{ '2026-10': 1234, … }</code>), le nombre de commandes par statut, le top 3 des clients par CA (tri décroissant), le panier moyen, et le taux d'annulation en %. Affichez le résultat avec <code>console.table()</code>.</p>
+§solution
+<p><code>reduce</code> peut construire un objet : l'accumulateur de départ est <code>{}</code> et on incrémente une clé à chaque élément. Pour un top 3 : <code>Object.entries()</code> transforme l'objet en tableau de paires, qu'on trie puis coupe avec <code>slice(0, 3)</code>.</p>
+§solution-code js
+const cmds = [
+  { client: 'Brico Sud', date: '2026-09-04', statut: 'livree', ttc: 25680 },
+  { client: 'Visso', date: '2026-09-12', statut: 'livree', ttc: 104400 },
+  { client: 'Atelier Mistral', date: '2026-09-20', statut: 'annulee', ttc: 8990 },
+  { client: 'Brico Sud', date: '2026-10-01', statut: 'livree', ttc: 15400 },
+  { client: 'Menuiserie Var', date: '2026-10-03', statut: 'expediee', ttc: 48200 },
+  { client: 'Visso', date: '2026-10-08', statut: 'livree', ttc: 31000 },
+  { client: 'Atelier Mistral', date: '2026-10-15', statut: 'livree', ttc: 12990 },
+  { client: 'Brico Sud', date: '2026-10-22', statut: 'attente', ttc: 7400 },
+  { client: 'Menuiserie Var', date: '2026-10-28', statut: 'annulee', ttc: 5200 },
+  { client: 'Visso', date: '2026-11-02', statut: 'validee', ttc: 66000 },
+  { client: 'Brico Sud', date: '2026-11-02', statut: 'preparation', ttc: 9900 },
+  { client: 'Atelier Mistral', date: '2026-11-03', statut: 'attente', ttc: 4400 }
+];
+const valides = cmds.filter((c) => c.statut !== 'annulee');
+const caParMois = valides.reduce((acc, c) => {
+  const mois = c.date.slice(0, 7);
+  acc[mois] = (acc[mois] || 0) + c.ttc;
+  return acc;
+}, {});
+const parStatut = cmds.reduce((acc, c) => ({ ...acc, [c.statut]: (acc[c.statut] || 0) + 1 }), {});
+const caClients = valides.reduce((acc, c) => { acc[c.client] = (acc[c.client] || 0) + c.ttc; return acc; }, {});
+const top3 = Object.entries(caClients).sort((a, b) => b[1] - a[1]).slice(0, 3);
+const panierMoyen = Math.round(valides.reduce((s, c) => s + c.ttc, 0) / valides.length);
+const tauxAnnulation = (cmds.length - valides.length) / cmds.length * 100;
+console.table(caParMois);
+console.table(parStatut);
+console.table(top3);
+console.log({ panierMoyen, tauxAnnulation: tauxAnnulation.toFixed(1) + ' %' });
+§quiz
+? Quelle méthode garde seulement les commandes livrées ?
+- map
++ filter
+- find
+- reduce
+= filter renvoie un nouveau tableau des éléments qui passent le test.
+? Que renvoie [1, 2, 3].map((n) => n * 10) ?
+- 60
++ [10, 20, 30]
+- [1, 2, 3]
+- 10
+= map transforme chaque élément, la longueur reste la même.
+? Que renvoie find si aucun élément ne correspond ?
+- null
+- false
++ undefined
+- []
+= Toujours vérifier le résultat avant d'utiliser ses propriétés.
+? Que vaut [5, 10, 15].reduce((s, n) => s + n, 0) ?
++ 30
+- 0
+- [5, 10, 15]
+- 15
+= L'accumulateur part de 0.
+? Que fait const copie = { ...commande, statut: 'livree' } ?
+- Modifie la commande d'origine
++ Crée une nouvelle commande copiée dont le statut est remplacé
+- Supprime le statut
+- Provoque une erreur
+= L'original reste intact : pratique pour annuler une modification.
+§ondea
+<p>Les modules <code>commandes.js</code>, <code>clients.js</code> et <code>produits.js</code> d'Ondea filtrent leurs listes avec <code>filter()</code> (filtre par statut via les puces, recherche texte), trient pour les colonnes cliquables, et <code>statistiques.js</code> utilise <code>reduce()</code> pour le CA par mois, la répartition par statut et le classement des meilleurs clients et produits, ensuite dessinés par <code>charts.js</code>.</p>
+
+§§chapter js-dom
+part: js
+title: Le DOM : lire et modifier la page
+subtitle: querySelector, textContent, classList, createElement, sécurité
+duration: 2 h
+feature: Affichage dynamique des listes et du tableau de bord
+§intro
+<p>Le <strong>DOM</strong> (Document Object Model) est la représentation de la page HTML sous forme d'arbre d'objets que le JavaScript peut lire et modifier. Chaque balise devient un objet <code>Element</code>.</p>
+<ul>
+<li><strong>Trouver</strong> : <code>document.querySelector('.kpi')</code> (le premier), <code>document.querySelectorAll('tr')</code> (tous). Ils acceptent n'importe quel sélecteur CSS.</li>
+<li><strong>Lire/écrire le texte</strong> : <code>el.textContent = 'Livrée'</code>.</li>
+<li><strong>Changer les classes</strong> : <code>el.classList.add('is-open')</code>, <code>remove</code>, <code>toggle</code>.</li>
+<li><strong>Attributs</strong> : <code>el.setAttribute('aria-expanded', 'true')</code>, <code>el.dataset.status</code>, <code>el.hidden = true</code>.</li>
+<li><strong>Créer</strong> : <code>document.createElement('li')</code> puis <code>parent.append(li)</code>.</li>
+</ul>
+<p><strong>Sécurité :</strong> <code>innerHTML</code> interprète du HTML. Si on y insère un texte saisi par un utilisateur (un nom de client « &lt;img onerror=…&gt; »), on ouvre une faille <strong>XSS</strong>. Règle : <code>textContent</code> pour les données, ou bien on <strong>échappe</strong> les caractères spéciaux avant <code>innerHTML</code>.</p>
+§example js
+// Trouver des éléments avec des sélecteurs CSS
+const titre = document.querySelector('h1');
+const lignes = document.querySelectorAll('#liste-commandes tr');
+console.log(lignes.length);
+
+// Modifier le texte (sûr : aucun HTML interprété)
+titre.textContent = 'Commandes (12)';
+
+// Classes et attributs
+const panneau = document.querySelector('#panneau-notifs');
+panneau.classList.toggle('is-open');
+panneau.hidden = false;
+document.querySelector('[aria-controls="panneau-notifs"]').setAttribute('aria-expanded', 'true');
+
+// Créer une ligne de tableau proprement
+function creerLigne(commande) {
+  const tr = document.createElement('tr');
+  const tdNum = document.createElement('td');
+  tdNum.textContent = commande.numero;           // jamais d'HTML injecté
+  const tdClient = document.createElement('td');
+  tdClient.textContent = commande.client;
+  tr.append(tdNum, tdClient);
+  tr.dataset.id = commande.id;                   // data-id="..."
+  return tr;
+}
+document.querySelector('#liste-commandes').append(creerLigne({ id: 9, numero: 'CMD-0050', client: 'Visso' }));
+
+// Si on veut un gabarit HTML : ÉCHAPPER les données d'abord
+const echapper = (s) => String(s).replace(/[&<>"']/g, (c) =>
+  ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const nom = '<img src=x onerror=alert(1)>';      // saisie malveillante
+document.querySelector('#fiche').innerHTML = `<h2>${echapper(nom)}</h2>`; // affiché comme du texte
+§explain
+<ul>
+<li><code>querySelector</code> renvoie <code>null</code> si rien n'est trouvé : <code>null.textContent</code> provoque une erreur « Cannot read properties of null ».</li>
+<li><code>querySelectorAll</code> renvoie une <code>NodeList</code> : on la parcourt avec <code>forEach</code> ou <code>for…of</code>.</li>
+<li><code>append()</code> accepte plusieurs éléments ou du texte.</li>
+<li><code>dataset.id = 9</code> crée l'attribut <code>data-id="9"</code> : on retrouvera la commande au clic.</li>
+<li>La fonction <code>echapper</code> remplace <code>&lt;</code> par <code>&amp;lt;</code>, etc. : le navigateur affiche les symboles au lieu de les interpréter.</li>
+<li>Pour beaucoup d'éléments, on construit la chaîne entière puis on fait <strong>un seul</strong> <code>innerHTML</code> (plus rapide que 100 <code>append</code>).</li>
+</ul>
+§demo-html
+<h2 id="t">Clients (0)</h2>
+<form id="f"><label for="n">Nom du client</label> <input id="n" value="&lt;b&gt;Brico&lt;/b&gt; Sud"> <button>Ajouter</button></form>
+<ul id="l"></ul>
+<p><small>Essayez de saisir du HTML : il est affiché comme du texte, pas interprété.</small></p>
+§demo-css
+body{font-family:system-ui;padding:1rem}
+li{padding:.35rem .6rem;border:1px solid #e2dbcc;border-radius:8px;margin:.3rem 0;list-style:none;display:flex;justify-content:space-between}
+li.nouveau{border-color:#c9a14a;background:#faf3e0}
+§demo-js
+const liste = document.getElementById('l');
+document.getElementById('f').addEventListener('submit', (e) => {
+  e.preventDefault();
+  const li = document.createElement('li');
+  li.textContent = document.getElementById('n').value;   // sûr
+  li.classList.add('nouveau');
+  const btn = document.createElement('button');
+  btn.textContent = 'Retirer';
+  btn.addEventListener('click', () => { li.remove(); maj(); });
+  li.append(btn);
+  liste.append(li);
+  maj();
+});
+function maj() {
+  document.getElementById('t').textContent = `Clients (${liste.children.length})`;
+  console.log('Nombre de clients :', liste.children.length);
+}
+§guided
+<p>Affichez les indicateurs du tableau de bord à partir des données.</p>
+<ol>
+<li>Pour chaque élément du tableau <code>kpis</code>, créez un <code>&lt;article class="kpi"&gt;</code> contenant un <code>&lt;h3&gt;</code> (le libellé) et un <code>&lt;p&gt;</code> (la valeur), avec <code>textContent</code>.</li>
+<li>Ajoutez chaque article dans <code>#kpis</code>.</li>
+<li>Si la valeur dépasse 10, ajoutez la classe <code>alerte</code> à l'article.</li>
+<li>Mettez à jour le titre <code>#titre</code> : <code>Tableau de bord (4 indicateurs)</code>.</li>
+</ol>
+§guided-html
+<h1 id="titre">Tableau de bord</h1>
+<section id="kpis"></section>
+§guided-css
+#kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: .6rem; }
+.kpi { border: 1px solid #c9a14a; border-radius: 12px; padding: .6rem; }
+.alerte { background: #fbeccb; }
+§guided-js
+const kpis = [
+  { libelle: 'En attente', valeur: 12 },
+  { libelle: 'À préparer', valeur: 7 },
+  { libelle: 'À expédier', valeur: 5 },
+  { libelle: 'En retard', valeur: 14 }
+];
+// À vous
+
+§guided-checks
+count | #kpis article.kpi | 4 | 4 articles .kpi créés
+count | #kpis .kpi h3 | 4 | Chaque carte a un h3
+count | #kpis .kpi.alerte | =2 | 2 cartes en alerte (valeur > 10)
+text | #titre | Tableau de bord (4 indicateurs) | Le titre est mis à jour
+js | createElement | createElement est utilisé
+§guided-solution-js
+const kpis = [
+  { libelle: 'En attente', valeur: 12 },
+  { libelle: 'À préparer', valeur: 7 },
+  { libelle: 'À expédier', valeur: 5 },
+  { libelle: 'En retard', valeur: 14 }
+];
+const zone = document.querySelector('#kpis');
+for (const k of kpis) {
+  const article = document.createElement('article');
+  article.className = 'kpi';
+  const h3 = document.createElement('h3');
+  h3.textContent = k.libelle;
+  const p = document.createElement('p');
+  p.textContent = k.valeur;
+  if (k.valeur > 10) article.classList.add('alerte');
+  article.append(h3, p);
+  zone.append(article);
+}
+document.querySelector('#titre').textContent = `Tableau de bord (${kpis.length} indicateurs)`;
+§auto
+<p>Écrivez une fonction <code>afficherCommandes(commandes)</code> qui remplit le <code>&lt;tbody&gt;</code> d'un tableau (numéro, client, statut sous forme de badge, montant TTC formaté), avec une fonction <code>echapper()</code> et un seul <code>innerHTML</code>. Ajoutez un état vide (« Aucune commande ») quand le tableau est vide, et un compteur dans le titre. Testez avec un nom de client contenant <code>&lt;script&gt;</code>.</p>
+§solution
+<p>On construit les lignes avec <code>map</code> puis <code>join('')</code>. Toute donnée passe par <code>echapper()</code> ; seules nos propres balises restent du HTML.</p>
+§solution-code js
+const echapper = (s) => String(s ?? '').replace(/[&<>"']/g, (c) =>
+  ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const euros = (c) => new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR' }).format(c / 100);
+const LIBELLES = { attente: 'En attente', validee: 'Validée', livree: 'Livrée', annulee: 'Annulée' };
+
+function afficherCommandes(commandes) {
+  const tbody = document.querySelector('#commandes tbody');
+  document.querySelector('#titre').textContent = `Commandes (${commandes.length})`;
+  if (commandes.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="4">Aucune commande</td></tr>';
+    return;
+  }
+  tbody.innerHTML = commandes.map((c) => `
+    <tr data-id="${echapper(c.id)}">
+      <td>${echapper(c.numero)}</td>
+      <td>${echapper(c.client)}</td>
+      <td><span class="badge" data-status="${echapper(c.statut)}">${echapper(LIBELLES[c.statut] || c.statut)}</span></td>
+      <td class="num">${euros(c.ttc)}</td>
+    </tr>`).join('');
+}
+afficherCommandes([{ id: 1, numero: 'CMD-0042', client: '<script>alert(1)</script>', statut: 'livree', ttc: 25680 }]);
+§quiz
+? Que renvoie document.querySelector('.absent') si aucun élément ne correspond ?
+- undefined
++ null
+- Une liste vide
+- false
+= Toujours tester avant d'utiliser le résultat.
+? Pourquoi préférer textContent à innerHTML pour afficher un nom de client ?
+- C'est plus rapide à taper
++ textContent n'interprète pas le HTML : pas de faille XSS
+- innerHTML n'existe plus
+- textContent met en forme le texte
+= Une saisie malveillante reste du texte inoffensif.
+? Comment ajouter la classe is-open si elle est absente et l'enlever sinon ?
+- el.class = 'is-open'
++ el.classList.toggle('is-open')
+- el.addClass('is-open')
+- el.style.toggle('is-open')
+= toggle renvoie aussi true/false selon le nouvel état.
+? Que crée el.dataset.id = 9 ?
+- Une variable id
++ L'attribut data-id="9" sur l'élément
+- Un id="9"
+- Rien
+= dataset est le pont entre les attributs data-* et le JS.
+? Que fait document.createElement('li') ?
+- Ajoute un li dans la page
++ Crée un élément li en mémoire, qu'il faut ensuite insérer avec append
+- Cherche un li
+- Supprime les li
+= Il n'apparaît que lorsqu'on l'ajoute à un parent présent dans la page.
+§ondea
+<p>Ondea Commandes est construit sur ce principe : chaque module (ex. <code>dashboard.js</code>) fabrique son écran en HTML puis l'insère dans le <code>main</code>. Pour la sécurité, <code>utils.js</code> fournit un gabarit étiqueté <code>html`…`</code> qui <strong>échappe automatiquement</strong> toute valeur interpolée grâce à <code>esc()</code> et une table <code>ESC_MAP</code> — sauf si elle a été marquée sûre (<code>SafeHtml</code>). C'est la version professionnelle de la fonction <code>echapper</code>.</p>
+
+§§chapter js-evenements
+part: js
+title: Événements
+subtitle: addEventListener, objet event, délégation, clavier
+duration: 1 h 30
+feature: Boutons d'action, raccourcis clavier, navigation
+§intro
+<p>Un <strong>événement</strong> est quelque chose qui se produit : un clic, une touche pressée, un champ modifié, la page chargée, l'adresse qui change. On demande au navigateur : « quand <em>cet événement</em> arrive sur <em>cet élément</em>, exécute <em>cette fonction</em> ».</p>
+<p><code>element.addEventListener('click', maFonction)</code></p>
+<p>Événements courants : <code>click</code>, <code>input</code> (à chaque frappe), <code>change</code> (valeur validée), <code>submit</code> (formulaire), <code>keydown</code> (touche), <code>hashchange</code> (adresse #), <code>DOMContentLoaded</code> (HTML prêt).</p>
+<p>La fonction reçoit un objet <code>event</code> : <code>event.target</code> (l'élément cliqué), <code>event.key</code> (la touche), <code>event.preventDefault()</code> (annule le comportement par défaut).</p>
+<p>La <strong>délégation</strong> : au lieu de poser un écouteur sur chacun des 200 boutons d'un tableau, on en pose <strong>un seul</strong> sur le parent, et on regarde quel bouton a été cliqué. Ça fonctionne même pour les lignes ajoutées plus tard.</p>
+§example js
+// 1. Un écouteur simple
+const btnTheme = document.querySelector('#btn-theme');
+btnTheme.addEventListener('click', () => {
+  document.documentElement.classList.toggle('dark');
+});
+
+// 2. Délégation : UN écouteur pour tous les boutons du tableau
+//    HTML : <button data-action="voir" data-id="42">Voir</button>
+document.querySelector('#table-commandes').addEventListener('click', (event) => {
+  // closest() remonte jusqu'au bouton même si on clique sur son icône
+  const bouton = event.target.closest('[data-action]');
+  if (!bouton) return;                     // clic ailleurs : on ignore
+
+  const { action, id } = bouton.dataset;
+  if (action === 'voir') ouvrirCommande(id);
+  else if (action === 'annuler') confirmerAnnulation(id);
+});
+
+// 3. Raccourcis clavier : Ctrl+K = recherche, Échap = fermer
+document.addEventListener('keydown', (event) => {
+  if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === 'k') {
+    event.preventDefault();                // empêche le raccourci du navigateur
+    document.querySelector('#recherche').focus();
+  }
+  if (event.key === 'Escape') fermerPanneaux();
+});
+
+// 4. Saisie en direct dans un champ de recherche
+document.querySelector('#recherche').addEventListener('input', (event) => {
+  filtrerCommandes(event.target.value.trim());
+});
+§explain
+<ul>
+<li>On passe la fonction <strong>sans parenthèses</strong> : <code>addEventListener('click', ouvrir)</code>. Avec parenthèses, elle serait exécutée tout de suite.</li>
+<li><code>event.target</code> est l'élément le plus profond cliqué (une icône SVG dans le bouton…) ; <code>closest('[data-action]')</code> remonte au bouton.</li>
+<li>Les événements « remontent » (bubbling) de l'enfant vers les parents : c'est ce qui rend la délégation possible.</li>
+<li><code>metaKey</code> est la touche ⌘ sur Mac : on gère les deux systèmes.</li>
+<li><code>removeEventListener</code> retire un écouteur (avec la même fonction nommée).</li>
+<li>Un <code>&lt;button&gt;</code> réagit au clic, à Entrée et à Espace : un écouteur <code>click</code> suffit pour la souris <strong>et</strong> le clavier.</li>
+</ul>
+§demo-html
+<table id="t"><tbody>
+  <tr><td>CMD-0042</td><td><button data-action="voir" data-id="42">👁 Voir</button> <button data-action="dupliquer" data-id="42">⧉ Dupliquer</button></td></tr>
+  <tr><td>CMD-0043</td><td><button data-action="voir" data-id="43">👁 Voir</button> <button data-action="dupliquer" data-id="43">⧉ Dupliquer</button></td></tr>
+</tbody></table>
+<p id="info">Cliquez un bouton, ou appuyez sur Ctrl + K.</p>
+<input id="rech" placeholder="Recherche (Ctrl+K)">
+§demo-css
+body{font-family:system-ui;padding:1rem}
+td{padding:.4rem}
+button{border:1px solid #c9a14a;background:#fff;border-radius:8px;padding:.3rem .6rem}
+#info{font-weight:700;color:#614608}
+§demo-js
+let n = 44;
+document.getElementById('t').addEventListener('click', (e) => {
+  const b = e.target.closest('[data-action]');
+  if (!b) return;
+  const { action, id } = b.dataset;
+  document.getElementById('info').textContent = `Action « ${action} » sur la commande ${id}`;
+  console.log(action, id);
+  if (action === 'dupliquer') {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `<td>CMD-00${n}</td><td><button data-action="voir" data-id="${n}">👁 Voir</button> <button data-action="dupliquer" data-id="${n}">⧉ Dupliquer</button></td>`;
+    n++;
+    document.querySelector('#t tbody').append(tr);   // le nouveau bouton fonctionne aussi !
+  }
+});
+document.addEventListener('keydown', (e) => {
+  if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') { e.preventDefault(); document.getElementById('rech').focus(); console.log('Raccourci Ctrl+K'); }
+});
+§guided
+<p>Faites fonctionner la file de préparation par délégation.</p>
+<ol>
+<li>Posez <strong>un seul</strong> écouteur <code>click</code> sur <code>#file</code>.</li>
+<li>Avec <code>closest('[data-action]')</code>, récupérez le bouton cliqué.</li>
+<li>Si l'action est <code>preparer</code>, ajoutez la classe <code>preparee</code> à la ligne <code>&lt;li&gt;</code> parente (<code>closest('li')</code>) et changez le texte du bouton en <code>Préparée</code>.</li>
+<li>Mettez à jour <code>#compteur</code> : nombre de lignes <code>.preparee</code>.</li>
+</ol>
+<p>Le test cliquera automatiquement sur les deux premiers boutons.</p>
+§guided-html
+<ul id="file">
+  <li>CMD-0043 <button data-action="preparer" data-id="43">Préparer</button></li>
+  <li>CMD-0044 <button data-action="preparer" data-id="44">Préparer</button></li>
+  <li>CMD-0047 <button data-action="preparer" data-id="47">Préparer</button></li>
+</ul>
+<p>Préparées : <span id="compteur">0</span></p>
+§guided-css
+.preparee { text-decoration: line-through; opacity: .7; }
+§guided-js
+// À vous
+
+§guided-checks
+click | #file li:nth-child(1) button | Clic simulé sur la 1re commande
+click | #file li:nth-child(2) button | Clic simulé sur la 2e commande
+count | #file li.preparee | 2 | Deux lignes marquées .preparee
+text | #compteur | 2 | Le compteur affiche 2
+text | #file li:nth-child(1) button | Préparée | Le texte du bouton a changé
+js | closest\( | closest() est utilisé (délégation)
+§guided-solution-js
+document.querySelector('#file').addEventListener('click', (event) => {
+  const bouton = event.target.closest('[data-action]');
+  if (!bouton) return;
+  if (bouton.dataset.action === 'preparer') {
+    bouton.closest('li').classList.add('preparee');
+    bouton.textContent = 'Préparée';
+    bouton.disabled = true;
+    document.querySelector('#compteur').textContent = document.querySelectorAll('#file li.preparee').length;
+  }
+});
+§auto
+<p>Ajoutez à votre version d'Ondea : (1) un bouton thème qui bascule clair/sombre, (2) un menu mobile qui s'ouvre au clic, se ferme avec Échap et au clic sur le fond assombri, et met à jour <code>aria-expanded</code>, (3) le raccourci <code>Ctrl+K</code> vers la recherche, (4) des boutons « Voir / Modifier / Supprimer » par ligne de tableau gérés par délégation. Vérifiez qu'aucun écouteur n'est ajouté deux fois (compteur dans la console).</p>
+§solution
+<p>On centralise les écouteurs globaux dans une fonction <code>initialiser()</code> appelée <strong>une seule fois</strong> au démarrage. C'est ce que fait <code>app.js</code> d'Ondea.</p>
+§solution-code js
+function initialiser() {
+  const menu = document.querySelector('#sidebar');
+  const btnMenu = document.querySelector('#btn-menu');
+  const fond = document.querySelector('.overlay');
+  const ouvrirMenu = (ouvert) => {
+    menu.classList.toggle('is-open', ouvert);
+    btnMenu.setAttribute('aria-expanded', String(ouvert));
+  };
+  btnMenu.addEventListener('click', () => ouvrirMenu(!menu.classList.contains('is-open')));
+  fond.addEventListener('click', () => ouvrirMenu(false));
+
+  document.querySelector('#btn-theme').addEventListener('click', () => {
+    const html = document.documentElement;
+    html.dataset.theme = html.dataset.theme === 'dark' ? 'light' : 'dark';
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') ouvrirMenu(false);
+    if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
+      e.preventDefault();
+      document.querySelector('#recherche').focus();
+    }
+  });
+
+  document.querySelector('#table-commandes').addEventListener('click', (e) => {
+    const b = e.target.closest('[data-action]');
+    if (!b) return;
+    console.log(`Action ${b.dataset.action} sur ${b.dataset.id}`);
+  });
+}
+document.addEventListener('DOMContentLoaded', initialiser);
+§quiz
+? Quelle écriture est correcte ?
+- btn.addEventListener('click', ouvrir())
++ btn.addEventListener('click', ouvrir)
+- btn.onclick('ouvrir')
+- btn.addEventListener(click, ouvrir)
+= Avec ouvrir(), la fonction s'exécuterait immédiatement.
+? Que fait event.preventDefault() sur un submit ?
++ Empêche l'envoi et le rechargement de la page
+- Supprime le formulaire
+- Arrête tout le JavaScript
+- Vide les champs
+= On peut alors valider et enregistrer en JavaScript.
+? Quel est l'intérêt de la délégation d'événements ?
+- Rendre les clics plus rapides
++ Un seul écouteur sur le parent gère tous les enfants, même ajoutés plus tard
+- Éviter le HTML
+- Remplacer les boutons
+= Moins d'écouteurs, moins de bugs de doublons.
+? Quel événement se déclenche à chaque frappe dans un champ ?
+- change
++ input
+- submit
+- keyup uniquement
+= change ne se déclenche qu'à la validation (perte du focus).
+? Que renvoie event.target.closest('[data-action]') ?
+- Le premier enfant ayant data-action
++ L'élément lui-même ou son ancêtre le plus proche ayant data-action (ou null)
+- Tous les boutons
+- Le parent direct
+= closest remonte l'arbre du DOM.
+§ondea
+<p>Ondea utilise massivement la délégation : les boutons portent <code>data-action</code> et un écouteur par écran les dispatche. Le routeur recrée l'écran à chaque navigation, ce qui évite les écouteurs dupliqués (commentaire de <code>router.js</code> : « vue recréée à chaque navigation (aucun écouteur dupliqué) »). <code>app.js</code> gère les raccourcis clavier et la synchronisation entre onglets via l'événement <code>storage</code>.</p>
+
+§§chapter js-formulaires
+part: js
+title: Formulaires en JavaScript
+subtitle: submit, FormData, validation, messages d'erreur accessibles
+duration: 2 h
+feature: Connexion, création de clients et de commandes
+§intro
+<p>Le HTML offre une validation de base, mais une application professionnelle valide aussi en JavaScript pour : afficher des <strong>messages clairs en français</strong> sous chaque champ, appliquer des <strong>règles métier</strong> (un SIRET valide, une date de livraison après aujourd'hui, une quantité inférieure au stock), et <strong>préparer les données</strong> avant l'enregistrement.</p>
+<p>Le schéma est toujours le même :</p>
+<ol>
+<li>Écouter <code>submit</code> sur le formulaire et appeler <code>event.preventDefault()</code>.</li>
+<li>Lire les valeurs avec <code>new FormData(form)</code> (basé sur les attributs <code>name</code>).</li>
+<li>Valider et construire un objet <code>erreurs</code>.</li>
+<li>S'il y a des erreurs : les afficher, marquer les champs <code>aria-invalid="true"</code>, mettre le focus sur le premier champ en erreur.</li>
+<li>Sinon : enregistrer, afficher un message de succès, réinitialiser.</li>
+</ol>
+<p>Attention : <code>input.value</code> est <strong>toujours une chaîne</strong>. Pour calculer : <code>Number(...)</code>.</p>
+§example js
+const form = document.querySelector('#form-client');
+
+form.addEventListener('submit', (event) => {
+  event.preventDefault();                       // pas de rechargement
+
+  // 1. Lire toutes les valeurs d'un coup (clé = attribut name)
+  const donnees = Object.fromEntries(new FormData(form));
+  donnees.nom = donnees.nom.trim();
+
+  // 2. Valider : un objet { nomDuChamp: 'message' }
+  const erreurs = {};
+  if (donnees.nom.length < 2) erreurs.nom = 'La raison sociale doit contenir au moins 2 caractères.';
+  if (donnees.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(donnees.email)) {
+    erreurs.email = "L'adresse e-mail n'est pas valide (exemple : contact@societe.fr).";
+  }
+  if (!/^\d{5}$/.test(donnees.cp)) erreurs.cp = 'Le code postal doit contenir 5 chiffres.';
+
+  // 3. Afficher les erreurs (ou les effacer)
+  for (const champ of form.elements) {
+    if (!champ.name) continue;
+    const zone = document.querySelector(`#err-${champ.name}`);
+    const message = erreurs[champ.name];
+    champ.setAttribute('aria-invalid', message ? 'true' : 'false');
+    if (zone) zone.textContent = message || '';
+  }
+
+  // 4. Focus sur le premier champ en erreur
+  const premier = Object.keys(erreurs)[0];
+  if (premier) {
+    form.elements[premier].focus();
+    return;                                     // on n'enregistre pas
+  }
+
+  // 5. Succès
+  enregistrerClient(donnees);
+  document.querySelector('#statut').textContent = `Client « ${donnees.nom} » enregistré.`;
+  form.reset();
+});
+§explain
+<ul>
+<li><code>Object.fromEntries(new FormData(form))</code> transforme le formulaire en objet <code>{ nom: '…', email: '…', cp: '…' }</code>.</li>
+<li><code>trim()</code> supprime les espaces au début et à la fin : « Brico  » devient « Brico ».</li>
+<li>Les <strong>expressions régulières</strong> testent un format : <code>/^\d{5}$/</code> = « du début (^) à la fin ($), exactement 5 chiffres ».</li>
+<li>Chaque champ a une zone d'erreur reliée par <code>aria-describedby="err-cp"</code> : le lecteur d'écran lit l'erreur avec le champ.</li>
+<li><code>aria-invalid="true"</code> annonce le champ comme invalide et permet de le styler en CSS : <code>[aria-invalid="true"]</code>.</li>
+<li>La zone <code>#statut</code> a <code>role="status"</code> : le succès est annoncé.</li>
+</ul>
+§demo-html
+<form id="f" novalidate>
+  <label for="nom">Raison sociale *</label>
+  <input id="nom" name="nom" aria-describedby="err-nom"><p class="err" id="err-nom"></p>
+  <label for="email">E-mail</label>
+  <input id="email" name="email" type="email" aria-describedby="err-email"><p class="err" id="err-email"></p>
+  <label for="cp">Code postal *</label>
+  <input id="cp" name="cp" inputmode="numeric" aria-describedby="err-cp"><p class="err" id="err-cp"></p>
+  <button>Enregistrer</button>
+  <p id="statut" role="status"></p>
+</form>
+§demo-css
+body{font-family:system-ui;padding:1rem}
+form{display:grid;max-width:340px}
+input{font:inherit;padding:.5rem;border:1px solid #888;border-radius:8px}
+[aria-invalid="true"]{border:2px solid #b91c1c;background:#fff6f5}
+.err{color:#7a1410;font-size:.85rem;margin:.2rem 0 .6rem;min-height:1em}
+#statut{color:#0b4a26;font-weight:700}
+button{padding:.6rem;border-radius:8px;border:0;background:#171a26;color:#fdf8ea}
+§demo-js
+const f = document.getElementById('f');
+f.addEventListener('submit', (e) => {
+  e.preventDefault();
+  const d = Object.fromEntries(new FormData(f));
+  const err = {};
+  if (d.nom.trim().length < 2) err.nom = 'Au moins 2 caractères.';
+  if (d.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(d.email)) err.email = 'E-mail invalide (ex. : contact@societe.fr).';
+  if (!/^\d{5}$/.test(d.cp)) err.cp = '5 chiffres attendus.';
+  for (const c of f.elements) {
+    if (!c.name) continue;
+    c.setAttribute('aria-invalid', err[c.name] ? 'true' : 'false');
+    document.getElementById('err-' + c.name).textContent = err[c.name] || '';
+  }
+  const premier = Object.keys(err)[0];
+  if (premier) { f.elements[premier].focus(); console.log('Erreurs :', err); return; }
+  document.getElementById('statut').textContent = `Client « ${d.nom.trim()} » enregistré.`;
+  console.log('Données valides :', d);
+  f.reset();
+});
+§guided
+<p>Validez le formulaire d'ajout de ligne de commande.</p>
+<ol>
+<li>Écrivez une fonction <code>validerLigne(donnees, stockDisponible)</code> qui renvoie un objet d'erreurs.</li>
+<li>Règles : <code>produit</code> obligatoire → <code>'Choisissez un produit.'</code> ; <code>quantite</code> doit être un entier ≥ 1 → <code>'Quantité invalide.'</code> ; quantité ≤ stock disponible → <code>'Stock insuffisant.'</code></li>
+<li>Rappel : les valeurs du formulaire sont des chaînes, convertissez avec <code>Number()</code>. <code>Number.isInteger()</code> teste un entier.</li>
+</ol>
+§guided-js
+// donnees ressemble à { produit: 'PER-18V', quantite: '3' }
+function validerLigne(donnees, stockDisponible) {
+  const erreurs = {};
+  // À vous
+  return erreurs;
+}
+
+§guided-checks
+eval | JSON.stringify(validerLigne({ produit: 'PER-18V', quantite: '3' }, 5)) | {} | Ligne valide : aucune erreur
+eval | validerLigne({ produit: '', quantite: '1' }, 5).produit | Choisissez un produit. | Produit manquant détecté
+eval | validerLigne({ produit: 'A', quantite: '0' }, 5).quantite | Quantité invalide. | Quantité 0 refusée
+eval | validerLigne({ produit: 'A', quantite: '2.5' }, 5).quantite | Quantité invalide. | Quantité décimale refusée
+eval | validerLigne({ produit: 'A', quantite: '8' }, 5).quantite | Stock insuffisant. | Stock insuffisant détecté
+§guided-solution-js
+function validerLigne(donnees, stockDisponible) {
+  const erreurs = {};
+  const qte = Number(donnees.quantite);
+  if (!donnees.produit) erreurs.produit = 'Choisissez un produit.';
+  if (!Number.isInteger(qte) || qte < 1) erreurs.quantite = 'Quantité invalide.';
+  else if (qte > stockDisponible) erreurs.quantite = 'Stock insuffisant.';
+  return erreurs;
+}
+§auto
+<p>Programmez l'écran de connexion d'Ondea : identifiant et mot de passe obligatoires, message d'erreur générique « Identifiant ou mot de passe incorrect » (ne jamais dire lequel est faux), blocage 30 secondes après 5 échecs avec un compte à rebours, bouton « afficher le mot de passe » (<code>type</code> qui passe de <code>password</code> à <code>text</code>, avec <code>aria-pressed</code>). Comptes de test : <code>directeur / Directeur2026!</code> et <code>magasinier / Magasin2026!</code>. Après connexion, affichez « Bonjour, Directeur » ou « Bonjour, Magasinier ».</p>
+§solution
+<p>Le message générique évite d'aider un attaquant à deviner les identifiants. <strong>Important :</strong> une vérification en JavaScript dans le navigateur n'est <strong>pas</strong> une vraie sécurité (le code est lisible par tous) ; Ondea le signale lui-même. Une vraie authentification se fait côté serveur (PHP, Node…), ce que vous verrez dans le CCP 2.</p>
+§solution-code js
+const COMPTES = { directeur: { mdp: 'Directeur2026!', role: 'Directeur' }, magasinier: { mdp: 'Magasin2026!', role: 'Magasinier' } };
+let echecs = 0;
+let bloqueJusqua = 0;
+const form = document.querySelector('#login');
+const msg = document.querySelector('#msg');
+
+document.querySelector('#voir-mdp').addEventListener('click', (e) => {
+  const champ = document.querySelector('#mdp');
+  const visible = champ.type === 'password';
+  champ.type = visible ? 'text' : 'password';
+  e.currentTarget.setAttribute('aria-pressed', String(visible));
+});
+
+form.addEventListener('submit', (e) => {
+  e.preventDefault();
+  if (Date.now() < bloqueJusqua) return;
+  const { identifiant, mdp } = Object.fromEntries(new FormData(form));
+  if (!identifiant || !mdp) { msg.textContent = 'Renseignez l’identifiant et le mot de passe.'; return; }
+  const compte = COMPTES[identifiant.trim().toLowerCase()];
+  if (!compte || compte.mdp !== mdp) {
+    echecs++;
+    msg.textContent = 'Identifiant ou mot de passe incorrect.';
+    if (echecs >= 5) bloquer();
+    return;
+  }
+  echecs = 0;
+  msg.textContent = `Bonjour, ${compte.role}`;
+});
+
+function bloquer() {
+  bloqueJusqua = Date.now() + 30000;
+  const bouton = form.querySelector('button[type="submit"]');
+  bouton.disabled = true;
+  const minuteur = setInterval(() => {
+    const reste = Math.ceil((bloqueJusqua - Date.now()) / 1000);
+    msg.textContent = `Trop de tentatives. Réessayez dans ${reste} s.`;
+    if (reste <= 0) { clearInterval(minuteur); bouton.disabled = false; echecs = 0; msg.textContent = ''; }
+  }, 1000);
+}
+§quiz
+? Quel type a toujours input.value ?
+- number
++ string
+- Cela dépend du type de l'input
+- object
+= Même pour type="number" : il faut convertir avec Number().
+? Que fait Object.fromEntries(new FormData(form)) ?
++ Crée un objet { name: valeur } à partir des champs du formulaire
+- Envoie le formulaire au serveur
+- Vide le formulaire
+- Valide le formulaire
+= FormData se base sur l'attribut name de chaque champ.
+? Que signifie l'expression régulière /^\d{5}$/ ?
+- Au moins 5 chiffres
++ Exactement 5 chiffres, rien d'autre
+- 5 lettres
+- Un nombre inférieur à 5
+= ^ = début, \d = chiffre, {5} = 5 fois, $ = fin.
+? Comment signaler un champ invalide aux lecteurs d'écran ?
+- En le colorant en rouge
++ aria-invalid="true" et un message relié par aria-describedby
+- Avec un alert()
+- En le désactivant
+= Et on déplace le focus sur le premier champ en erreur.
+? Une vérification de mot de passe en JavaScript côté navigateur est-elle une vraie sécurité ?
+- Oui, si le code est minifié
++ Non : le code est visible et modifiable, la vraie sécurité est côté serveur
+- Oui, avec HTTPS
+- Oui, si on utilise const
+= Ondea l'indique clairement : « contrôle d'accès local ».
+§ondea
+<p>Dans Ondea, <code>auth.js</code> ne stocke jamais les mots de passe en clair : il les <strong>sale et les hache</strong> (SHA-256 itéré via WebCrypto) et compare les empreintes ; il gère aussi le verrouillage. <code>ui.js</code> affiche les erreurs sous les champs à partir d'une <code>ValidationError</code> qui contient <code>fields</code> (même principe que l'objet <code>erreurs</code>). Le README précise que ces comptes sont un contrôle d'accès local, pas une authentification serveur.</p>
+
+§§chapter js-json-localstorage
+part: js
+title: JSON et LocalStorage
+subtitle: Sérialiser, mémoriser des préférences, exporter une sauvegarde
+duration: 1 h 30
+feature: Thème mémorisé, session, sauvegarde et restauration
+§intro
+<p>Quand on recharge la page, toutes les variables JavaScript disparaissent. Pour garder une information, le navigateur offre le <strong>LocalStorage</strong> : un petit espace (environ 5 Mo) qui stocke des paires clé/valeur, <strong>uniquement des chaînes</strong>, et qui persiste même après fermeture du navigateur.</p>
+<ul>
+<li><code>localStorage.setItem('cle', 'valeur')</code> : enregistrer ;</li>
+<li><code>localStorage.getItem('cle')</code> : lire (renvoie <code>null</code> si absent) ;</li>
+<li><code>localStorage.removeItem('cle')</code> : supprimer.</li>
+</ul>
+<p>Pour stocker un objet ou un tableau, on le transforme en texte au format <strong>JSON</strong> (JavaScript Object Notation) avec <code>JSON.stringify()</code>, et on le relit avec <code>JSON.parse()</code>. JSON est aussi le format universel d'échange entre applications et des fichiers de sauvegarde.</p>
+<p>LocalStorage convient aux <strong>petites données</strong> : thème, préférences, brouillon, progression. Pour des centaines de commandes et des images, on utilise IndexedDB (chapitre suivant).</p>
+§example js
+const PREFIXE = 'oc.';     // évite les collisions avec d'autres applis du même domaine
+
+// Écrire et lire une valeur simple
+localStorage.setItem(PREFIXE + 'theme', 'dark');
+const theme = localStorage.getItem(PREFIXE + 'theme') || 'light';   // valeur par défaut
+
+// Objet → JSON → LocalStorage
+const preferences = { lignesParPage: 25, triCommandes: 'date-desc', sons: false };
+localStorage.setItem(PREFIXE + 'prefs', JSON.stringify(preferences));
+
+// LocalStorage → JSON → objet, avec protection contre un contenu corrompu
+function lirePrefs() {
+  try {
+    return JSON.parse(localStorage.getItem(PREFIXE + 'prefs')) ?? {};
+  } catch (erreur) {
+    console.warn('Préférences illisibles, valeurs par défaut utilisées.');
+    return {};
+  }
+}
+console.log(lirePrefs().lignesParPage);   // 25
+
+// Exporter une sauvegarde JSON téléchargeable
+function exporter(donnees) {
+  const texte = JSON.stringify({ version: 1, date: new Date().toISOString(), donnees }, null, 2);
+  const blob = new Blob([texte], { type: 'application/json' });
+  const lien = document.createElement('a');
+  lien.href = URL.createObjectURL(blob);
+  lien.download = `ondea-sauvegarde-${new Date().toISOString().slice(0, 10)}.json`;
+  lien.click();                          // déclenche le téléchargement
+  URL.revokeObjectURL(lien.href);        // libère la mémoire
+}
+§explain
+<ul>
+<li><code>||</code> fournit une valeur par défaut si <code>getItem</code> renvoie <code>null</code>.</li>
+<li><code>??</code> (coalescence) ne remplace que <code>null</code>/<code>undefined</code>, pas <code>0</code> ni <code>''</code>.</li>
+<li><code>JSON.parse</code> lève une erreur si le texte n'est pas du JSON valide : on l'entoure de <code>try…catch</code>.</li>
+<li><code>JSON.stringify(obj, null, 2)</code> indente le JSON de 2 espaces : lisible par un humain.</li>
+<li>JSON ne connaît pas les dates ni les fonctions : une date devient une chaîne ISO (« 2026-11-03T10:00:00.000Z »).</li>
+<li>Un <code>Blob</code> est un « fichier en mémoire » ; <code>URL.createObjectURL</code> lui donne une adresse temporaire utilisable dans un lien de téléchargement.</li>
+<li>Ne stockez <strong>jamais</strong> de mot de passe ou de donnée sensible en clair dans LocalStorage : tout script de la page peut le lire.</li>
+</ul>
+§demo-html
+<p>Thème : <button id="b" aria-pressed="false">Sombre</button> — rechargez l'aperçu (bouton ↻) : le choix est conservé.</p>
+<label for="n">Lignes par page</label> <select id="n"><option>10</option><option>25</option><option>50</option></select>
+<pre id="json"></pre>
+§demo-css
+body{font-family:system-ui;padding:1rem;transition:background .3s}
+body.dark{background:#0b0c12;color:#f2eee4}
+pre{background:#171a26;color:#f4e8c8;padding:.8rem;border-radius:10px;font-size:.85rem}
+§demo-js
+const K = 'demo.oc.prefs';
+const lire = () => { try { return JSON.parse(localStorage.getItem(K)) ?? { theme: 'light', lignes: 25 }; } catch { return { theme: 'light', lignes: 25 }; } };
+const ecrire = (p) => { localStorage.setItem(K, JSON.stringify(p)); afficher(p); };
+function afficher(p) {
+  document.body.classList.toggle('dark', p.theme === 'dark');
+  document.getElementById('b').setAttribute('aria-pressed', p.theme === 'dark');
+  document.getElementById('n').value = String(p.lignes);
+  document.getElementById('json').textContent = `localStorage["${K}"] =\n` + JSON.stringify(p, null, 2);
+}
+document.getElementById('b').addEventListener('click', () => { const p = lire(); p.theme = p.theme === 'dark' ? 'light' : 'dark'; ecrire(p); console.log('Thème :', p.theme); });
+document.getElementById('n').addEventListener('change', (e) => { const p = lire(); p.lignes = Number(e.target.value); ecrire(p); });
+afficher(lire());
+§guided
+<p>Créez le petit module de stockage des préférences d'Ondea.</p>
+<ol>
+<li><code>sauver(cle, valeur)</code> enregistre <code>valeur</code> (n'importe quel type) en JSON sous la clé <code>'exo.oc.' + cle</code>.</li>
+<li><code>charger(cle, defaut)</code> renvoie la valeur relue (<code>JSON.parse</code>) ou <code>defaut</code> si la clé est absente <strong>ou</strong> si le contenu est invalide (<code>try…catch</code>).</li>
+</ol>
+§guided-js
+// À vous
+
+§guided-checks
+eval | (sauver('test', { a: 1, liste: [1, 2] }), charger('test', null).liste.length) | 2 | Un objet est sauvé puis relu
+eval | localStorage.getItem('exo.oc.test') | {"a":1,"liste":[1,2]} | La valeur est stockée en JSON avec le préfixe
+eval | charger('absente', 'défaut') | défaut | Valeur par défaut si la clé est absente
+eval | (localStorage.setItem('exo.oc.casse', '{oups'), charger('casse', 42)) | 42 | Valeur par défaut si le JSON est invalide
+§guided-solution-js
+const PREFIXE = 'exo.oc.';
+function sauver(cle, valeur) {
+  localStorage.setItem(PREFIXE + cle, JSON.stringify(valeur));
+}
+function charger(cle, defaut) {
+  const texte = localStorage.getItem(PREFIXE + cle);
+  if (texte === null) return defaut;
+  try {
+    return JSON.parse(texte);
+  } catch (e) {
+    return defaut;
+  }
+}
+§auto
+<p>Créez une mini-application « Brouillon de commande » : un formulaire (client, produit, quantité, note) dont le contenu est enregistré automatiquement dans LocalStorage à chaque saisie, et restauré au rechargement. Ajoutez un bouton « Exporter en JSON » (téléchargement d'un fichier), un bouton « Importer » (<code>&lt;input type="file" accept=".json"&gt;</code> + <code>file.text()</code> + <code>JSON.parse</code> avec vérification du format) et un bouton « Effacer le brouillon ».</p>
+§solution
+<p>À l'import, on <strong>vérifie</strong> toujours la structure avant d'utiliser les données : un fichier peut provenir d'une autre application ou avoir été modifié à la main.</p>
+§solution-code js
+const CLE = 'oc.brouillon';
+const form = document.querySelector('#brouillon');
+
+form.addEventListener('input', () => {
+  localStorage.setItem(CLE, JSON.stringify(Object.fromEntries(new FormData(form))));
+});
+function restaurer(donnees) {
+  for (const [nom, valeur] of Object.entries(donnees)) {
+    if (form.elements[nom]) form.elements[nom].value = valeur;
+  }
+}
+try { restaurer(JSON.parse(localStorage.getItem(CLE)) ?? {}); } catch { localStorage.removeItem(CLE); }
+
+document.querySelector('#exporter').addEventListener('click', () => {
+  const blob = new Blob([localStorage.getItem(CLE) ?? '{}'], { type: 'application/json' });
+  const a = Object.assign(document.createElement('a'), { href: URL.createObjectURL(blob), download: 'brouillon-commande.json' });
+  a.click();
+  URL.revokeObjectURL(a.href);
+});
+document.querySelector('#importer').addEventListener('change', async (e) => {
+  const fichier = e.target.files[0];
+  if (!fichier) return;
+  try {
+    const donnees = JSON.parse(await fichier.text());
+    if (typeof donnees !== 'object' || donnees === null || !('client' in donnees)) throw new Error('Format inattendu');
+    restaurer(donnees);
+    localStorage.setItem(CLE, JSON.stringify(donnees));
+  } catch (err) {
+    alert('Fichier invalide : ' + err.message);
+  }
+});
+document.querySelector('#effacer').addEventListener('click', () => { localStorage.removeItem(CLE); form.reset(); });
+§quiz
+? Quel type de valeur LocalStorage stocke-t-il ?
+- Tous les types JavaScript
++ Uniquement des chaînes de caractères
+- Uniquement des nombres
+- Des fichiers
+= D'où JSON.stringify pour les objets.
+? Que renvoie localStorage.getItem('inconnue') ?
+- undefined
+- ''
++ null
+- Une erreur
+= Pensez à prévoir une valeur par défaut.
+? Que renvoie JSON.parse('{"stock": 12}').stock ?
++ 12
+- '12'
+- undefined
+- {"stock": 12}
+= Le nombre JSON redevient un nombre.
+? Pourquoi entourer JSON.parse d'un try…catch ?
+- Pour aller plus vite
++ Parce qu'un texte invalide lève une erreur qui bloquerait le script
+- C'est obligatoire
+- Pour chiffrer les données
+= Données corrompues ou modifiées à la main : on se protège.
+? Quelle donnée ne faut-il PAS stocker en clair dans LocalStorage ?
+- Le thème choisi
+- Le nombre de lignes par page
++ Un mot de passe
+- La dernière page visitée
+= Tout script de la page y a accès.
+§ondea
+<p><code>storage.js</code> d'Ondea encapsule LocalStorage avec le préfixe <code>oc.</code> pour le thème, la session (avec expiration), les préférences et quelques réglages légers. Les grosses données sont dans IndexedDB, mais la <strong>sauvegarde complète</strong> (<code>database.js</code>) les exporte en un fichier JSON — comme ceux du dossier <code>sauvegardes/</code> de l'application — et sait les restaurer, images comprises (converties en Data URL).</p>
+
+§§chapter js-indexeddb
+part: js
+title: IndexedDB et gestion des images
+subtitle: Une vraie base de données dans le navigateur
+duration: 2 h 30
+feature: Base locale des commandes et photos (Blob)
+§intro
+<p><strong>IndexedDB</strong> est une base de données intégrée au navigateur. Contrairement à LocalStorage, elle stocke de <strong>grandes quantités</strong> de données (des centaines de Mo), des <strong>objets</strong> directement (pas besoin de JSON), des <strong>fichiers</strong> (images en <code>Blob</code>), avec des <strong>index</strong> pour chercher vite et des <strong>transactions</strong> pour garantir la cohérence.</p>
+<p>Le vocabulaire :</p>
+<ul>
+<li><strong>Base</strong> (database) : par exemple <code>ondea-commandes</code>, avec un numéro de <strong>version</strong>.</li>
+<li><strong>Magasin d'objets</strong> (object store) : l'équivalent d'une table : <code>clients</code>, <code>orders</code>, <code>files</code>.</li>
+<li><strong>Clé</strong> (keyPath) : la propriété unique de chaque objet, souvent <code>id</code>.</li>
+<li><strong>Index</strong> : permet de chercher par une autre propriété (le statut, le client).</li>
+<li><strong>Transaction</strong> : un groupe d'opérations qui réussissent toutes ou échouent toutes.</li>
+</ul>
+<p>L'API est <strong>asynchrone</strong> et basée sur des événements (<code>onsuccess</code>, <code>onerror</code>). On l'enveloppe dans des <strong>promesses</strong> pour écrire du code clair avec <code>async/await</code> (chapitre suivant).</p>
+§example js
+// 1. Ouvrir (ou créer) la base, version 1
+function ouvrirBase() {
+  return new Promise((resolve, reject) => {
+    const requete = indexedDB.open('ondea-cours', 1);
+
+    // Appelé seulement à la création ou quand la version augmente
+    requete.onupgradeneeded = () => {
+      const db = requete.result;
+      const clients = db.createObjectStore('clients', { keyPath: 'id' });
+      clients.createIndex('ville', 'ville');                 // index de recherche
+      db.createObjectStore('files', { keyPath: 'id' });      // pour les images
+    };
+    requete.onsuccess = () => resolve(requete.result);
+    requete.onerror = () => reject(requete.error);
+  });
+}
+
+// 2. Petite fonction utilitaire : transformer une requête en promesse
+const promesse = (req) => new Promise((ok, ko) => { req.onsuccess = () => ok(req.result); req.onerror = () => ko(req.error); });
+
+// 3. Écrire (put = ajoute ou remplace)
+async function enregistrerClient(client) {
+  const db = await ouvrirBase();
+  const tx = db.transaction('clients', 'readwrite');
+  await promesse(tx.objectStore('clients').put(client));
+}
+
+// 4. Lire tous les clients d'une ville grâce à l'index
+async function clientsDeLaVille(ville) {
+  const db = await ouvrirBase();
+  const index = db.transaction('clients').objectStore('clients').index('ville');
+  return promesse(index.getAll(ville));
+}
+
+// 5. Stocker une image choisie par l'utilisateur (un File est un Blob)
+async function enregistrerPhoto(id, fichier) {
+  const db = await ouvrirBase();
+  const tx = db.transaction('files', 'readwrite');
+  await promesse(tx.objectStore('files').put({ id, nom: fichier.name, blob: fichier }));
+}
+
+// 6. Afficher l'image stockée
+async function afficherPhoto(id, img) {
+  const db = await ouvrirBase();
+  const enreg = await promesse(db.transaction('files').objectStore('files').get(id));
+  if (enreg) img.src = URL.createObjectURL(enreg.blob);
+}
+§explain
+<ul>
+<li><code>indexedDB.open(nom, version)</code> : si la version demandée est plus haute que celle existante, <code>onupgradeneeded</code> s'exécute : c'est le seul endroit où l'on crée des stores et des index (les <strong>migrations</strong>).</li>
+<li><code>transaction('clients', 'readwrite')</code> : par défaut une transaction est en lecture seule (<code>'readonly'</code>).</li>
+<li><code>put</code> ajoute ou remplace ; <code>add</code> échoue si la clé existe ; <code>get(cle)</code>, <code>getAll()</code>, <code>delete(cle)</code>.</li>
+<li>Un <code>File</code> issu d'un <code>&lt;input type="file"&gt;</code> est un <code>Blob</code> : IndexedDB le stocke tel quel, sans conversion.</li>
+<li><code>URL.createObjectURL(blob)</code> crée une adresse temporaire pour l'afficher dans un <code>&lt;img&gt;</code>.</li>
+<li>On peut ouvrir les outils de développement → Application → IndexedDB pour voir le contenu de la base.</li>
+</ul>
+§demo-html
+<p><label for="f">Photo d'un produit :</label> <input id="f" type="file" accept="image/*"></p>
+<p><button id="seed">Ajouter 3 clients</button> <button id="lire">Clients de Draguignan</button> <button id="raz">Vider la base de démo</button></p>
+<img id="img" alt="Photo du produit enregistrée dans IndexedDB" hidden>
+<ul id="out"></ul>
+§demo-css
+body{font-family:system-ui;padding:1rem}
+button{border:1px solid #c9a14a;background:#fff;border-radius:8px;padding:.4rem .7rem;margin:.2rem 0}
+img{max-width:200px;border-radius:12px;border:2px solid #c9a14a;display:block}
+img[hidden]{display:none}
+§demo-js
+const promesse = (r) => new Promise((ok, ko) => { r.onsuccess = () => ok(r.result); r.onerror = () => ko(r.error); });
+function ouvrir() {
+  const r = indexedDB.open('demo-ondea-cours', 1);
+  r.onupgradeneeded = () => {
+    const db = r.result;
+    db.createObjectStore('clients', { keyPath: 'id' }).createIndex('ville', 'ville');
+    db.createObjectStore('files', { keyPath: 'id' });
+  };
+  return promesse(r);
+}
+const out = (t) => { document.getElementById('out').innerHTML += `<li>${t}</li>`; console.log(t); };
+document.getElementById('seed').addEventListener('click', async () => {
+  const db = await ouvrir();
+  const tx = db.transaction('clients', 'readwrite');
+  [{ id: 1, nom: 'Brico Sud', ville: 'Draguignan' }, { id: 2, nom: 'Visso', ville: 'Toulon' }, { id: 3, nom: 'Atelier Mistral', ville: 'Draguignan' }]
+    .forEach((c) => tx.objectStore('clients').put(c));
+  tx.oncomplete = () => out('3 clients enregistrés (transaction terminée)');
+});
+document.getElementById('lire').addEventListener('click', async () => {
+  const db = await ouvrir();
+  const liste = await promesse(db.transaction('clients').objectStore('clients').index('ville').getAll('Draguignan'));
+  out(`Draguignan : ${liste.map((c) => c.nom).join(', ') || 'aucun'}`);
+});
+document.getElementById('f').addEventListener('change', async (e) => {
+  const fichier = e.target.files[0];
+  if (!fichier) return;
+  const db = await ouvrir();
+  await promesse(db.transaction('files', 'readwrite').objectStore('files').put({ id: 'produit-1', blob: fichier }));
+  const enreg = await promesse(db.transaction('files').objectStore('files').get('produit-1'));
+  const img = document.getElementById('img');
+  img.src = URL.createObjectURL(enreg.blob); img.hidden = false;
+  out(`Image « ${fichier.name} » (${Math.round(fichier.size / 1024)} Ko) stockée puis relue`);
+});
+document.getElementById('raz').addEventListener('click', async () => {
+  const db = await ouvrir();
+  const tx = db.transaction(['clients', 'files'], 'readwrite');
+  tx.objectStore('clients').clear(); tx.objectStore('files').clear();
+  tx.oncomplete = () => { document.getElementById('img').hidden = true; out('Base de démonstration vidée'); };
+});
+§guided
+<p>Complétez le module produits avec IndexedDB.</p>
+<ol>
+<li>La fonction <code>ouvrir()</code> est fournie : elle crée le store <code>produits</code> (clé <code>reference</code>).</li>
+<li>Écrivez <code>async function ajouterProduit(produit)</code> qui l'enregistre avec <code>put</code> dans une transaction <code>'readwrite'</code>.</li>
+<li>Écrivez <code>async function compterProduits()</code> qui renvoie le nombre de produits (<code>store.count()</code>).</li>
+<li>Le code de test en bas appelle vos fonctions et affiche <code>2 produits</code> dans la console.</li>
+</ol>
+§guided-js
+const promesse = (r) => new Promise((ok, ko) => { r.onsuccess = () => ok(r.result); r.onerror = () => ko(r.error); });
+function ouvrir() {
+  const r = indexedDB.open('exo-ondea-produits', 1);
+  r.onupgradeneeded = () => r.result.createObjectStore('produits', { keyPath: 'reference' });
+  return promesse(r);
+}
+
+// À vous : ajouterProduit et compterProduits
+
+
+// Test (ne pas modifier)
+(async () => {
+  try {
+    await ajouterProduit({ reference: 'VIS-440', nom: 'Vis inox 4x40' });
+    await ajouterProduit({ reference: 'PER-18V', nom: 'Perceuse 18 V' });
+    await ajouterProduit({ reference: 'VIS-440', nom: 'Vis inox 4x40 (modifié)' });
+    console.log(`${await compterProduits()} produits`);
+  } catch (e) { console.log('Erreur : ' + e.message); }
+})();
+§guided-checks
+wait | 700 | Attente de la base de données
+js | readwrite | Transaction en readwrite
+js | \.put\( | put() est utilisé
+js | \.count\( | count() est utilisé
+log | 2 produits | La console affiche « 2 produits » (put remplace le doublon)
+§guided-solution-js
+const promesse = (r) => new Promise((ok, ko) => { r.onsuccess = () => ok(r.result); r.onerror = () => ko(r.error); });
+function ouvrir() {
+  const r = indexedDB.open('exo-ondea-produits', 1);
+  r.onupgradeneeded = () => r.result.createObjectStore('produits', { keyPath: 'reference' });
+  return promesse(r);
+}
+
+async function ajouterProduit(produit) {
+  const db = await ouvrir();
+  const store = db.transaction('produits', 'readwrite').objectStore('produits');
+  await promesse(store.put(produit));
+}
+async function compterProduits() {
+  const db = await ouvrir();
+  return promesse(db.transaction('produits').objectStore('produits').count());
+}
+
+// Test (ne pas modifier)
+(async () => {
+  try {
+    await ajouterProduit({ reference: 'VIS-440', nom: 'Vis inox 4x40' });
+    await ajouterProduit({ reference: 'PER-18V', nom: 'Perceuse 18 V' });
+    await ajouterProduit({ reference: 'VIS-440', nom: 'Vis inox 4x40 (modifié)' });
+    console.log(`${await compterProduits()} produits`);
+  } catch (e) { console.log('Erreur : ' + e.message); }
+})();
+§auto
+<p>Créez la gestion des photos des utilisateurs d'Ondea : un formulaire (nom, rôle, photo) qui enregistre l'utilisateur dans le store <code>users</code> et la photo dans le store <code>files</code> (avec <code>ownerType: 'user'</code> et <code>ownerId</code>), le tout dans <strong>une seule transaction</strong> sur les deux stores. Refusez les fichiers qui ne sont pas des images ou qui dépassent 2 Mo. Affichez ensuite la liste des utilisateurs avec leur photo, et un bouton « Supprimer » qui efface l'utilisateur et sa photo.</p>
+§solution
+<p>Une transaction peut couvrir plusieurs stores : <code>db.transaction(['users', 'files'], 'readwrite')</code>. Si l'une des écritures échoue, aucune n'est conservée. Pensez à appeler <code>URL.revokeObjectURL</code> quand une image n'est plus affichée.</p>
+§solution-code js
+const promesse = (r) => new Promise((ok, ko) => { r.onsuccess = () => ok(r.result); r.onerror = () => ko(r.error); });
+const fin = (tx) => new Promise((ok, ko) => { tx.oncomplete = ok; tx.onerror = () => ko(tx.error); tx.onabort = () => ko(tx.error); });
+function ouvrir() {
+  const r = indexedDB.open('ondea-equipe', 1);
+  r.onupgradeneeded = () => {
+    r.result.createObjectStore('users', { keyPath: 'id' });
+    r.result.createObjectStore('files', { keyPath: 'id' }).createIndex('owner', ['ownerType', 'ownerId']);
+  };
+  return promesse(r);
+}
+async function creerUtilisateur({ nom, role }, photo) {
+  if (photo && !photo.type.startsWith('image/')) throw new Error('Le fichier doit être une image.');
+  if (photo && photo.size > 2 * 1024 * 1024) throw new Error('Image trop lourde (2 Mo maximum).');
+  const db = await ouvrir();
+  const id = crypto.randomUUID();
+  const tx = db.transaction(['users', 'files'], 'readwrite');
+  tx.objectStore('users').put({ id, nom, role });
+  if (photo) tx.objectStore('files').put({ id: 'photo-' + id, ownerType: 'user', ownerId: id, blob: photo });
+  await fin(tx);
+  return id;
+}
+async function supprimerUtilisateur(id) {
+  const db = await ouvrir();
+  const tx = db.transaction(['users', 'files'], 'readwrite');
+  tx.objectStore('users').delete(id);
+  tx.objectStore('files').delete('photo-' + id);
+  await fin(tx);
+}
+async function listerAvecPhotos() {
+  const db = await ouvrir();
+  const users = await promesse(db.transaction('users').objectStore('users').getAll());
+  const files = db.transaction('files').objectStore('files');
+  return Promise.all(users.map(async (u) => {
+    const f = await promesse(files.get('photo-' + u.id));
+    return { ...u, photoUrl: f ? URL.createObjectURL(f.blob) : null };
+  }));
+}
+§quiz
+? Où crée-t-on les object stores et les index ?
+- N'importe où
++ Dans l'événement onupgradeneeded
+- Dans onsuccess
+- Dans une transaction readonly
+= Seul onupgradeneeded peut modifier la structure de la base.
+? Quel mode de transaction pour écrire ?
+- 'readonly'
++ 'readwrite'
+- 'write'
+- 'admin'
+= Le mode par défaut est readonly.
+? Quelle différence entre put et add ?
++ put ajoute ou remplace ; add échoue si la clé existe déjà
+- Aucune
+- add remplace ; put échoue
+- put supprime
+= Dans l'exercice guidé, le doublon VIS-440 est remplacé.
+? Pourquoi IndexedDB plutôt que LocalStorage pour les photos ?
+- LocalStorage est plus lent
++ IndexedDB stocke des Blob et de gros volumes ; LocalStorage seulement ~5 Mo de texte
+- LocalStorage n'existe pas sur mobile
+- IndexedDB compresse les images
+= Une image en base64 dans LocalStorage gonfle de 33 % et sature vite.
+? Que garantit une transaction ?
+- La vitesse
++ Que toutes ses opérations réussissent ensemble ou sont toutes annulées
+- Le chiffrement
+- La sauvegarde dans le cloud
+= Exemple : réserver le stock ET changer le statut de la commande.
+§ondea
+<p><code>database.js</code> d'Ondea déclare un <code>SCHEMA</code> de <strong>14 stores</strong> (users, clients, products, orders, shipments, stockMovements, files…) avec leurs index, des <code>MIGRATIONS</code> versionnées, une fonction de transaction atomique utilisée par exemple par <code>stocks.js</code> (réserver, expédier, libérer le stock en même temps que le changement de statut), et traduit les erreurs (<code>QuotaExceededError</code>, <code>ConstraintError</code>) en messages compréhensibles. Le store <code>files</code> a un index composé <code>['ownerType', 'ownerId']</code> : exactement celui de l'exercice autonome.</p>
+
+§§chapter js-async-organisation
+part: js
+title: Asynchrone et organisation du code
+subtitle: Promesses, async/await, try/catch, espace de noms, ordre des scripts
+duration: 2 h
+feature: Démarrage de l'application, gestion des erreurs, architecture
+§intro
+<p>Certaines opérations prennent du temps : ouvrir la base, lire un fichier, attendre 30 secondes. Le JavaScript ne s'arrête pas pour attendre : il est <strong>asynchrone</strong>. Il continue et sera prévenu plus tard.</p>
+<ul>
+<li>Une <strong>promesse</strong> (<code>Promise</code>) représente un résultat futur : en attente, puis <em>tenue</em> (résultat) ou <em>rompue</em> (erreur).</li>
+<li><code>async</code> devant une fonction permet d'utiliser <code>await</code> à l'intérieur ; <code>await</code> « attend » la promesse et donne son résultat, comme si le code était séquentiel.</li>
+<li><code>try { … } catch (erreur) { … }</code> attrape les erreurs pour afficher un message au lieu de planter.</li>
+<li><code>Promise.all([...])</code> lance plusieurs opérations en parallèle.</li>
+</ul>
+<p><strong>Organisation :</strong> une application de 10 000 lignes doit être découpée en fichiers par responsabilité (utilitaires, stockage, interface, un fichier par module métier). En <code>file://</code>, les modules ES (<code>import</code>) sont bloqués : on charge des scripts classiques dans l'ordre avec <code>defer</code>, et chaque fichier s'enregistre dans <strong>un seul</strong> objet global (un <strong>espace de noms</strong>) pour ne pas polluer la page.</p>
+§example js
+// ---------- utils.js : chargé en premier ----------
+// IIFE : fonction exécutée immédiatement, ses variables restent privées
+(function (global) {
+  'use strict';                                  // mode strict : plus d'erreurs détectées
+  const OC = global.OC = global.OC || {};        // espace de noms unique
+
+  const pause = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+  OC.utils = { pause };                          // on n'expose que l'utile
+})(window);
+
+// ---------- database.js : utilise OC.utils ----------
+(function (OC) {
+  'use strict';
+  async function ouvrir() {
+    await OC.utils.pause(300);                   // simule une ouverture lente
+    return { nom: 'ondea-commandes' };
+  }
+  OC.db = { ouvrir };
+})(window.OC);
+
+// ---------- app.js : chargé en dernier, démarre tout ----------
+(function (OC) {
+  'use strict';
+  async function demarrer() {
+    try {
+      console.log('Démarrage…');
+      const db = await OC.db.ouvrir();           // attend sans bloquer la page
+      const [prefs, notifs] = await Promise.all([ // en parallèle
+        chargerPreferences(), compterNotifications()
+      ]);
+      console.log(`Base ${db.nom} prête, ${notifs} notifications`, prefs);
+    } catch (erreur) {
+      console.error(erreur);
+      afficherErreur("L'application n'a pas pu démarrer. Rechargez la page.");
+    } finally {
+      document.body.classList.remove('is-loading'); // toujours exécuté
+    }
+  }
+  document.addEventListener('DOMContentLoaded', demarrer);
+})(window.OC);
+§explain
+<ul>
+<li>L'<strong>IIFE</strong> <code>(function () { … })()</code> crée une portée privée : les variables internes ne deviennent pas globales.</li>
+<li><code>global.OC = global.OC || {}</code> : on réutilise l'objet s'il existe, sinon on le crée. Tous les fichiers ajoutent leur partie : <code>OC.utils</code>, <code>OC.db</code>…</li>
+<li>L'<strong>ordre des balises script</strong> compte : <code>database.js</code> utilise <code>OC.utils</code>, il doit donc être chargé après <code>utils.js</code>.</li>
+<li><code>await</code> ne fonctionne que dans une fonction <code>async</code> (ou au niveau supérieur d'un module ES).</li>
+<li><code>finally</code> s'exécute dans tous les cas, succès ou erreur : idéal pour retirer un indicateur de chargement.</li>
+<li>Une fonction <code>async</code> renvoie toujours une promesse.</li>
+<li><code>window.addEventListener('unhandledrejection', …)</code> attrape les erreurs de promesses oubliées : un filet de sécurité global.</li>
+</ul>
+§demo-html
+<button id="go">Démarrer l'application</button>
+<ol id="etapes"></ol>
+§demo-css
+body{font-family:system-ui;padding:1rem}
+li{padding:.2rem 0}
+.ok{color:#0b4a26}.ko{color:#7a1410;font-weight:700}
+button{padding:.5rem 1rem;border-radius:8px;border:1px solid #c9a14a;background:#171a26;color:#f4e8c8}
+§demo-js
+const pause = (ms) => new Promise((r) => setTimeout(r, ms));
+const etape = (t, cls = 'ok') => { document.getElementById('etapes').innerHTML += `<li class="${cls}">${t}</li>`; console.log(t); };
+async function ouvrirBase() { await pause(400); return 'ondea-commandes'; }
+async function chargerPrefs() { await pause(300); return { theme: 'dark' }; }
+async function compterNotifs() { await pause(500); if (Math.random() < 0.25) throw new Error('Lecture des notifications impossible'); return 3; }
+document.getElementById('go').addEventListener('click', async (e) => {
+  e.target.disabled = true;
+  document.getElementById('etapes').innerHTML = '';
+  const t0 = performance.now();
+  try {
+    etape('Ouverture de la base…');
+    const nom = await ouvrirBase();
+    etape(`Base « ${nom} » ouverte`);
+    const [prefs, n] = await Promise.all([chargerPrefs(), compterNotifs()]);
+    etape(`Thème ${prefs.theme}, ${n} notifications (chargées en parallèle)`);
+  } catch (err) {
+    etape('Erreur attrapée : ' + err.message + ' (relancez, 1 chance sur 4)', 'ko');
+  } finally {
+    etape(`Terminé en ${Math.round(performance.now() - t0)} ms`);
+    e.target.disabled = false;
+  }
+});
+§guided
+<p>Écrivez le démarrage asynchrone d'Ondea.</p>
+<ol>
+<li>Les fonctions <code>ouvrirBase()</code> et <code>chargerSession()</code> sont fournies ; elles renvoient des promesses.</li>
+<li>Écrivez <code>async function demarrer()</code> qui attend <code>ouvrirBase()</code>, puis <code>chargerSession()</code>, et renvoie le texte <code>'Prêt : directeur'</code> (avec le rôle de la session).</li>
+<li>Si une erreur survient, <code>demarrer</code> l'attrape avec <code>try…catch</code> et renvoie <code>'Échec : '</code> suivi du message de l'erreur.</li>
+<li>Affichez le résultat de <code>demarrer()</code> dans la console.</li>
+</ol>
+§guided-js
+const pause = (ms) => new Promise((r) => setTimeout(r, ms));
+async function ouvrirBase() { await pause(100); return true; }
+let sessionCassee = false;
+async function chargerSession() {
+  await pause(100);
+  if (sessionCassee) throw new Error('session expirée');
+  return { role: 'directeur' };
+}
+// À vous
+
+§guided-checks
+js | async\s+function\s+demarrer | demarrer est une fonction async
+js | await\s+(ouvrirBase|chargerSession) | await est utilisé sur les fonctions fournies
+js | try\s*\{ | try…catch est utilisé
+wait | 500 | Attente du démarrage
+log | Prêt : directeur | La console affiche « Prêt : directeur »
+evalasync | (sessionCassee = true, demarrer()) | Échec : session expirée | Une erreur donne « Échec : session expirée »
+§guided-solution-js
+const pause = (ms) => new Promise((r) => setTimeout(r, ms));
+async function ouvrirBase() { await pause(100); return true; }
+let sessionCassee = false;
+async function chargerSession() {
+  await pause(100);
+  if (sessionCassee) throw new Error('session expirée');
+  return { role: 'directeur' };
+}
+
+async function demarrer() {
+  try {
+    await ouvrirBase();
+    const session = await chargerSession();
+    return `Prêt : ${session.role}`;
+  } catch (erreur) {
+    return `Échec : ${erreur.message}`;
+  }
+}
+demarrer().then((message) => console.log(message));
+§auto
+<p>Réorganisez tout le code JavaScript écrit pendant le cours en une architecture à la Ondea : <code>js/utils.js</code> (calculs, échappement, formatage), <code>js/storage.js</code> (LocalStorage), <code>js/database.js</code> (IndexedDB), <code>js/ui.js</code> (toasts, modales), <code>js/clients.js</code>, <code>js/commandes.js</code> et <code>js/app.js</code>, chacun dans une IIFE qui s'enregistre dans <code>window.OC</code>. Ajoutez un gestionnaire global d'erreurs (<code>error</code> et <code>unhandledrejection</code>) qui affiche un toast. Rédigez un schéma de dépendances entre fichiers pour votre dossier projet.</p>
+§solution
+<p>Règle de dépendance : un fichier ne peut utiliser que ce qui a été chargé avant lui. Dessinez les flèches : utils ← storage ← database ← ui ← modules ← app. Pas de flèche dans l'autre sens.</p>
+§solution-code html
+<!-- index.html : l'ordre de chargement = l'ordre des dépendances -->
+<script src="js/utils.js" defer></script>
+<script src="js/storage.js" defer></script>
+<script src="js/database.js" defer></script>
+<script src="js/ui.js" defer></script>
+<script src="js/clients.js" defer></script>
+<script src="js/commandes.js" defer></script>
+<script src="js/app.js" defer></script>
+<script>
+  // Extrait de js/app.js : filet de sécurité global
+  window.addEventListener('error', (e) => window.OC?.ui?.toast?.('Une erreur est survenue : ' + e.message, 'danger'));
+  window.addEventListener('unhandledrejection', (e) => {
+    e.preventDefault();
+    window.OC?.ui?.toast?.(e.reason?.message || 'Opération impossible.', 'danger');
+  });
+</script>
+§quiz
+? Que fait await devant une promesse ?
+- Bloque tout le navigateur
++ Attend son résultat dans la fonction async, sans bloquer la page
+- Annule la promesse
+- Transforme la promesse en tableau
+= Le reste de la page reste réactif.
+? Que renvoie toujours une fonction async ?
+- undefined
++ Une promesse
+- Un booléen
+- Une chaîne
+= Même si on écrit return 5, on obtient une promesse de 5.
+? À quoi sert Promise.all([a(), b()]) ?
+- À exécuter a puis b
++ À lancer a et b en parallèle et attendre les deux
+- À ne garder que la plus rapide
+- À annuler les promesses
+= Promise.race garde la plus rapide.
+? Pourquoi Ondea n'utilise-t-il pas import/export (modules ES) ?
+- C'est trop récent
++ Les navigateurs bloquent les modules en file:// (ouverture par double-clic)
+- Les modules sont lents
+- Pour cacher le code
+= D'où les scripts classiques avec defer et l'espace de noms OC.
+? Quel bloc s'exécute dans tous les cas, erreur ou non ?
+- catch
+- try
++ finally
+- then
+= Idéal pour retirer un indicateur de chargement.
+§ondea
+<p>C'est l'architecture exacte d'Ondea Commandes. Le README explique : « Les navigateurs bloquent <code>import</code> en <code>file://</code>. Les scripts sont donc classiques (<code>defer</code>), chargés dans l'ordre, et chacun s'enregistre dans un <strong>unique</strong> espace de noms ». <code>utils.js</code> crée <code>window.OC</code> et des classes d'erreurs (<code>AppError</code>, <code>PermissionError</code>, <code>ValidationError</code>) ; <code>app.js</code> assure « l'amorçage, la gestion centralisée des erreurs, les raccourcis et la synchronisation entre onglets ».</p>

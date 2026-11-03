@@ -1,0 +1,39 @@
+/* ==========================================================================
+   Ondea Academy — print.css
+   Impression A4 propre : fiches mémo, glossaire ou chapitre courant.
+   Quand on imprime une seule fiche, <body data-print="memo-js"> masque les autres.
+   ========================================================================== */
+@media print {
+  @page { size: A4; margin: 14mm; }
+  :root, [data-theme] {
+    --bg: #fff; --surface: #fff; --surface-2: #fff; --surface-3: #f4f1ea; --text: #000; --text-muted: #222;
+    --heading: #000; --border: #999; --gold-text: #5c4207; --code-bg: #fff; --code-text: #000;
+    --tk-comment: #444; --tk-string: #1d5e10; --tk-keyword: #6b4b00; --tk-number: #8f2a0c; --tk-function: #0b3f7a;
+    --tk-tag: #6b4b00; --tk-attr: #0b3f7a; --tk-prop: #0b3f7a; --tk-value: #4b2a8f; --tk-punct: #000;
+  }
+  html, body { min-height: 0 !important; height: auto !important; }
+  body { background: #fff !important; font-size: 10.5pt; }
+  .app-header, .sidebar, .overlay, .app-footer, .steps-nav, .no-print, .toasts, .intro, .pg, .pager, dialog, .btn, .skip-link, .curtain { display: none !important; }
+  .layout { display: block !important; }
+  main { padding: 0 !important; }
+  .card { box-shadow: none !important; border: 1px solid #999; break-inside: avoid; }
+  .reveal { opacity: 1 !important; transform: none !important; }
+  .title-glow { color: #000 !important; background: none !important; }
+  a { color: #000; }
+  .code { border: 1px solid #999; box-shadow: none; }
+  .code-bar { background: #eee; color: #000; }
+  .code pre { white-space: pre-wrap; }
+  details.reveal-box > div { display: block !important; }
+  /* Une seule fiche mémo */
+  body[data-print^="memo-"] .view > :not(.memo-list) { display: none !important; }
+  body[data-print^="memo-"] .memo { display: none !important; }
+  body[data-print="memo-html"] #memo-html,
+  body[data-print="memo-css"] #memo-css,
+  body[data-print="memo-js"] #memo-js,
+  body[data-print="memo-ondea"] #memo-ondea { display: block !important; }
+  body[data-print="all-memos"] .view > :not(.memo-list) { display: none !important; }
+  .memo { break-after: page; }
+  .memo:last-child, body[data-print^="memo-"] .memo { break-after: auto; }
+  .memo-block { break-inside: avoid; border: 1px solid #999; }
+  .memo-block pre { font-size: 8.5pt; }
+}

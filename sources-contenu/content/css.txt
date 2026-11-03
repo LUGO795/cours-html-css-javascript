@@ -1,0 +1,1215 @@
+§§chapter css-selecteurs
+part: css
+title: Sélecteurs, cascade et spécificité
+subtitle: Cibler exactement le bon élément
+duration: 1 h 30
+feature: Boutons et badges de statut
+§intro
+<p>Le <strong>CSS</strong> (Cascading Style Sheets) décrit l'apparence. Une <strong>règle</strong> CSS a deux parties : un <strong>sélecteur</strong> (qui ?) et des <strong>déclarations</strong> (quoi ?) entre accolades, sous la forme <code>propriété: valeur;</code>.</p>
+<p>Les sélecteurs essentiels :</p>
+<ul>
+<li><code>p</code> : tous les paragraphes (sélecteur d'<strong>élément</strong>).</li>
+<li><code>.btn</code> : tous les éléments ayant <code>class="btn"</code> (<strong>classe</strong>, le plus utilisé).</li>
+<li><code>#contenu</code> : l'élément <code>id="contenu"</code> (unique, à éviter pour le style).</li>
+<li><code>[data-theme="dark"]</code> : sélecteur d'<strong>attribut</strong>.</li>
+<li><code>.nav a</code> : les liens <em>à l'intérieur</em> de <code>.nav</code> (descendant).</li>
+<li><code>.btn:hover</code>, <code>:focus-visible</code>, <code>li:nth-child(2)</code> : <strong>pseudo-classes</strong> (un état ou une position).</li>
+</ul>
+<p>Quand deux règles se contredisent, le navigateur applique la <strong>cascade</strong> : la règle la plus <strong>spécifique</strong> gagne (id &gt; classe &gt; élément) ; à égalité, la <strong>dernière</strong> écrite gagne.</p>
+§example css
+/* Sélecteur de classe : la base de tous les boutons */
+.btn {
+  padding: .6rem 1.1rem;          /* espace intérieur */
+  border-radius: 10px;            /* coins arrondis */
+  border: 1px solid transparent;
+  font-weight: 700;
+  cursor: pointer;                /* main au survol */
+}
+
+/* Variante : deux classes sur le même élément class="btn btn-primary" */
+.btn-primary { background: #171a26; color: #fdf8ea; }
+
+/* Pseudo-classe : état survolé */
+.btn-primary:hover { background: #262a3b; }
+
+/* Focus clavier visible : NE JAMAIS le supprimer */
+.btn:focus-visible { outline: 3px solid #1d4ed8; outline-offset: 2px; }
+
+/* Sélecteur d'attribut : badge selon le statut */
+.badge[data-status="livree"]  { background: #dcf3e4; color: #0b4a26; }
+.badge[data-status="annulee"] { background: #fbe0de; color: #7a1410; }
+
+/* Descendant : liens du menu seulement */
+.sidebar nav a { text-decoration: none; }
+§explain
+<ul>
+<li>Une classe est réutilisable : on compose <code>class="btn btn-primary"</code> plutôt que de tout réécrire.</li>
+<li><code>:hover</code> = survol souris ; <code>:focus-visible</code> = focus clavier. Supprimer le contour de focus est une faute d'accessibilité grave.</li>
+<li><code>[data-status="livree"]</code> cible un attribut : pratique quand le JS change l'état d'un élément.</li>
+<li>Spécificité : <code>#id</code> vaut (1,0,0), <code>.classe</code>/<code>[attr]</code>/<code>:hover</code> valent (0,1,0), <code>p</code> vaut (0,0,1). On les additionne.</li>
+<li><code>!important</code> écrase tout : à réserver aux cas exceptionnels, il rend le code difficile à maintenir.</li>
+</ul>
+§demo-html
+<button class="btn">Bouton simple</button>
+<button class="btn btn-primary">Valider la commande</button>
+<p><span class="badge" data-status="livree">Livrée</span> <span class="badge" data-status="annulee">Annulée</span> <span class="badge" data-status="attente">En attente</span></p>
+<ul class="liste"><li>Ligne 1</li><li>Ligne 2</li><li>Ligne 3</li><li>Ligne 4</li></ul>
+§demo-css
+body{font-family:system-ui;padding:1rem}
+.btn{padding:.6rem 1.1rem;border-radius:10px;border:1px solid #171a26;font-weight:700;cursor:pointer;background:#fff}
+.btn-primary{background:#171a26;color:#fdf8ea}
+.btn-primary:hover{background:#c9a14a;color:#171a26}
+.btn:focus-visible{outline:3px solid #1d4ed8;outline-offset:2px}
+.badge{padding:.2rem .6rem;border-radius:99px;font-size:.85rem}
+.badge[data-status="livree"]{background:#dcf3e4;color:#0b4a26}
+.badge[data-status="annulee"]{background:#fbe0de;color:#7a1410}
+.badge[data-status="attente"]{background:#fbeccb;color:#5c3b00}
+.liste li:nth-child(even){background:#f4f1ea}
+§guided
+<p>Le HTML des badges de statut est fourni. Écrivez le CSS dans l'onglet CSS :</p>
+<ol>
+<li>La classe <code>.badge</code> : <code>padding</code>, <code>border-radius: 999px</code> et <code>display: inline-block</code>.</li>
+<li>Le badge <code>[data-status="validee"]</code> a un fond bleu clair <code>#dfe9fb</code> et un texte <code>#0f2f6e</code>.</li>
+<li>Le badge <code>[data-status="expediee"]</code> a un fond <code>#f4e8c8</code> et un texte <code>#614608</code>.</li>
+<li>Au survol (<code>:hover</code>), un badge passe en gras.</li>
+</ol>
+§guided-html
+<span class="badge" data-status="validee">Validée</span>
+<span class="badge" data-status="expediee">Expédiée</span>
+§guided-css
+/* À vous */
+
+§guided-checks
+style | .badge | display | inline-block | .badge est en inline-block
+style | .badge | border-top-left-radius | 999px | .badge a des coins en pilule
+style | [data-status="validee"] | background-color | rgb(223, 233, 251) | Fond bleu clair pour « validée »
+style | [data-status="expediee"] | color | rgb(97, 70, 8) | Texte doré foncé pour « expédiée »
+css | \.badge:hover\s*\{[^}]*font-weight | Une règle .badge:hover change la graisse
+§guided-solution-css
+.badge { display: inline-block; padding: .2rem .7rem; border-radius: 999px; }
+.badge[data-status="validee"]  { background: #dfe9fb; color: #0f2f6e; }
+.badge[data-status="expediee"] { background: #f4e8c8; color: #614608; }
+.badge:hover { font-weight: 700; }
+§auto
+<p>Créez les 9 badges de statut d'Ondea (brouillon, attente, validée, préparation, partielle, prête, expédiée, livrée, annulée) avec un sélecteur d'attribut chacun, puis les 3 badges de priorité (normale, haute, urgente). Ajoutez un petit point coloré avant le texte grâce au pseudo-élément <code>::before</code>. Calculez à la main la spécificité de 3 de vos sélecteurs.</p>
+§solution
+<p>Le pseudo-élément <code>::before</code> crée un élément virtuel avant le contenu ; il a besoin de la propriété <code>content</code> (même vide) pour exister.</p>
+§solution-code css
+.badge { display: inline-flex; align-items: center; gap: .4rem; padding: .2rem .7rem; border-radius: 999px; font-size: .85rem; }
+.badge::before { content: ""; width: .5rem; height: .5rem; border-radius: 50%; background: currentColor; }
+.badge[data-status="brouillon"]   { background: #ebe7de; color: #2c2f38; }
+.badge[data-status="attente"]     { background: #fbeccb; color: #5c3b00; }
+.badge[data-status="validee"]     { background: #dfe9fb; color: #0f2f6e; }
+.badge[data-status="preparation"] { background: #ebe2fb; color: #3b1a7a; }
+.badge[data-status="partielle"]   { background: #fbeccb; color: #5c3b00; }
+.badge[data-status="prete"]       { background: #d7f1ef; color: #0b4541; }
+.badge[data-status="expediee"]    { background: #f4e8c8; color: #614608; }
+.badge[data-status="livree"]      { background: #dcf3e4; color: #0b4a26; }
+.badge[data-status="annulee"]     { background: #fbe0de; color: #7a1410; }
+.badge[data-priority="haute"]     { background: #fbeccb; color: #5c3b00; }
+.badge[data-priority="urgente"]   { background: #fbe0de; color: #7a1410; }
+/* Spécificité : .badge = (0,1,0) ; .badge[data-status="livree"] = (0,2,0) ; .badge::before = (0,1,1) */
+§quiz
+? Quel sélecteur cible class="btn" ?
+- #btn
++ .btn
+- btn
+- [btn]
+= Le point désigne une classe, le dièse un id.
+? Quelle règle l'emporte : #total { color: red } ou .total { color: blue } ?
++ #total, car un id est plus spécifique
+- .total, car elle est écrite après
+- Aucune
+- Celle avec la couleur la plus claire
+= La spécificité passe avant l'ordre d'écriture.
+? Que cible .sidebar a ?
+- Les éléments qui ont les deux classes
++ Les liens situés à l'intérieur de .sidebar
+- Le lien juste après .sidebar
+- Toutes les sidebars
+= L'espace est le combinateur descendant.
+? Pourquoi ne jamais écrire :focus { outline: none } sans alternative ?
+- C'est invalide
++ Les utilisateurs au clavier ne voient plus où ils sont
+- Cela ralentit la page
+- Cela casse le JavaScript
+= Critère WCAG 2.4.7 : focus visible.
+? Que fait li:nth-child(even) ?
+- Cible le premier li
++ Cible les li en position paire
+- Cible les li vides
+- Cible le dernier li
+= Pratique pour zébrer des lignes.
+§ondea
+<p>Dans <code>components.css</code> d'Ondea, tous les boutons partent de <code>.btn</code> avec des variantes (<code>.btn-primary</code>, <code>.btn-ghost</code>, <code>.btn-danger</code>) et les statuts utilisent des classes <code>.badge-success</code>, <code>.badge-warning</code>, <code>.badge-gold</code>… choisies par le JavaScript à partir de la constante <code>STATUSES</code>. Le thème entier repose sur le sélecteur d'attribut <code>[data-theme="dark"]</code>.</p>
+
+§§chapter css-couleurs-typo
+part: css
+title: Couleurs, contrastes et typographie
+subtitle: Hexadécimal, rgb, polices, tailles en rem et lisibilité
+duration: 1 h 30
+feature: Identité Obsidienne & Or
+§intro
+<p>Une couleur s'écrit de plusieurs façons : <code>#c9a14a</code> (hexadécimal : rouge, vert, bleu de 00 à ff), <code>rgb(201 161 74)</code>, avec transparence <code>rgb(201 161 74 / 45%)</code>, ou <code>hsl()</code> (teinte, saturation, luminosité).</p>
+<p>Le <strong>contraste</strong> entre le texte et le fond se mesure par un ratio : 4,5:1 minimum (niveau AA), <strong>7:1</strong> pour le niveau AAA visé par Ondea. Un gris clair sur blanc paraît élégant mais devient illisible pour beaucoup de gens.</p>
+<p>Pour la typographie : <code>font-family</code> (avec des polices de secours), <code>font-size</code> en <code>rem</code> (relatif à la taille choisie par l'utilisateur, 1rem = 16px par défaut), <code>line-height</code> autour de 1,5 pour le texte courant, et une largeur de ligne limitée (environ 70 caractères : <code>max-width: 70ch</code>).</p>
+<p>On peut embarquer une police avec <code>@font-face</code> et un fichier <code>.woff2</code> : l'application fonctionne alors hors ligne.</p>
+§example css
+/* Embarquer une police locale (fonctionne sans Internet) */
+@font-face {
+  font-family: "Atkinson Hyperlegible";
+  src: url("../assets/fonts/atkinson-hyperlegible-400.woff2") format("woff2");
+  font-weight: 400;
+  font-display: swap;      /* affiche une police de secours en attendant */
+}
+
+body {
+  /* Police principale puis polices de secours */
+  font-family: "Atkinson Hyperlegible", system-ui, sans-serif;
+  font-size: 1rem;         /* respecte le réglage du navigateur */
+  line-height: 1.6;        /* interligne confortable */
+  color: #14161f;          /* quasi-noir sur fond ivoire : 16:1 */
+  background: #f4f1ea;
+}
+
+h1, h2 {
+  font-family: "Playfair Display", Georgia, serif;
+  line-height: 1.2;
+  color: #0f111a;
+}
+
+/* Taille fluide : jamais moins de 1.8rem, jamais plus de 3rem */
+h1 { font-size: clamp(1.8rem, 1.2rem + 2.5vw, 3rem); }
+
+.texte-or { color: #614608; }   /* or foncé lisible (≥ 7:1 sur blanc) */
+.prose    { max-width: 70ch; }  /* lignes pas trop longues */
+§explain
+<ul>
+<li><code>font-display: swap</code> évite un texte invisible pendant le chargement de la police.</li>
+<li>Le doré vif <code>#c9a14a</code> ne contraste pas assez avec le blanc pour du texte : Ondea l'utilise en décor (bordures, halos) et réserve <code>#614608</code> pour le texte doré.</li>
+<li><code>clamp(min, idéal, max)</code> crée une taille qui grandit avec l'écran (<code>vw</code> = 1 % de la largeur de la fenêtre) sans dépasser les bornes.</li>
+<li><code>ch</code> = largeur du caractère « 0 » : <code>70ch</code> ≈ 70 caractères par ligne.</li>
+<li>Préférez <code>rem</code> à <code>px</code> pour les tailles de texte : l'utilisateur qui agrandit la police par défaut sera respecté.</li>
+</ul>
+§demo-html
+<h1>Ondea Commandes</h1>
+<p class="prose">Le texte courant utilise une police très lisible, un interligne de 1,6 et une couleur quasi-noire sur fond ivoire. <span class="or">Ce texte doré foncé reste lisible.</span></p>
+<p class="mauvais">Exemple à éviter : gris clair sur blanc (contraste 2,3:1).</p>
+<div class="palette"><span style="background:#0f111a">#0f111a</span><span style="background:#171a26">#171a26</span><span style="background:#c9a14a;color:#171a26">#c9a14a</span><span style="background:#f4e8c8;color:#171a26">#f4e8c8</span><span style="background:#f4f1ea;color:#171a26">#f4f1ea</span></div>
+§demo-css
+body{font-family:Georgia,serif;background:#f4f1ea;color:#14161f;padding:1rem;line-height:1.6}
+h1{font-size:clamp(1.6rem,1rem + 3vw,2.6rem);margin:0 0 .5rem}
+.prose{max-width:60ch;font-family:system-ui}
+.or{color:#614608;font-weight:700}
+.mauvais{color:#aaa;background:#fff;padding:.5rem;font-family:system-ui}
+.palette{display:flex;flex-wrap:wrap;gap:.4rem}.palette span{color:#fdf8ea;padding:.8rem;border-radius:8px;font:600 .8rem monospace}
+§guided
+<p>Appliquez l'identité Obsidienne & Or à une carte d'accueil.</p>
+<ol>
+<li><code>body</code> : fond <code>#0f111a</code> (obsidienne), texte <code>#f4e8c8</code>, <code>line-height: 1.6</code>.</li>
+<li><code>h1</code> : couleur or <code>#d6b05c</code> et taille définie avec <code>clamp()</code>.</li>
+<li><code>.prose</code> : largeur maximale <code>60ch</code>.</li>
+<li><code>.muted</code> : couleur <code>#c7c2b4</code> (reste lisible sur fond sombre).</li>
+</ol>
+§guided-html
+<h1>Bienvenue, Claire</h1>
+<p class="prose">Vous avez 4 commandes à valider et 2 produits sous le seuil d'alerte.</p>
+<p class="muted">Dernière connexion : hier à 17 h 42</p>
+§guided-css
+/* À vous */
+
+§guided-checks
+style | body | background-color | rgb(15, 17, 26) | Fond obsidienne #0f111a
+style | body | color | rgb(244, 232, 200) | Texte ivoire #f4e8c8
+style | h1 | color | rgb(214, 176, 92) | Titre doré #d6b05c
+css | h1\s*\{[^}]*clamp\( | Taille du h1 avec clamp()
+css | \.prose\s*\{[^}]*max-width\s*:\s*60ch | .prose limité à 60ch
+style | .muted | color | rgb(199, 194, 180) | .muted en #c7c2b4
+§guided-solution-css
+body { background: #0f111a; color: #f4e8c8; line-height: 1.6; font-family: system-ui, sans-serif; padding: 1.5rem; }
+h1 { color: #d6b05c; font-family: Georgia, serif; font-size: clamp(1.8rem, 1rem + 3vw, 3rem); }
+.prose { max-width: 60ch; }
+.muted { color: #c7c2b4; }
+§auto
+<p>Créez une page « Charte graphique Ondea » : une pastille par couleur de la palette avec son code, et pour chaque couple texte/fond le ratio de contraste mesuré (outil de contraste de l'inspecteur Chrome ou Firefox). Présentez la hiérarchie typographique (h1, h2, h3, texte, petit texte, code) avec les polices Playfair Display, Atkinson Hyperlegible et JetBrains Mono embarquées par <code>@font-face</code>.</p>
+§solution
+<p>Les trois polices ont des rôles distincts : Playfair (titres, caractère luxueux), Atkinson Hyperlegible (texte, conçue pour les personnes malvoyantes), JetBrains Mono (codes, références, montants alignés). Elles sont fournies dans le dossier <code>assets/fonts</code> de ce cours.</p>
+§solution-code css
+@font-face { font-family: "Playfair Display"; font-weight: 700; font-display: swap;
+  src: url("assets/fonts/playfair-display-latin-700-normal.woff2") format("woff2"); }
+@font-face { font-family: "Atkinson Hyperlegible"; font-weight: 400; font-display: swap;
+  src: url("assets/fonts/atkinson-hyperlegible-latin-400-normal.woff2") format("woff2"); }
+@font-face { font-family: "JetBrains Mono"; font-weight: 400; font-display: swap;
+  src: url("assets/fonts/jetbrains-mono-latin-400-normal.woff2") format("woff2"); }
+
+body  { font: 1rem/1.6 "Atkinson Hyperlegible", system-ui, sans-serif; color: #14161f; background: #f4f1ea; }
+h1    { font: 700 clamp(2rem, 1.4rem + 2.5vw, 3rem)/1.15 "Playfair Display", Georgia, serif; }
+h2    { font: 700 1.75rem/1.2 "Playfair Display", Georgia, serif; }
+h3    { font-size: 1.25rem; }
+small { font-size: .875rem; }
+code  { font-family: "JetBrains Mono", ui-monospace, monospace; }
+.pastille { display: inline-grid; place-items: center; width: 7rem; height: 4rem; border-radius: 12px; }
+/* #14161f sur #f4f1ea : 16,1:1 — #614608 sur #ffffff : 8,6:1 — #f4e8c8 sur #0f111a : 15,4:1 */
+§quiz
+? Quel ratio de contraste minimal vise le niveau AAA pour du texte courant ?
+- 3:1
+- 4,5:1
++ 7:1
+- 21:1
+= AA = 4,5:1 ; AAA = 7:1 (texte normal).
+? Pourquoi préférer rem à px pour la taille du texte ?
++ rem respecte la taille de police choisie par l'utilisateur
+- px n'existe plus
+- rem est plus rapide
+- Pour l'impression uniquement
+= 1rem = taille de base de la racine (souvent 16px, modifiable).
+? Que fait clamp(1.8rem, 4vw, 3rem) ?
+- Fixe la taille à 4vw
++ Une taille fluide bornée entre 1,8rem et 3rem
+- Une animation de taille
+- Une erreur
+= Typographie fluide sans media query.
+? Pourquoi mettre plusieurs polices dans font-family ?
+- Pour mélanger les styles
++ Pour avoir des polices de secours si la première est indisponible
+- C'est obligatoire
+- Pour la rapidité
+= Le navigateur prend la première disponible.
+? Quel interligne pour un texte courant lisible ?
+- 1
++ Environ 1,5 à 1,6
+- 3
+- 0,8
+= WCAG 1.4.12 recommande au moins 1,5.
+§ondea
+<p>Le fichier <code>themes.css</code> d'Ondea charge les trois polices en <code>@font-face</code> depuis <code>assets/fonts/</code> et précise en commentaire : « Tous les couples texte / fond ont été choisis pour viser un contraste ≥ 7:1 (WCAG AAA) ». On y voit la distinction entre <code>--gold</code> (décor) et <code>--gold-text</code> (<code>#614608</code>, texte).</p>
+
+§§chapter css-box-model
+part: css
+title: Le modèle de boîte
+subtitle: content, padding, border, margin et box-sizing
+duration: 1 h
+feature: Les cartes du tableau de bord
+§intro
+<p>Pour le navigateur, <strong>chaque élément est une boîte rectangulaire</strong> composée de quatre couches, de l'intérieur vers l'extérieur :</p>
+<ol>
+<li><strong>content</strong> : le contenu (texte, image), dimensionné par <code>width</code>/<code>height</code> ;</li>
+<li><strong>padding</strong> : l'espace intérieur, qui prend la couleur de fond ;</li>
+<li><strong>border</strong> : la bordure ;</li>
+<li><strong>margin</strong> : l'espace extérieur, transparent, qui éloigne les autres boîtes.</li>
+</ol>
+<p>Piège classique : par défaut, <code>width: 300px</code> ne compte que le contenu ; le padding et la bordure s'ajoutent. Avec <code>box-sizing: border-box</code>, la largeur inclut padding et bordure : beaucoup plus intuitif. Presque tous les projets professionnels commencent par cette règle.</p>
+<p>Il existe aussi deux grands types d'affichage : <code>block</code> (prend toute la largeur, passe à la ligne : div, p, h1) et <code>inline</code> (dans le flux du texte : span, a, strong).</p>
+§example css
+/* Règle de base de tout projet : la largeur inclut padding + bordure */
+*, *::before, *::after { box-sizing: border-box; }
+
+.card {
+  width: 100%;
+  max-width: 320px;              /* jamais plus large que 320px */
+  padding: 1.25rem;              /* espace intérieur sur les 4 côtés */
+  border: 1px solid #e2dbcc;     /* épaisseur, style, couleur */
+  border-radius: 14px;
+  margin-bottom: 1rem;           /* espace sous la carte */
+  background: #ffffff;
+  box-shadow: 0 10px 30px rgb(23 26 38 / 10%);  /* profondeur */
+}
+
+/* Raccourcis : haut droite bas gauche (sens des aiguilles d'une montre) */
+.kpi-valeur { margin: 0 0 .25rem 0; }
+.kpi-label  { padding: .25rem .5rem; }  /* vertical | horizontal */
+
+/* Centrer un bloc horizontalement */
+.conteneur { max-width: 1200px; margin-inline: auto; }
+§explain
+<ul>
+<li>Le sélecteur universel <code>*</code> applique <code>border-box</code> à tous les éléments et pseudo-éléments.</li>
+<li><code>max-width</code> laisse la carte rétrécir sur mobile mais l'empêche de trop s'étaler sur grand écran.</li>
+<li>Valeurs raccourcies : 1 valeur = 4 côtés ; 2 valeurs = vertical puis horizontal ; 4 valeurs = haut, droite, bas, gauche.</li>
+<li><code>margin-inline: auto</code> répartit l'espace restant à gauche et à droite : le bloc est centré.</li>
+<li>Les marges verticales de deux blocs voisins <strong>fusionnent</strong> (la plus grande l'emporte) : c'est le « margin collapsing ».</li>
+<li>Dans l'inspecteur du navigateur, l'onglet « Calculé » dessine le modèle de boîte de l'élément sélectionné.</li>
+</ul>
+§demo-html
+<div class="card a"><p class="v">12</p><p class="l">content-box : 220px + padding + bordure</p></div>
+<div class="card b"><p class="v">12</p><p class="l">border-box : 220px au total</p></div>
+§demo-css
+body{font-family:system-ui;padding:1rem;background:#f4f1ea}
+.card{width:220px;padding:24px;border:6px solid #c9a14a;margin:0 0 1rem;background:#fff;border-radius:14px;box-shadow:0 10px 30px rgb(23 26 38/12%)}
+.a{box-sizing:content-box}.b{box-sizing:border-box}
+.v{font-size:2rem;font-weight:700;margin:0}.l{margin:0;font-size:.85rem}
+§guided
+<p>Mettez en forme la carte indicateur « Chiffre d'affaires du mois ».</p>
+<ol>
+<li>Appliquez <code>box-sizing: border-box</code> à tous les éléments.</li>
+<li><code>.kpi</code> : <code>padding</code> de 24px (1.5rem), bordure de 1px pleine, <code>border-radius</code> de 14px, <code>max-width</code> de 280px.</li>
+<li>Centrez la carte avec <code>margin-inline: auto</code> (ou <code>margin: 0 auto</code>).</li>
+<li>Ajoutez une ombre avec <code>box-shadow</code>.</li>
+</ol>
+§guided-html
+<article class="kpi">
+  <h2>Chiffre d'affaires du mois</h2>
+  <p class="valeur">18 420,00 €</p>
+  <p class="evolution">+12 % par rapport au mois dernier</p>
+</article>
+§guided-css
+/* À vous */
+
+§guided-checks
+style | .kpi | box-sizing | border-box | box-sizing: border-box appliqué
+style | .kpi | padding-top | 24px | padding de 24px
+style | .kpi | border-top-style | solid | Bordure pleine
+style | .kpi | border-top-left-radius | 14px | Coins arrondis à 14px
+style | .kpi | max-width | 280px | Largeur max 280px
+css | box-shadow\s*: | Une ombre box-shadow
+css | margin(-inline)?\s*:\s*(0\s+)?auto | Carte centrée avec auto
+§guided-solution-css
+*, *::before, *::after { box-sizing: border-box; }
+body { font-family: system-ui, sans-serif; background: #f4f1ea; padding: 1rem; }
+.kpi { max-width: 280px; margin-inline: auto; padding: 1.5rem; border: 1px solid #e2dbcc; border-radius: 14px; background: #fff; box-shadow: 0 10px 30px rgb(23 26 38 / 10%); }
+.valeur { font-size: 2rem; font-weight: 700; margin: .25rem 0; }
+.evolution { color: #0b4a26; margin: 0; }
+§auto
+<p>Réalisez les 4 cartes indicateurs du tableau de bord d'Ondea (commandes en attente, à préparer, à expédier, CA du mois) avec une icône, une valeur et une évolution. Donnez à chaque carte une bordure supérieure colorée de 4px selon son thème. Ouvrez l'inspecteur et faites une capture du modèle de boîte d'une carte en l'annotant.</p>
+§solution
+<p>La bordure supérieure seule s'écrit <code>border-top</code>. Comme <code>box-sizing: border-box</code> est actif, ajouter 4px de bordure ne change pas la largeur des cartes.</p>
+§solution-code css
+*, *::before, *::after { box-sizing: border-box; }
+.kpi { padding: 1.25rem; border: 1px solid #e2dbcc; border-top: 4px solid var(--accent, #c9a14a); border-radius: 14px; background: #fff; box-shadow: 0 8px 24px rgb(23 26 38 / 8%); }
+.kpi--attente  { --accent: #b45309; }
+.kpi--preparer { --accent: #6d28d9; }
+.kpi--expedier { --accent: #0f766e; }
+.kpi--ca       { --accent: #c9a14a; }
+.kpi__valeur { font-size: 2rem; font-weight: 700; margin: .25rem 0; }
+.kpi__evolution { margin: 0; font-size: .9rem; }
+§quiz
+? Quelle couche du modèle de boîte prend la couleur de fond ?
+- margin
++ padding
+- Aucune
+- Seulement la bordure
+= Le fond s'étend sous le contenu et le padding (et la bordure).
+? Avec box-sizing: border-box, width: 300px; padding: 20px, la largeur totale est…
++ 300px
+- 340px
+- 320px
+- 260px
+= Le padding est inclus dans les 300px.
+? Que signifie margin: 10px 20px ?
+- 10px en haut, 20px en bas
++ 10px en haut et en bas, 20px à gauche et à droite
+- 10px à gauche, 20px à droite
+- Erreur
+= Deux valeurs : vertical puis horizontal.
+? Comment centrer horizontalement un bloc de largeur max 1200px ?
+- text-align: center
++ margin-inline: auto
+- align: center
+- float: center
+= Les marges automatiques se partagent l'espace restant.
+? Quel élément est inline par défaut ?
+- <p>
+- <div>
++ <span>
+- <section>
+= span, a, strong, em sont inline.
+§ondea
+<p>Le fichier <code>style.css</code> d'Ondea commence par la réinitialisation <code>box-sizing: border-box</code>. Les cartes <code>.card</code> et les indicateurs du tableau de bord (<code>dashboard.js</code>) combinent padding, bordure fine <code>var(--border)</code>, rayon <code>var(--radius)</code> et ombre. Les rayons sont centralisés dans <code>themes.css</code> : <code>--radius-xs</code> à <code>--radius-lg</code>.</p>
+
+§§chapter css-flexbox
+part: css
+title: Flexbox
+subtitle: Aligner des éléments sur une ligne ou une colonne
+duration: 1 h 30
+feature: Barre supérieure et barres d'actions
+§intro
+<p><strong>Flexbox</strong> sert à aligner des éléments <strong>sur un seul axe</strong> : une ligne (barre d'outils, menu horizontal) ou une colonne. On l'active sur le <strong>parent</strong> avec <code>display: flex</code> ; ses enfants directs deviennent des « éléments flexibles ».</p>
+<p>Les propriétés du parent à connaître :</p>
+<ul>
+<li><code>flex-direction</code> : <code>row</code> (ligne, défaut) ou <code>column</code>.</li>
+<li><code>justify-content</code> : répartition sur l'axe principal (<code>flex-start</code>, <code>center</code>, <code>space-between</code>…).</li>
+<li><code>align-items</code> : alignement sur l'axe secondaire (<code>center</code> pour centrer verticalement).</li>
+<li><code>gap</code> : espace entre les enfants.</li>
+<li><code>flex-wrap: wrap</code> : passage à la ligne si la place manque.</li>
+</ul>
+<p>Côté enfant, <code>flex: 1</code> signifie « prends toute la place restante ».</p>
+§example css
+/* Barre supérieure : titre à gauche, actions à droite */
+.topbar {
+  display: flex;                    /* active Flexbox */
+  align-items: center;              /* centre verticalement */
+  justify-content: space-between;   /* écarte les extrémités */
+  gap: 1rem;                        /* espace entre enfants */
+  padding: .75rem 1.25rem;
+  min-height: 68px;
+}
+
+/* La recherche prend toute la place disponible */
+.topbar .recherche { flex: 1; max-width: 480px; }
+
+/* Groupe de boutons */
+.actions {
+  display: flex;
+  gap: .5rem;
+  flex-wrap: wrap;                  /* passe à la ligne sur mobile */
+}
+
+/* Centrer parfaitement un élément (écran vide, chargement) */
+.centre {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 60vh;
+}
+§explain
+<ul>
+<li><code>display: flex</code> agit sur les <strong>enfants directs</strong> uniquement, pas sur les petits-enfants.</li>
+<li>Axe principal = sens de <code>flex-direction</code>. Si on passe en <code>column</code>, <code>justify-content</code> agit verticalement.</li>
+<li><code>space-between</code> colle le premier élément à gauche, le dernier à droite, et répartit le reste.</li>
+<li><code>gap</code> remplace les marges entre éléments : plus de problème de marge en trop sur le dernier.</li>
+<li><code>flex: 1</code> est un raccourci de <code>flex-grow: 1; flex-shrink: 1; flex-basis: 0</code>.</li>
+<li><code>margin-left: auto</code> sur un enfant le pousse tout à droite.</li>
+</ul>
+§demo-html
+<header class="topbar">
+  <h1>Commandes</h1>
+  <input class="recherche" type="search" placeholder="Rechercher une commande…" aria-label="Rechercher">
+  <div class="actions"><button>Exporter</button><button class="p">+ Nouvelle commande</button></div>
+</header>
+<p>Réduisez la largeur de l'aperçu : les éléments s'adaptent.</p>
+<div class="chips"><span>Toutes</span><span>En attente</span><span>Validées</span><span>En préparation</span><span>Expédiées</span><span>Livrées</span></div>
+§demo-css
+body{font-family:system-ui;margin:0}
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:.75rem 1rem;background:#171a26;color:#f4e8c8;flex-wrap:wrap}
+.topbar h1{margin:0;font-size:1.3rem}
+.recherche{flex:1;min-width:160px;max-width:420px;padding:.5rem;border-radius:8px;border:0}
+.actions{display:flex;gap:.5rem}
+button{padding:.5rem .8rem;border-radius:8px;border:1px solid #c9a14a;background:transparent;color:#f4e8c8}
+button.p{background:#c9a14a;color:#171a26;font-weight:700}
+p{padding:0 1rem}
+.chips{display:flex;flex-wrap:wrap;gap:.4rem;padding:0 1rem}
+.chips span{border:1px solid #c9a14a;border-radius:99px;padding:.25rem .7rem}
+§guided
+<p>Mettez en page la ligne d'une commande dans la liste « Préparation ».</p>
+<ol>
+<li><code>.ligne</code> : Flexbox, éléments centrés verticalement, espace de 1rem entre eux.</li>
+<li><code>.infos</code> prend toute la place restante (<code>flex: 1</code>).</li>
+<li><code>.boutons</code> : Flexbox avec un <code>gap</code> de .5rem.</li>
+</ol>
+§guided-html
+<div class="ligne">
+  <span class="numero">CMD-2026-0043</span>
+  <div class="infos"><strong>Visso Bricolage</strong><br>12 articles — priorité haute</div>
+  <div class="boutons"><button>Détails</button><button>Préparer</button></div>
+</div>
+§guided-css
+/* À vous */
+
+§guided-checks
+style | .ligne | display | flex | .ligne est en display: flex
+style | .ligne | align-items | center | Alignement vertical centré
+style | .ligne | column-gap | 16px | gap de 1rem
+style | .infos | flex-grow | 1 | .infos prend la place restante
+style | .boutons | display | flex | .boutons en Flexbox
+style | .boutons | column-gap | 8px | gap de .5rem entre les boutons
+§guided-solution-css
+body { font-family: system-ui, sans-serif; padding: 1rem; }
+.ligne { display: flex; align-items: center; gap: 1rem; padding: .75rem 1rem; border: 1px solid #e2dbcc; border-radius: 12px; }
+.numero { font-family: ui-monospace, monospace; font-weight: 700; }
+.infos { flex: 1; }
+.boutons { display: flex; gap: .5rem; }
+§auto
+<p>Construisez la barre supérieure complète d'Ondea : bouton menu (mobile), titre de l'écran, barre de recherche extensible, bouton notifications avec une pastille de compteur positionnée en haut à droite (indice : <code>position: relative</code> sur le bouton, <code>absolute</code> sur la pastille), avatar et nom de l'utilisateur. Sous 600px, la recherche passe sur une seconde ligne (<code>flex-wrap</code> + <code>order</code> ou <code>flex-basis: 100%</code>).</p>
+§solution
+<p><code>order</code> change l'ordre d'affichage sans toucher au HTML (attention : l'ordre de tabulation reste celui du HTML). <code>flex-basis: 100%</code> force l'élément à occuper toute une ligne.</p>
+§solution-code css
+.topbar { display: flex; align-items: center; gap: .75rem; padding: .75rem 1rem; flex-wrap: wrap; }
+.topbar h1 { margin: 0; font-size: 1.25rem; }
+.topbar .recherche { flex: 1; min-width: 200px; }
+.topbar .profil { display: flex; align-items: center; gap: .5rem; margin-left: auto; }
+.btn-notif { position: relative; }
+.btn-notif .pastille { position: absolute; top: -4px; right: -4px; min-width: 1.25rem; height: 1.25rem; border-radius: 999px; background: #b91c1c; color: #fff; font-size: .75rem; display: grid; place-items: center; }
+.avatar { width: 36px; height: 36px; border-radius: 50%; object-fit: cover; }
+@media (max-width: 600px) {
+  .topbar .recherche { flex-basis: 100%; order: 10; }
+}
+§quiz
+? Sur quel élément écrit-on display: flex ?
++ Sur le parent des éléments à aligner
+- Sur chaque enfant
+- Sur body uniquement
+- Sur le dernier enfant
+= Le parent devient un conteneur flexible.
+? Comment centrer verticalement des éléments dans une ligne flex ?
+- justify-content: center
++ align-items: center
+- vertical-align: middle
+- text-align: center
+= align-items agit sur l'axe secondaire (vertical pour une ligne).
+? Que fait justify-content: space-between ?
+- Centre tout
++ Place le premier et le dernier élément aux extrémités et répartit l'espace entre eux
+- Ajoute des marges égales autour
+- Inverse l'ordre
+= Idéal pour un titre à gauche et des actions à droite.
+? Que fait flex: 1 sur un enfant ?
+- Le cache
++ Lui fait prendre l'espace restant
+- Le met en première position
+- Le fixe à 1px
+= flex-grow: 1 lui attribue la place libre.
+? À quoi sert flex-wrap: wrap ?
+- À entourer d'une bordure
++ À autoriser le passage à la ligne quand la place manque
+- À inverser les colonnes
+- À grouper les éléments
+= Sans wrap, les éléments rétrécissent ou débordent.
+§ondea
+<p>Ondea utilise Flexbox partout où il y a une seule rangée : la barre supérieure (<code>.topbar</code>), les barres d'actions des fiches, les groupes de filtres par statut (<code>.chips</code> dans <code>commandes.js</code>), les lignes de la file de préparation et l'alignement icône + texte à l'intérieur des boutons.</p>
+
+§§chapter css-grid
+part: css
+title: CSS Grid
+subtitle: Mises en page en deux dimensions
+duration: 1 h 30
+feature: Structure de l'application et grille d'indicateurs
+§intro
+<p><strong>CSS Grid</strong> organise des éléments en <strong>lignes ET colonnes</strong> à la fois. C'est l'outil idéal pour la structure générale d'une application (barre latérale + contenu) et pour les grilles de cartes.</p>
+<ul>
+<li><code>display: grid</code> active la grille sur le parent.</li>
+<li><code>grid-template-columns: 268px 1fr</code> : une colonne fixe de 268px puis une colonne qui prend le reste. L'unité <code>fr</code> signifie « fraction de l'espace libre ».</li>
+<li><code>repeat(3, 1fr)</code> : trois colonnes égales.</li>
+<li><code>repeat(auto-fit, minmax(220px, 1fr))</code> : « autant de colonnes de 220px minimum qu'il en tient ». Responsive sans aucune media query !</li>
+<li><code>grid-template-areas</code> : on dessine la mise en page avec des noms de zones.</li>
+</ul>
+<p>Flexbox ou Grid ? Flexbox pour une ligne de contenus, Grid pour une mise en page à deux dimensions. Les deux se combinent très bien.</p>
+§example css
+/* Structure de l'application dessinée avec des zones nommées */
+.app {
+  display: grid;
+  grid-template-columns: 268px 1fr;      /* barre latérale | contenu */
+  grid-template-rows: 68px 1fr;          /* barre supérieure | écran */
+  grid-template-areas:
+    "sidebar topbar"
+    "sidebar main";
+  min-height: 100vh;
+}
+.app > aside  { grid-area: sidebar; }
+.app > header { grid-area: topbar; }
+.app > main   { grid-area: main; }
+
+/* Grille d'indicateurs : responsive automatiquement */
+.kpis {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+}
+
+/* Une carte qui occupe 2 colonnes */
+.graphique-ca { grid-column: span 2; }
+§explain
+<ul>
+<li><code>grid-template-areas</code> se lit comme un dessin : chaque chaîne est une ligne, chaque mot une cellule. Un nom répété fusionne les cellules.</li>
+<li><code>grid-area</code> place un enfant dans la zone portant ce nom.</li>
+<li><code>minmax(220px, 1fr)</code> : jamais moins de 220px, et partage de l'espace en plus.</li>
+<li><code>auto-fit</code> crée autant de colonnes que possible et étire les cartes pour remplir la ligne.</li>
+<li><code>grid-column: span 2</code> étend une carte sur deux colonnes.</li>
+<li>L'inspecteur de Chrome/Firefox a un badge « grid » qui dessine les lignes de la grille : utilisez-le !</li>
+</ul>
+§demo-html
+<div class="app">
+  <aside>Menu</aside>
+  <header>Tableau de bord</header>
+  <main>
+    <div class="kpis">
+      <article>En attente<b>12</b></article><article>À préparer<b>7</b></article>
+      <article>À expédier<b>5</b></article><article>Livrées<b>31</b></article>
+      <article class="large">Chiffre d'affaires (2 colonnes)</article>
+    </div>
+  </main>
+</div>
+§demo-css
+body{margin:0;font-family:system-ui}
+.app{display:grid;grid-template-columns:140px 1fr;grid-template-rows:56px 1fr;grid-template-areas:"sidebar topbar" "sidebar main";min-height:100vh}
+aside{grid-area:sidebar;background:#171a26;color:#f4e8c8;padding:1rem}
+header{grid-area:topbar;background:#f4f1ea;padding:1rem;font-weight:700}
+main{grid-area:main;padding:1rem}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:.8rem}
+.kpis article{border:1px solid #c9a14a;border-radius:12px;padding:.8rem;display:flex;flex-direction:column}
+.kpis b{font-size:1.8rem}
+.large{grid-column:span 2;background:#f4e8c8}
+§guided
+<p>Créez la grille de la page « Produits » d'Ondea.</p>
+<ol>
+<li><code>.catalogue</code> en <code>display: grid</code>.</li>
+<li>Colonnes automatiques : <code>repeat(auto-fit, minmax(200px, 1fr))</code>.</li>
+<li>Espace de 1rem entre les cartes.</li>
+<li>La carte <code>.vedette</code> s'étend sur 2 colonnes.</li>
+</ol>
+§guided-html
+<section class="catalogue">
+  <article class="produit vedette">Perceuse 18 V — produit vedette</article>
+  <article class="produit">Vis inox 4x40</article>
+  <article class="produit">Chevilles 8 mm</article>
+  <article class="produit">Équerre 60 mm</article>
+  <article class="produit">Charnière laiton</article>
+</section>
+§guided-css
+.produit { border: 1px solid #c9a14a; border-radius: 12px; padding: 1rem; }
+/* À vous */
+
+§guided-checks
+style | .catalogue | display | grid | .catalogue est une grille
+css | grid-template-columns\s*:\s*repeat\(\s*auto-fit\s*,\s*minmax\(\s*200px | Colonnes auto-fit minmax(200px, 1fr)
+style | .catalogue | row-gap | 16px | gap de 1rem
+css | \.vedette\s*\{[^}]*grid-column\s*:\s*span\s+2 | .vedette sur 2 colonnes
+§guided-solution-css
+.produit { border: 1px solid #c9a14a; border-radius: 12px; padding: 1rem; }
+.catalogue { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; }
+.vedette { grid-column: span 2; background: #f4e8c8; }
+§auto
+<p>Construisez la mise en page complète du tableau de bord d'Ondea avec <code>grid-template-areas</code> : 4 indicateurs en haut, un graphique « Chiffre d'affaires » large (2/3) avec à côté « Commandes par statut » (1/3), puis une liste « Commandes en retard » sur toute la largeur. Sous 900px, tout passe en une seule colonne en redéfinissant seulement <code>grid-template-areas</code> dans une media query.</p>
+§solution
+<p>Toute la force de <code>grid-template-areas</code> : la version mobile ne demande que de redessiner les zones.</p>
+§solution-code css
+.dashboard {
+  display: grid; gap: 1rem;
+  grid-template-columns: 2fr 1fr;
+  grid-template-areas:
+    "kp kp"
+    "ca st"
+    "rt rt";
+}
+.zone-kpis   { grid-area: kp; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; }
+.zone-ca     { grid-area: ca; }   /* 2/3 de la largeur */
+.zone-statut { grid-area: st; }   /* 1/3 */
+.zone-retard { grid-area: rt; }   /* toute la largeur */
+@media (max-width: 900px) {
+  .dashboard { grid-template-columns: 1fr; grid-template-areas: "kp" "ca" "st" "rt"; }
+}
+§quiz
+? Quand préférer Grid à Flexbox ?
+- Pour aligner trois boutons sur une ligne
++ Pour une mise en page en lignes et colonnes à la fois
+- Jamais
+- Pour les textes
+= Grid est bidimensionnel, Flexbox unidimensionnel.
+? Que signifie 1fr ?
+- 1 pixel
++ Une fraction de l'espace libre
+- 1 % de l'écran
+- La première colonne
+= 1fr 2fr donne un tiers / deux tiers.
+? Que produit repeat(auto-fit, minmax(220px, 1fr)) ?
++ Autant de colonnes d'au moins 220px qu'il en tient, étirées pour remplir
+- Exactement 220 colonnes
+- Une seule colonne
+- Une erreur
+= Grille responsive sans media query.
+? Comment étendre une carte sur deux colonnes ?
+- width: 200%
++ grid-column: span 2
+- colspan="2"
+- flex: 2
+= colspan est un attribut de tableau HTML, pas du CSS.
+? À quoi sert grid-template-areas ?
+- À nommer des couleurs
++ À dessiner la mise en page avec des noms de zones
+- À créer des animations
+- À ajouter des marges
+= On place ensuite les enfants avec grid-area.
+§ondea
+<p>La coque d'Ondea est une grille : barre latérale de largeur <code>var(--sidebar-w)</code> (268px) et barre supérieure de hauteur <code>var(--topbar-h)</code> (68px), deux variables définies dans <code>themes.css</code>. Les indicateurs du tableau de bord et les grilles de produits utilisent <code>auto-fit</code> + <code>minmax()</code> pour s'adapter de l'ordinateur au smartphone.</p>
+
+§§chapter css-responsive
+part: css
+title: Responsive design
+subtitle: Mobile first, media queries, images et tableaux adaptatifs
+duration: 1 h 30
+feature: Ondea sur tablette et smartphone (magasinier en entrepôt)
+§intro
+<p>Le magasinier prépare les commandes dans l'entrepôt, tablette ou téléphone à la main : l'application doit être aussi confortable sur un écran de 360px que sur un écran de 1920px. C'est le <strong>responsive design</strong>.</p>
+<p>La démarche <strong>mobile first</strong> : on écrit d'abord le CSS pour le petit écran (une colonne, gros boutons), puis on ajoute des règles pour les écrans plus larges avec des <strong>media queries</strong> :</p>
+<p><code>@media (min-width: 900px) { ... }</code> = « à partir de 900px de large, applique aussi ces règles ».</p>
+<p>Autres outils : unités relatives (<code>%</code>, <code>rem</code>, <code>vw</code>), <code>max-width: 100%</code> sur les images, zones tactiles d'au moins 44×44px, et les <strong>préférences utilisateur</strong> : <code>prefers-color-scheme</code> (thème), <code>prefers-reduced-motion</code> (animations).</p>
+§example css
+/* 1. Mobile d'abord : une seule colonne, menu caché */
+.app { display: block; }
+.sidebar {
+  position: fixed; inset: 0 auto 0 0;
+  width: 268px;
+  transform: translateX(-100%);       /* hors de l'écran */
+  transition: transform .24s;
+}
+.sidebar.is-open { transform: none; } /* ouvert par le bouton menu */
+
+/* Zones tactiles confortables */
+.btn { min-height: 44px; padding-inline: 1rem; }
+
+/* Images et tableaux jamais plus larges que l'écran */
+img { max-width: 100%; height: auto; }
+.table-wrap { overflow-x: auto; }
+
+/* 2. Tablette paysage et ordinateur : barre latérale fixe */
+@media (min-width: 900px) {
+  .app { display: grid; grid-template-columns: 268px 1fr; }
+  .sidebar { position: sticky; top: 0; height: 100vh; transform: none; }
+  .btn-menu { display: none; }        /* bouton menu inutile */
+}
+
+/* 3. Grand écran : on limite la largeur du contenu */
+@media (min-width: 1400px) {
+  main { max-width: 1280px; margin-inline: auto; }
+}
+§explain
+<ul>
+<li>Sans <code>&lt;meta name="viewport"&gt;</code> dans le HTML, les media queries ne fonctionnent pas correctement sur mobile.</li>
+<li><code>transform: translateX(-100%)</code> décale le menu de sa propre largeur vers la gauche : il est caché, prêt à glisser.</li>
+<li><code>position: sticky; top: 0</code> : l'élément défile normalement puis reste collé en haut.</li>
+<li><code>inset: 0 auto 0 0</code> est le raccourci de <code>top right bottom left</code>.</li>
+<li>Points de rupture (breakpoints) : on les choisit quand <strong>le contenu</strong> se casse, pas d'après une liste d'appareils.</li>
+<li>Testez avec le mode « appareil » des outils de développement (Ctrl+Maj+M).</li>
+</ul>
+§demo-html
+<div class="app">
+  <aside class="sidebar" id="sb"><b>◆ Ondea</b><p>Commandes<br>Préparation<br>Livraisons</p></aside>
+  <main>
+    <button class="btn-menu" aria-expanded="false" aria-controls="sb">☰ Menu</button>
+    <h1>Préparation</h1>
+    <div class="cartes"><article>CMD-0043</article><article>CMD-0044</article><article>CMD-0047</article></div>
+    <p class="info">Largeur actuelle : <span id="w"></span>px</p>
+  </main>
+</div>
+§demo-css
+body{margin:0;font-family:system-ui}
+.sidebar{position:fixed;inset:0 auto 0 0;width:200px;background:#171a26;color:#f4e8c8;padding:1rem;transform:translateX(-100%);transition:transform .24s}
+.sidebar.is-open{transform:none}
+main{padding:1rem}
+.btn-menu{min-height:44px;padding:0 1rem;border-radius:8px;border:1px solid #171a26;background:#fff}
+.cartes{display:grid;gap:.6rem}
+.cartes article{border:1px solid #c9a14a;border-radius:10px;padding:1rem}
+@media (min-width:560px){.app{display:grid;grid-template-columns:200px 1fr}.sidebar{position:static;transform:none}.btn-menu{display:none}.cartes{grid-template-columns:repeat(3,1fr)}}
+§demo-js
+const sb = document.getElementById('sb');
+const btn = document.querySelector('.btn-menu');
+btn.addEventListener('click', () => {
+  const ouvert = sb.classList.toggle('is-open');
+  btn.setAttribute('aria-expanded', ouvert);
+});
+const w = () => document.getElementById('w').textContent = window.innerWidth;
+window.addEventListener('resize', w); w();
+§guided
+<p>Rendez responsive la liste des commandes à préparer (mobile first).</p>
+<ol>
+<li>Par défaut (mobile) : <code>.liste</code> est une grille d'<strong>une</strong> colonne avec un <code>gap</code> de 12px.</li>
+<li>À partir de 700px : 2 colonnes.</li>
+<li>À partir de 1100px : 3 colonnes.</li>
+<li>Les boutons <code>.btn</code> ont une hauteur minimale de 44px.</li>
+</ol>
+§guided-html
+<div class="liste">
+  <article>CMD-0043 <button class="btn">Préparer</button></article>
+  <article>CMD-0044 <button class="btn">Préparer</button></article>
+  <article>CMD-0047 <button class="btn">Préparer</button></article>
+</div>
+§guided-css
+article { border: 1px solid #c9a14a; border-radius: 10px; padding: 1rem; }
+/* À vous (mobile first) */
+
+§guided-checks
+style | .liste | display | grid | .liste est une grille
+style | .liste | row-gap | 12px | gap de 12px
+css | @media\s*\(\s*min-width\s*:\s*700px\s*\) | Media query à 700px (min-width)
+css | @media\s*\(\s*min-width\s*:\s*1100px\s*\) | Media query à 1100px (min-width)
+style | .btn | min-height | 44px | Boutons de 44px minimum
+§guided-solution-css
+article { border: 1px solid #c9a14a; border-radius: 10px; padding: 1rem; }
+.liste { display: grid; grid-template-columns: 1fr; gap: 12px; }
+.btn { min-height: 44px; padding-inline: 1rem; }
+@media (min-width: 700px)  { .liste { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 1100px) { .liste { grid-template-columns: repeat(3, 1fr); } }
+§auto
+<p>Prenez votre structure d'application (chapitres Grid et Flexbox) et rendez-la entièrement responsive : menu latéral qui glisse sur mobile avec un fond assombri cliquable, tableau des commandes qui défile horizontalement, formulaire en une colonne sur mobile et deux colonnes sur ordinateur. Testez à 360px, 768px, 1024px et 1440px et faites une capture de chaque largeur.</p>
+§solution
+<p>Pour le fond assombri, un élément <code>.overlay</code> plein écran apparaît en même temps que le menu ; un clic dessus ferme le menu (JavaScript du chapitre Événements).</p>
+§solution-code css
+.overlay { position: fixed; inset: 0; background: rgb(10 12 20 / 55%); opacity: 0; pointer-events: none; transition: opacity .24s; }
+.sidebar.is-open + .overlay { opacity: 1; pointer-events: auto; }
+.table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+.table-wrap table { min-width: 640px; }
+.form-grid { display: grid; gap: 1rem; }
+@media (min-width: 900px) {
+  .form-grid { grid-template-columns: 1fr 1fr; }
+  .form-grid .pleine-largeur { grid-column: 1 / -1; }
+  .overlay { display: none; }
+}
+§quiz
+? Que signifie « mobile first » ?
+- Développer seulement pour mobile
++ Écrire d'abord le CSS du petit écran, puis l'enrichir avec des min-width
+- Tester sur mobile en dernier
+- Utiliser une application mobile
+= On ajoute de la complexité quand la place augmente.
+? Que fait @media (min-width: 900px) { … } ?
++ Applique les règles à partir de 900px de largeur
+- Applique les règles en dessous de 900px
+- Fixe la largeur à 900px
+- Cible les imprimantes
+= min-width = « au moins ».
+? Quelle taille minimale pour une zone tactile confortable ?
+- 16×16px
+- 24×24px
++ 44×44px
+- 100×100px
+= Recommandation courante (Apple, WCAG 2.5.5 AAA).
+? Comment empêcher une image de déborder de son conteneur ?
+- width: 1000px
++ max-width: 100%; height: auto
+- overflow: hidden sur body
+- display: none
+= L'image rétrécit sans se déformer.
+? Quelle balise est indispensable au responsive sur mobile ?
+- <meta charset>
++ <meta name="viewport" content="width=device-width, initial-scale=1">
+- <link rel="icon">
+- <base>
+= Sans elle, le téléphone simule un écran de 980px.
+§ondea
+<p>Le README d'Ondea Commandes annonce une application « responsive ». Dans <code>style.css</code>, la barre latérale devient un tiroir sur petit écran (bouton menu, fond assombri), les tableaux sont enveloppés pour défiler horizontalement, et l'écran « Préparation » est pensé pour une tablette en entrepôt (gros boutons, lignes lisibles). <code>print.css</code> est lui une media query <code>print</code> pour les documents A4.</p>
+
+§§chapter css-variables-themes
+part: css
+title: Variables CSS et thèmes clair / sombre
+subtitle: Custom properties, data-theme et prefers-color-scheme
+duration: 1 h 30
+feature: Mode clair / mode sombre mémorisé
+§intro
+<p>Une <strong>variable CSS</strong> (custom property) commence par deux tirets : <code>--gold: #c9a14a;</code>. On la lit avec <code>var(--gold)</code>. On les déclare en général sur <code>:root</code> (la racine du document) pour qu'elles soient disponibles partout.</p>
+<p>Leur super-pouvoir : on peut les <strong>redéfinir</strong> dans un autre sélecteur. Pour créer un thème sombre, il suffit de redéfinir les mêmes variables dans <code>[data-theme="dark"]</code> : tous les composants qui utilisent <code>var(--bg)</code> changent d'un coup.</p>
+<p>On nomme les variables par leur <strong>rôle</strong> (<code>--bg</code>, <code>--text</code>, <code>--surface</code>, <code>--border</code>) et non par leur couleur (<code>--blanc</code>) : en thème sombre, <code>--bg</code> n'est plus blanc !</p>
+§example css
+/* Thème clair : valeurs par défaut sur la racine */
+:root {
+  --bg: #f4f1ea;          /* fond de page ivoire */
+  --surface: #ffffff;     /* fond des cartes */
+  --text: #14161f;        /* texte principal */
+  --border: #e2dbcc;
+  --gold: #c9a14a;        /* décor */
+  --gold-text: #614608;   /* texte doré lisible */
+  --radius: 14px;
+  color-scheme: light;    /* barres de défilement, champs natifs clairs */
+}
+
+/* Thème sombre : on redéfinit SEULEMENT les valeurs */
+[data-theme="dark"] {
+  --bg: #0b0c12;          /* obsidienne */
+  --surface: #151824;
+  --text: #f2eee4;
+  --border: #2c3142;
+  --gold-text: #e2c27a;
+  color-scheme: dark;
+}
+
+/* Les composants n'utilisent que des variables */
+body  { background: var(--bg); color: var(--text); }
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+.lien-or { color: var(--gold-text); }
+
+/* Valeur de secours si la variable n'existe pas */
+.badge { background: var(--badge-bg, #ebe7de); }
+§explain
+<ul>
+<li><code>:root</code> = l'élément <code>&lt;html&gt;</code>, avec une spécificité de classe.</li>
+<li>Le JavaScript change le thème en une ligne : <code>document.documentElement.dataset.theme = 'dark'</code>.</li>
+<li><code>color-scheme</code> indique au navigateur d'adapter ses éléments natifs (cases, barres de défilement, calendrier).</li>
+<li>Les variables héritent : définies sur un parent, elles valent pour tous ses descendants, et on peut les surcharger localement (<code>.kpi--ca { --accent: gold }</code>).</li>
+<li><code>var(--x, secours)</code> fournit une valeur par défaut.</li>
+<li>Pour respecter le réglage du système au premier lancement : <code>matchMedia('(prefers-color-scheme: dark)')</code> en JS, ou une media query en CSS.</li>
+</ul>
+§demo-html
+<button id="t" aria-pressed="false">🌙 Passer en sombre</button>
+<article class="card"><h2>CMD-2026-0042</h2><p>Brico Sud — <span class="or">256,80 € TTC</span></p></article>
+§demo-css
+:root{--bg:#f4f1ea;--surface:#fff;--text:#14161f;--border:#e2dbcc;--gold-text:#614608;color-scheme:light}
+[data-theme="dark"]{--bg:#0b0c12;--surface:#151824;--text:#f2eee4;--border:#2c3142;--gold-text:#e2c27a;color-scheme:dark}
+body{background:var(--bg);color:var(--text);font-family:system-ui;padding:1rem;transition:background .3s,color .3s}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:1rem;margin-top:1rem}
+.or{color:var(--gold-text);font-weight:700}
+button{font:inherit;padding:.5rem 1rem;border-radius:8px}
+§demo-js
+const btn = document.getElementById('t');
+btn.addEventListener('click', () => {
+  const html = document.documentElement;
+  const sombre = html.dataset.theme !== 'dark';
+  html.dataset.theme = sombre ? 'dark' : 'light';
+  btn.setAttribute('aria-pressed', sombre);
+  btn.textContent = sombre ? '☀️ Passer en clair' : '🌙 Passer en sombre';
+});
+§guided
+<p>Créez le système de thèmes d'une carte Ondea.</p>
+<ol>
+<li>Sur <code>:root</code>, déclarez <code>--bg: #f4f1ea</code>, <code>--text: #14161f</code> et <code>--surface: #ffffff</code>.</li>
+<li>Dans <code>[data-theme="dark"]</code>, redéfinissez <code>--bg: #0b0c12</code>, <code>--text: #f2eee4</code> et <code>--surface: #151824</code>.</li>
+<li><code>body</code> utilise <code>var(--bg)</code> et <code>var(--text)</code> ; <code>.card</code> utilise <code>var(--surface)</code>.</li>
+<li>Le HTML a déjà <code>data-theme="dark"</code> sur un conteneur pour tester.</li>
+</ol>
+§guided-html
+<div class="card">Thème clair</div>
+<div data-theme="dark" class="zone-sombre">
+  <div class="card">Thème sombre</div>
+</div>
+§guided-css
+/* À vous */
+
+§guided-checks
+css | :root\s*\{[^}]*--bg\s*: | Variable --bg déclarée sur :root
+css | \[data-theme="dark"\]\s*\{[^}]*--surface\s*: | --surface redéfinie en thème sombre
+style | body | background-color | rgb(244, 241, 234) | body utilise --bg (clair)
+style | .zone-sombre .card | background-color | rgb(21, 24, 36) | La carte sombre utilise --surface sombre
+style | .zone-sombre .card | color | rgb(242, 238, 228) | Le texte de la carte sombre est clair
+§guided-solution-css
+:root { --bg: #f4f1ea; --text: #14161f; --surface: #ffffff; }
+[data-theme="dark"] { --bg: #0b0c12; --text: #f2eee4; --surface: #151824; }
+body { background: var(--bg); color: var(--text); font-family: system-ui, sans-serif; }
+.zone-sombre { background: var(--bg); padding: 1rem; }
+.card { background: var(--surface); color: var(--text); padding: 1rem; border-radius: 12px; margin: .5rem 0; }
+§auto
+<p>Écrivez la feuille <code>themes.css</code> complète de votre version d'Ondea : polices, rayons, durées d'animation, puis toutes les couleurs (fond, surfaces 1 à 3, bordures, texte, texte atténué, or, primaire, focus, et les couples fond/texte des 6 couleurs de statut) en thème clair et en thème sombre. Vérifiez chaque couple avec un outil de contraste et notez les ratios en commentaire.</p>
+§solution
+<p>Le thème sombre n'est pas une simple inversion : les fonds sombres sont légèrement bleutés (moins fatigants que le noir pur), les couleurs de statut deviennent des fonds sombres avec un texte clair et coloré.</p>
+§solution-code css
+:root {
+  --font-display: "Playfair Display", Georgia, serif;
+  --font-body: "Atkinson Hyperlegible", system-ui, sans-serif;
+  --radius-sm: 10px; --radius: 14px; --radius-lg: 20px;
+  --dur-fast: 140ms; --dur: 240ms;
+}
+:root, [data-theme="light"] {
+  --bg: #f4f1ea; --surface: #ffffff; --surface-2: #faf8f3; --surface-3: #f1ece1;
+  --border: #e2dbcc; --text: #14161f; --text-muted: #434753;
+  --gold: #c9a14a; --gold-text: #614608; --primary: #171a26; --on-primary: #fdf8ea;
+  --focus: #1d4ed8;
+  --success-bg: #dcf3e4; --success-fg: #0b4a26;  /* 8,9:1 */
+  --warning-bg: #fbeccb; --warning-fg: #5c3b00;  /* 8,7:1 */
+  --danger-bg:  #fbe0de; --danger-fg:  #7a1410;  /* 9,1:1 */
+  color-scheme: light;
+}
+[data-theme="dark"] {
+  --bg: #0b0c12; --surface: #151824; --surface-2: #1b1f2e; --surface-3: #232838;
+  --border: #2c3142; --text: #f2eee4; --text-muted: #c7c2b4;
+  --gold: #d6b05c; --gold-text: #e2c27a; --primary: #d6b05c; --on-primary: #11131c;
+  --focus: #93b4ff;
+  --success-bg: #0f2e1d; --success-fg: #a7e8c0;
+  --warning-bg: #33260a; --warning-fg: #f6d48f;
+  --danger-bg:  #3a1513; --danger-fg:  #f8b4ae;
+  color-scheme: dark;
+}
+§quiz
+? Comment déclare-t-on une variable CSS ?
+- $gold: #c9a14a;
++ --gold: #c9a14a;
+- var gold = #c9a14a;
+- @gold: #c9a14a;
+= Deux tirets ; $ et @ sont des syntaxes de préprocesseurs (Sass, Less).
+? Comment lire la variable --bg ?
++ var(--bg)
+- $bg
+- get(--bg)
+- --bg()
+= var() accepte aussi une valeur de secours.
+? Pourquoi nommer une variable --bg plutôt que --blanc ?
+- C'est plus court
++ Parce que sa valeur change selon le thème : on nomme le rôle, pas la couleur
+- --blanc est interdit
+- Pour le référencement
+= En thème sombre, --blanc vaudrait du noir : absurde.
+? Comment basculer en thème sombre en JavaScript ?
+- document.theme = 'dark'
++ document.documentElement.dataset.theme = 'dark'
+- body.dark = true
+- css.setTheme('dark')
+= Le CSS réagit au sélecteur [data-theme="dark"].
+? Que fait color-scheme: dark ?
+- Inverse toutes les couleurs
++ Indique au navigateur d'afficher ses éléments natifs en version sombre
+- Active le mode sombre du système
+- Rien
+= Barres de défilement, champs de date, cases à cocher s'adaptent.
+§ondea
+<p><code>themes.css</code> d'Ondea est un modèle du genre : jetons communs (polices, rayons, durées, <code>--sidebar-w</code>), puis <code>:root, [data-theme="light"]</code> et <code>[data-theme="dark"]</code> qui redéfinissent les mêmes noms. <code>storage.js</code> mémorise le choix dans LocalStorage (clé préfixée <code>oc.</code>) et l'applique avant le premier affichage pour éviter un flash de mauvais thème. Ce cours fonctionne de la même façon.</p>
+
+§§chapter css-animations
+part: css
+title: Transitions, animations et effets visuels
+subtitle: transition, transform, @keyframes, ombres, dégradés et reduced motion
+duration: 2 h
+feature: Micro-interactions et effets premium
+§intro
+<p>Une bonne animation <strong>explique</strong> ce qui se passe : un panneau qui glisse indique d'où il vient, un bouton qui s'enfonce confirme le clic. Elle doit être <strong>courte</strong> (150 à 300 ms) et ne jamais gêner.</p>
+<ul>
+<li><code>transition</code> : anime le passage d'un état à un autre (au survol, à l'ajout d'une classe).</li>
+<li><code>transform</code> : déplace (<code>translate</code>), agrandit (<code>scale</code>) ou tourne (<code>rotate</code>) sans perturber la mise en page. Avec <code>opacity</code>, ce sont les propriétés les plus fluides à animer.</li>
+<li><code>@keyframes</code> + <code>animation</code> : une animation en plusieurs étapes, éventuellement en boucle.</li>
+<li>Effets : <code>box-shadow</code> (ombres et halos), <code>linear-gradient</code> (dégradés), <code>backdrop-filter: blur()</code> (verre dépoli).</li>
+</ul>
+<p><strong>Obligatoire :</strong> certaines personnes (troubles vestibulaires, migraines) sont malades devant le mouvement. La media query <code>prefers-reduced-motion: reduce</code> permet de couper les animations quand l'utilisateur l'a demandé dans son système.</p>
+§example css
+/* Micro-interaction : le bouton se soulève au survol */
+.btn {
+  transition: transform .14s ease-out, box-shadow .14s ease-out;
+}
+.btn:hover  { transform: translateY(-2px); box-shadow: 0 8px 20px rgb(201 161 74 / 35%); }
+.btn:active { transform: translateY(0) scale(.98); }   /* enfoncé au clic */
+
+/* Apparition d'une carte : de bas en haut avec fondu */
+@keyframes apparition {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: none; }
+}
+.card { animation: apparition .48s cubic-bezier(.22, 1, .36, 1) both; }
+
+/* Halo doré autour d'une notification non lue */
+@keyframes pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgb(201 161 74 / 45%); }
+  50%      { box-shadow: 0 0 0 8px rgb(201 161 74 / 0%); }
+}
+.notif-non-lue { animation: pulse 2s infinite; }
+
+/* Titre doré avec dégradé dans le texte */
+.titre-or {
+  background: linear-gradient(90deg, #8a6a1f, #e7c873, #8a6a1f);
+  -webkit-background-clip: text; background-clip: text;
+  color: transparent;
+}
+
+/* RESPECT DES PRÉFÉRENCES : on coupe le mouvement */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+§explain
+<ul>
+<li><code>transition</code> se place sur l'état <strong>de départ</strong> : l'animation joue dans les deux sens (survol et sortie).</li>
+<li>On liste les propriétés animées plutôt que <code>transition: all</code>, plus coûteux et imprévisible.</li>
+<li><code>cubic-bezier(.22, 1, .36, 1)</code> est une courbe « ease-out » marquée : départ rapide, arrivée douce, très cinématographique.</li>
+<li><code>both</code> (fill-mode) garde l'état initial avant le départ et l'état final après la fin.</li>
+<li><code>background-clip: text</code> découpe le fond selon les lettres : le dégradé apparaît dans le texte. Gardez un contraste suffisant !</li>
+<li>Dans la règle <code>prefers-reduced-motion</code>, <code>!important</code> est justifié : elle doit l'emporter sur tout.</li>
+</ul>
+§demo-html
+<button class="btn">Survolez-moi</button>
+<div class="grille"><article class="card">Carte 1</article><article class="card" style="animation-delay:.1s">Carte 2</article><article class="card" style="animation-delay:.2s">Carte 3</article></div>
+<p><span class="notif-non-lue">3</span> notifications non lues</p>
+<h2 class="titre-or">Obsidienne &amp; Or</h2>
+<button id="rejouer" class="btn">Rejouer l'apparition</button>
+§demo-css
+body{font-family:system-ui;padding:1rem;background:#0f111a;color:#f4e8c8}
+.btn{font:inherit;padding:.6rem 1.1rem;border-radius:10px;border:1px solid #c9a14a;background:#171a26;color:#f4e8c8;cursor:pointer;transition:transform .14s ease-out,box-shadow .14s ease-out}
+.btn:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgb(201 161 74/35%)}
+.btn:active{transform:scale(.98)}
+.grille{display:flex;gap:.6rem;margin:1rem 0}
+@keyframes apparition{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+.card{flex:1;padding:1rem;border:1px solid #c9a14a;border-radius:12px;animation:apparition .6s cubic-bezier(.22,1,.36,1) both}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgb(201 161 74/55%)}50%{box-shadow:0 0 0 8px rgb(201 161 74/0%)}}
+.notif-non-lue{display:inline-grid;place-items:center;width:1.6rem;height:1.6rem;border-radius:50%;background:#c9a14a;color:#171a26;font-weight:700;animation:pulse 2s infinite}
+.titre-or{font:700 2rem Georgia,serif;background:linear-gradient(90deg,#b8892c,#f1d68b,#b8892c);-webkit-background-clip:text;background-clip:text;color:transparent}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+§demo-js
+document.getElementById('rejouer').addEventListener('click', () => {
+  document.querySelectorAll('.card').forEach((c) => {
+    c.style.animation = 'none';
+    void c.offsetWidth;          // force le navigateur à recalculer
+    c.style.animation = '';
+  });
+});
+§guided
+<p>Ajoutez les micro-interactions de la carte commande.</p>
+<ol>
+<li><code>.carte</code> a une <code>transition</code> sur <code>transform</code> et <code>box-shadow</code>.</li>
+<li>Au survol, <code>.carte</code> monte (<code>transform: translateY(-4px)</code>) et gagne une ombre.</li>
+<li>Créez une animation <code>@keyframes entree</code> (de <code>opacity: 0</code> à <code>opacity: 1</code>) appliquée à <code>.carte</code>.</li>
+<li>Ajoutez la règle <code>@media (prefers-reduced-motion: reduce)</code> qui supprime l'animation et la transition.</li>
+</ol>
+§guided-html
+<article class="carte"><h2>CMD-2026-0044</h2><p>Atelier Mistral — En préparation</p></article>
+§guided-css
+.carte { padding: 1rem; border: 1px solid #c9a14a; border-radius: 12px; max-width: 320px; }
+/* À vous */
+
+§guided-checks
+css | transition\s*:[^;]*transform | Transition sur transform
+css | \.carte:hover\s*\{[^}]*translateY\(\s*-4px\s*\) | Survol : translateY(-4px)
+css | \.carte:hover\s*\{[^}]*box-shadow | Survol : une ombre
+css | @keyframes\s+entree | Animation @keyframes entree
+style | .carte | animation-name | entree | L'animation entree est appliquée
+css | @media\s*\(\s*prefers-reduced-motion\s*:\s*reduce\s*\) | Règle prefers-reduced-motion
+§guided-solution-css
+.carte { padding: 1rem; border: 1px solid #c9a14a; border-radius: 12px; max-width: 320px;
+  transition: transform .2s ease-out, box-shadow .2s ease-out;
+  animation: entree .4s ease-out both; }
+.carte:hover { transform: translateY(-4px); box-shadow: 0 12px 28px rgb(23 26 38 / 18%); }
+@keyframes entree { from { opacity: 0; } to { opacity: 1; } }
+@media (prefers-reduced-motion: reduce) {
+  .carte { animation: none; transition: none; }
+}
+§auto
+<p>Créez un écran de connexion « cinématographique » pour Ondea : fond obsidienne avec un dégradé radial doré discret, carte en verre dépoli (<code>backdrop-filter</code>), titre au dégradé doré, bordure qui s'illumine au focus des champs, bouton avec halo au survol, et un indicateur de chargement en <code>@keyframes</code> (rotation). Tout doit rester lisible (contraste) et s'arrêter avec <code>prefers-reduced-motion</code>. Testez en activant « Réduire les animations » dans votre système.</p>
+§solution
+<p><code>:focus-within</code> s'applique à un parent quand un de ses enfants a le focus : pratique pour illuminer tout le groupe d'un champ.</p>
+§solution-code css
+body { min-height: 100vh; display: grid; place-items: center; color: #f2eee4;
+  background: radial-gradient(circle at 30% 20%, rgb(201 161 74 / 18%), transparent 45%), #0b0c12; }
+.login { width: min(420px, 92vw); padding: 2rem; border-radius: 20px;
+  background: rgb(21 24 36 / 70%); backdrop-filter: blur(14px);
+  border: 1px solid rgb(214 176 92 / 35%); }
+.login h1 { background: linear-gradient(90deg, #b8892c, #f1d68b, #b8892c); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.champ { border: 1px solid #2c3142; border-radius: 12px; transition: border-color .2s, box-shadow .2s; }
+.champ:focus-within { border-color: #d6b05c; box-shadow: 0 0 0 4px rgb(214 176 92 / 25%); }
+.btn-login { transition: box-shadow .2s, transform .14s; }
+.btn-login:hover { box-shadow: 0 0 24px rgb(214 176 92 / 45%); transform: translateY(-1px); }
+@keyframes tourner { to { transform: rotate(1turn); } }
+.loader { width: 1.25rem; height: 1.25rem; border: 3px solid rgb(214 176 92 / 30%); border-top-color: #d6b05c; border-radius: 50%; animation: tourner .8s linear infinite; }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
+§quiz
+? Quelles propriétés sont les plus fluides à animer ?
+- width et height
++ transform et opacity
+- margin et padding
+- top et left
+= Elles ne déclenchent pas de recalcul de la mise en page.
+? Où écrire la propriété transition pour un effet au survol ?
++ Sur l'état normal de l'élément
+- Uniquement dans :hover
+- Dans @keyframes
+- Sur body
+= Ainsi l'effet joue à l'entrée et à la sortie du survol.
+? Que permet @media (prefers-reduced-motion: reduce) ?
+- Accélérer les animations
++ Réduire ou supprimer le mouvement pour les personnes qui l'ont demandé
+- Animer sur mobile
+- Économiser la batterie automatiquement
+= Critère WCAG 2.3.3 (AAA) : animations déclenchées par une interaction.
+? Quelle durée pour une micro-interaction ?
+- 2 à 3 secondes
++ Environ 150 à 300 ms
+- 1 ms
+- 10 secondes
+= Assez pour être perçue, assez court pour ne pas ralentir.
+? Que fait animation-fill-mode: both ?
+- Joue l'animation deux fois
++ Applique l'état de départ avant l'animation et garde l'état final après
+- Joue dans les deux sens
+- Rien
+= Évite un « flash » de l'état final avant le départ.
+§ondea
+<p><code>animations.css</code> d'Ondea (63 lignes) regroupe les micro-interactions : apparition des écrans (<code>.reveal</code>), soulèvement des boutons, entrée des toasts, graphiques SVG animés de <code>charts.js</code>. Son en-tête précise : « neutralisées si prefers-reduced-motion ». <code>premium.css</code> ajoute les halos dorés et effets de profondeur de l'identité Obsidienne & Or.</p>

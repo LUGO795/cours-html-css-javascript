@@ -1,0 +1,79 @@
+/* ==========================================================================
+   Ondea Academy — effects.css
+   Animations cinématographiques, apparitions au défilement, titres lumineux,
+   micro-interactions. Tout est neutralisé si prefers-reduced-motion: reduce
+   ou si l'utilisateur coupe les animations dans le cours (classe .no-motion).
+   ========================================================================== */
+
+/* ---------- Titres lumineux ---------- */
+.title-glow {
+  background: linear-gradient(100deg, var(--heading) 0%, var(--heading) 35%, var(--gold-strong) 50%, var(--heading) 65%, var(--heading) 100%);
+  background-size: 250% 100%;
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+  animation: shine 7s var(--ease-out) infinite;
+}
+[data-theme="dark"] .title-glow { text-shadow: 0 0 40px rgb(214 176 92 / 18%); }
+@keyframes shine { 0% { background-position: 120% 0; } 60%, 100% { background-position: -30% 0; } }
+
+/* ---------- Apparition au défilement ---------- */
+.reveal { opacity: 0; transform: translateY(22px); transition: opacity .7s var(--ease-out), transform .7s var(--ease-out); }
+.reveal.is-visible { opacity: 1; transform: none; }
+
+/* ---------- Transition entre les vues (« rideau ») ---------- */
+.view-enter { animation: view-in .55s var(--ease-out) both; }
+@keyframes view-in { from { opacity: 0; transform: translateY(14px) scale(.995); filter: blur(4px); } to { opacity: 1; transform: none; filter: none; } }
+.curtain { position: fixed; inset: 0; z-index: 2500; pointer-events: none; background: linear-gradient(90deg, transparent, rgb(214 176 92 / 22%), transparent); transform: translateX(-100%); }
+.curtain.is-playing { animation: curtain .6s var(--ease-out); }
+@keyframes curtain { from { transform: translateX(-100%); } to { transform: translateX(100%); } }
+
+/* ---------- Halo ---------- */
+.halo { animation: halo 3.2s ease-in-out infinite; }
+@keyframes halo { 0%, 100% { box-shadow: 0 0 0 0 var(--gold-glow); } 50% { box-shadow: 0 0 0 10px transparent; } }
+
+/* ---------- Succès d'un exercice ---------- */
+.burst { position: relative; }
+.burst::after { content: ""; position: absolute; inset: -4px; border-radius: inherit; border: 2px solid var(--gold); animation: burst .9s var(--ease-out) forwards; pointer-events: none; }
+@keyframes burst { from { opacity: 1; transform: scale(.97); } to { opacity: 0; transform: scale(1.04); } }
+
+/* ---------- Toasts ---------- */
+.toast { animation: toast-in .35s var(--ease-spring) both; }
+.toast.is-leaving { animation: toast-out .25s ease-in forwards; }
+@keyframes toast-in { from { opacity: 0; transform: translateY(12px) scale(.96); } }
+@keyframes toast-out { to { opacity: 0; transform: translateY(8px); } }
+
+/* ---------- Introduction ---------- */
+.intro.is-playing .intro-emblem { animation: emblem 1.4s var(--ease-out) both; }
+.intro.is-playing .intro-kicker { animation: fade-up .8s .5s var(--ease-out) both; }
+.intro.is-playing .intro-title .ch { animation: letter .9s var(--ease-out) both; animation-delay: calc(.7s + var(--i) * 45ms); }
+.intro.is-playing .intro-title .gold { animation: letter .9s var(--ease-out) both, gold-flow 4s 2s linear infinite; animation-delay: calc(.7s + var(--i) * 45ms), 2s; }
+.intro.is-playing .intro-sub { animation: fade-up .8s 1.6s var(--ease-out) both; }
+.intro.is-playing .intro-langs span { animation: fade-up .6s var(--ease-out) both; animation-delay: calc(1.9s + var(--i) * 120ms); }
+.intro.is-playing .intro-actions { animation: fade-up .8s 2.4s var(--ease-out) both; }
+.intro.is-playing .intro-scan { animation: scan 2.6s .2s var(--ease-out) both; }
+.intro.is-playing .intro-grid { animation: grid-move 14s linear infinite; }
+.intro.is-playing .intro-particles i { animation: rise var(--d, 7s) var(--delay, 0s) linear infinite; }
+.intro.is-leaving { animation: intro-out .8s var(--ease-out) forwards; }
+@keyframes emblem { from { opacity: 0; transform: scale(.6) rotate(-25deg); filter: blur(10px); } 60% { opacity: 1; } to { opacity: 1; transform: none; filter: drop-shadow(0 0 24px rgb(214 176 92 / 55%)); } }
+@keyframes letter { from { opacity: 0; transform: translateY(.6em) rotateX(70deg); filter: blur(8px); } to { opacity: 1; transform: none; filter: none; } }
+@keyframes fade-up { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
+@keyframes scan { 0% { top: 0; opacity: 0; } 15% { opacity: 1; } 85% { opacity: 1; } 100% { top: 100%; opacity: 0; } }
+@keyframes grid-move { to { background-position: 0 64px, 64px 0; } }
+@keyframes gold-flow { to { background-position: -200% 0; } }
+@keyframes rise { 0% { transform: translateY(0); opacity: 0; } 10% { opacity: .9; } 100% { transform: translateY(-110vh); opacity: 0; } }
+@keyframes intro-out { to { opacity: 0; transform: scale(1.04); filter: blur(6px); visibility: hidden; } }
+
+/* ---------- Réduction des animations : préférence système OU choix dans le cours ---------- */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .01ms !important; animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important; scroll-behavior: auto !important;
+  }
+  .reveal { opacity: 1; transform: none; }
+  .title-glow { animation: none; }
+  .glow-border::before { animation: none; }
+}
+.no-motion *, .no-motion *::before, .no-motion *::after {
+  animation-duration: .01ms !important; animation-iteration-count: 1 !important;
+  transition-duration: .01ms !important; scroll-behavior: auto !important;
+}
+.no-motion .reveal { opacity: 1; transform: none; }

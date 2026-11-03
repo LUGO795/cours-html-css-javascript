@@ -1,0 +1,29 @@
+/* ==========================================================================
+   Ondea Academy — wide-layout.css
+   Contenu des pages plus large : toutes les cartes, l'accueil, les chapitres,
+   le fil rouge, le jury, le glossaire, les fiches mémo et la progression
+   occupent davantage l'écran sur ordinateur, sans changer le mobile.
+   (Fichier chargé en dernier : il prend le dessus sur les largeurs d'origine.)
+   ========================================================================== */
+
+:root {
+  --content-w: 1480px;            /* avant : 940px */
+}
+
+/* Toutes les vues (chapitres, accueil, parties, fil rouge, jury, mémos…) */
+.view,
+.view-wide {
+  max-width: min(var(--content-w), 100%);
+}
+
+/* Marges latérales du contenu un peu réduites sur grand écran */
+@media (min-width: 900px) {
+  main { padding-left: clamp(1.25rem, 2.2vw, 3rem); padding-right: clamp(1.25rem, 2.2vw, 3rem); }
+}
+
+/* Textes : lignes plus longues tout en restant confortables à lire */
+.prose { max-width: 95ch; }
+.hero .lead { max-width: 85ch; }
+
+/* Pied de page aligné sur la nouvelle largeur */
+.app-footer .inner { max-width: var(--content-w); }

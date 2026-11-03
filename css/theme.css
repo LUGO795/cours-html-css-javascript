@@ -1,0 +1,112 @@
+/* ==========================================================================
+   Ondea Academy — theme.css
+   Jetons de conception « Obsidienne & Or » : polices embarquées, thème sombre
+   et thème clair. Chaque couple texte / fond vise un contraste ≥ 7:1 (AAA).
+   On nomme les variables par leur RÔLE (--bg, --text) et non par leur couleur.
+   ========================================================================== */
+
+@font-face { font-family: "Playfair Display"; font-weight: 600; font-display: swap;
+  src: url("../assets/fonts/playfair-display-latin-600-normal.woff2") format("woff2"); }
+@font-face { font-family: "Playfair Display"; font-weight: 700; font-display: swap;
+  src: url("../assets/fonts/playfair-display-latin-700-normal.woff2") format("woff2"); }
+@font-face { font-family: "Atkinson Hyperlegible"; font-weight: 400; font-display: swap;
+  src: url("../assets/fonts/atkinson-hyperlegible-latin-400-normal.woff2") format("woff2"); }
+@font-face { font-family: "Atkinson Hyperlegible"; font-weight: 400; font-style: italic; font-display: swap;
+  src: url("../assets/fonts/atkinson-hyperlegible-latin-400-italic.woff2") format("woff2"); }
+@font-face { font-family: "Atkinson Hyperlegible"; font-weight: 700; font-display: swap;
+  src: url("../assets/fonts/atkinson-hyperlegible-latin-700-normal.woff2") format("woff2"); }
+@font-face { font-family: "JetBrains Mono"; font-weight: 400; font-display: swap;
+  src: url("../assets/fonts/jetbrains-mono-latin-400-normal.woff2") format("woff2"); }
+@font-face { font-family: "JetBrains Mono"; font-weight: 600; font-display: swap;
+  src: url("../assets/fonts/jetbrains-mono-latin-600-normal.woff2") format("woff2"); }
+
+/* Propriété animable : angle des bordures lumineuses (conic-gradient) */
+@property --angle { syntax: "<angle>"; initial-value: 0deg; inherits: false; }
+
+:root {
+  --font-display: "Playfair Display", Georgia, "Times New Roman", serif;
+  --font-body: "Atkinson Hyperlegible", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "Cascadia Code", Consolas, monospace;
+
+  --radius-xs: 6px; --radius-sm: 10px; --radius: 16px; --radius-lg: 24px; --radius-pill: 999px;
+  --header-h: 64px; --sidebar-w: 300px; --content-w: 940px;
+
+  --ease-out: cubic-bezier(.22, 1, .36, 1);
+  --ease-spring: cubic-bezier(.34, 1.56, .64, 1);
+  --dur-fast: 150ms; --dur: 260ms; --dur-slow: 600ms;
+
+  /* Coloration syntaxique : panneau toujours sombre, contrastes ≥ 7:1 sur #0d0f17 */
+  --code-bg: #0d0f17; --code-border: #2a2f40; --code-text: #ece8de;
+  --tk-comment: #aab3c9; --tk-string: #b9e6a9; --tk-keyword: #f3c96e; --tk-number: #f8bb92;
+  --tk-function: #94cbff; --tk-tag: #f3c96e; --tk-attr: #94cbff; --tk-prop: #94cbff;
+  --tk-value: #d2c4ff; --tk-punct: #d9d4c8;
+}
+
+/* ---------- Thème sombre (Obsidienne) ---------- */
+:root,
+[data-theme="dark"] {
+  --bg: #07080d;
+  --bg-glow-1: rgb(214 176 92 / 14%);
+  --bg-glow-2: rgb(70 90 160 / 12%);
+  --surface: #10121b;
+  --surface-2: #161925;
+  --surface-3: #1e2232;
+  --surface-glass: rgb(16 18 27 / 78%);
+  --border: #2a2f40;
+  --border-strong: #464d64;
+  --text: #f2eee4;           /* 17,6:1 sur --bg */
+  --text-muted: #cdc8ba;     /* 12,1:1 */
+  --heading: #fbf7ec;
+  --gold: #d6b05c;           /* 9,7:1 : utilisable en texte */
+  --gold-strong: #f1d68b;
+  --gold-text: #e6c77f;
+  --gold-soft: rgb(214 176 92 / 14%);
+  --gold-glow: rgb(214 176 92 / 45%);
+  --primary: #d6b05c;
+  --primary-hover: #e7c574;
+  --on-primary: #11131c;
+  --focus: #9dbcff;
+  --focus-ring: 0 0 0 3px #07080d, 0 0 0 6px #9dbcff;
+  --success-bg: #0f2e1d; --success-fg: #a9ecc2; --success: #4ade80;
+  --warning-bg: #33260a; --warning-fg: #f8d690;
+  --danger-bg:  #3a1513; --danger-fg:  #f9b8b1; --danger: #f87171;
+  --info-bg:    #12234a; --info-fg:    #bcd2ff;
+  --html: #f4a58a; --css: #93c5fd; --js: #f3d36e; --projet: #c4b5fd;
+  --shadow: 0 18px 40px rgb(0 0 0 / 45%);
+  --shadow-sm: 0 6px 18px rgb(0 0 0 / 35%);
+  color-scheme: dark;
+}
+
+/* ---------- Thème clair (Ivoire & Or) ---------- */
+[data-theme="light"] {
+  --bg: #f4f1ea;
+  --bg-glow-1: rgb(201 161 74 / 18%);
+  --bg-glow-2: rgb(23 26 38 / 6%);
+  --surface: #ffffff;
+  --surface-2: #faf8f3;
+  --surface-3: #f1ece1;
+  --surface-glass: rgb(255 255 255 / 82%);
+  --border: #ddd4c1;
+  --border-strong: #a99d84;
+  --text: #14161f;           /* 16,1:1 sur --bg */
+  --text-muted: #3f4350;     /* 9,2:1 */
+  --heading: #0c0e16;
+  --gold: #c9a14a;           /* décor uniquement (bordures, halos) */
+  --gold-strong: #8a6a1f;
+  --gold-text: #5c4207;      /* 8,9:1 sur blanc */
+  --gold-soft: rgb(201 161 74 / 16%);
+  --gold-glow: rgb(201 161 74 / 40%);
+  --primary: #171a26;
+  --primary-hover: #262a3b;
+  --on-primary: #fdf8ea;
+  --focus: #1d4ed8;
+  --focus-ring: 0 0 0 3px #ffffff, 0 0 0 6px #1d4ed8;
+  --success-bg: #dcf3e4; --success-fg: #0b4a26; --success: #15803d;
+  --warning-bg: #fbeccb; --warning-fg: #5c3b00;
+  --danger-bg:  #fbe0de; --danger-fg:  #7a1410; --danger: #b91c1c;
+  --info-bg:    #dfe9fb; --info-fg:    #0f2f6e;
+  --html: #8f2a0c; --css: #0b4a8f; --js: #5c4700; --projet: #4b2a8f;
+  --shadow: 0 18px 40px rgb(23 26 38 / 12%);
+  --shadow-sm: 0 6px 18px rgb(23 26 38 / 8%);
+  color-scheme: light;
+}
